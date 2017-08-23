@@ -11,15 +11,9 @@ namespace AttackLeague.AttackLeague
 {
     public class Tile
     {
-        private AbstractBlock myBlock;
-        private Vector2 myPosition;
-        
         void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset)
         {
-            if (myBlock != null)
-            {
-                myBlock.Draw(aSpriteBatch, aGridOffset, myPosition);
-            }
+            Console.WriteLine(":(");
         }
 
     }

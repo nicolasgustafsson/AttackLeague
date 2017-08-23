@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AttackLeague.AttackLeague;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,15 +10,17 @@ namespace AttackLeague
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private Texture2D myTexture;
+        private Grid myGrid;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            myGrid = new Grid();
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
+
         }
 
         protected override void Initialize()
@@ -27,9 +30,8 @@ namespace AttackLeague
 
         protected override void LoadContent()
         {
-            myTexture = Content.Load<Texture2D>("Pixel");
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            myGrid.LoadContent(Content);
         }
 
         protected override void UnloadContent()
@@ -41,7 +43,12 @@ namespace AttackLeague
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                myGrid.GenerateGrid(Content);
+            }
 
+            myGrid.Update();
             base.Update(gameTime);
         }
 
@@ -50,7 +57,7 @@ namespace AttackLeague
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            spriteBatch.Draw(myTexture, new Vector2(100, 100), null, Color.Green, 0, Vector2.Zero, Vector2.One * 100, SpriteEffects.None, 0);
+            myGrid.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

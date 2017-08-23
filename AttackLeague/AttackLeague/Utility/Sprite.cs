@@ -13,15 +13,22 @@ namespace AttackLeague.Utility
     {
         private Texture2D myTexture;
         private Vector2 myPosition;
+        private Color myColor;
 
         public Sprite(string aTextureName, ContentManager aContent)
         {
+            myColor = Color.White;
             myTexture = aContent.Load<Texture2D>(aTextureName);
         }
 
         public Vector2 GetSize()
         {
             return new Vector2(myTexture.Width, myTexture.Height);
+        }
+
+        public void SetColor(Color aColor)
+        {
+            myColor = aColor;
         }
 
         public void SetPosition(Vector2 aNewPosition)
@@ -31,7 +38,7 @@ namespace AttackLeague.Utility
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myPosition, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
         }
     }
 }

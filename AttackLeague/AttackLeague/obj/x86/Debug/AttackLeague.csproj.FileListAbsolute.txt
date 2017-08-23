@@ -21,3 +21,6 @@ C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLea
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.exe
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.pdb
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Pixel.xnb
+C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CoreCompileInputs.cache
+C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\ColorBlock.xnb
+C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache

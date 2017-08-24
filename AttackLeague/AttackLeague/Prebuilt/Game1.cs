@@ -65,16 +65,16 @@ namespace AttackLeague
             if (myIsPaused == false)
             {
                 myGrid.Update();
-                myPlayer.Update();
             }
             else
             {
                 if (ActionMapper.ActionIsActive("StepOnce"))
                 {
                     myGrid.Update();
-                    myPlayer.Update();
                 }
             }
+
+            myPlayer.Update();
 
             base.Update(gameTime);
         }

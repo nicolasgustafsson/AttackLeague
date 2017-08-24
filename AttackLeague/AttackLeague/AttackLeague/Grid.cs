@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +20,6 @@ namespace AttackLeague.AttackLeague
         private int myWidth = 6;
         private ContentManager myContent;
         private Vector2 myOffset = new Vector2(100, 100);
-        private bool myPressedPrint = false;
 
         public Grid(ContentManager aContent)
         {
@@ -58,14 +58,9 @@ namespace AttackLeague.AttackLeague
             //if it crashes here there are big chances that they have same position
             myBlocks.Sort();
 
-            if (myPressedPrint == false && Keyboard.GetState().IsKeyDown(Keys.P))
-            {
-                myPressedPrint = true;
+            if (KeyboardWrapper.KeyPressed(Keys.P))
+            { 
                 PrintGrid();
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.P))
-            {
-                myPressedPrint = false;
             }
             
             for (int i = 0; i < myBlocks.Count; i++)

@@ -19,6 +19,22 @@ namespace AttackLeague.AttackLeague
 
         public Player(ContentManager aContent, Grid aGrid)
         {
+            ActionMapper.BindAction("MoveLeft", Keys.A, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveLeft", Keys.Left, KeyStatus.KeyPressed);
+
+            ActionMapper.BindAction("MoveRight", Keys.D, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveRight", Keys.Right, KeyStatus.KeyPressed);
+
+            ActionMapper.BindAction("MoveUp", Keys.W, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveUp", Keys.Up, KeyStatus.KeyPressed);
+
+            ActionMapper.BindAction("MoveDown", Keys.S, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveDown", Keys.Down, KeyStatus.KeyPressed);
+
+            ActionMapper.BindAction("SwapBlocks", Keys.E, KeyStatus.KeyPressed);
+
+            ActionMapper.BindAction("RaiseBlocks", Keys.Space, KeyStatus.KeyPressed);
+
             myGrid = aGrid;
             mySprite = new Sprite("PlayerMarker", aContent);
         }
@@ -27,12 +43,12 @@ namespace AttackLeague.AttackLeague
         {
             HandleMovement();
 
-            if (KeyboardWrapper.KeyPressed(Keys.E))
+            if (ActionMapper.ActionIsActive("SwapBlocks"))
             {
                 myGrid.SwapRight(myPosition);
             }
 
-            if (KeyboardWrapper.KeyPressed(Keys.Space))
+            if (ActionMapper.ActionIsActive("RaiseBlocks"))
             {
                 myGrid.RaiseBlocks();
             }
@@ -40,28 +56,28 @@ namespace AttackLeague.AttackLeague
 
         private void HandleMovement()
         {
-            if (KeyboardWrapper.KeyPressed(Keys.D) || KeyboardWrapper.KeyPressed(Keys.Right))
+            if (ActionMapper.ActionIsActive("MoveRight"))
             { 
                 if (myPosition.X < 4)
                 {
                     myPosition.X += 1;
                 }
             }
-            if (KeyboardWrapper.KeyPressed(Keys.A) || KeyboardWrapper.KeyPressed(Keys.Left))
+            if (ActionMapper.ActionIsActive("MoveLeft"))
             {
                 if (myPosition.X > 0)
                 {
                     myPosition.X -= 1;
                 }
             }
-            if (KeyboardWrapper.KeyPressed(Keys.W) || KeyboardWrapper.KeyPressed(Keys.Up))
+            if (ActionMapper.ActionIsActive("MoveUp"))
             {
                 if (myPosition.Y < 11)
                 {
                     myPosition.Y += 1;
                 }
             }
-            if (KeyboardWrapper.KeyPressed(Keys.S) || KeyboardWrapper.KeyPressed(Keys.Down))
+            if (ActionMapper.ActionIsActive("MoveDown"))
             {
                 if (myPosition.Y > 1)
                 {

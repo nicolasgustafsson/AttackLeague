@@ -58,7 +58,7 @@ namespace AttackLeague.AttackLeague
         {
             if (ActionMapper.ActionIsActive("MoveRight"))
             { 
-                if (myPosition.X < 4)
+                if (myPosition.X < myGrid.GetWidth() - 2)
                 {
                     myPosition.X += 1;
                 }
@@ -72,7 +72,7 @@ namespace AttackLeague.AttackLeague
             }
             if (ActionMapper.ActionIsActive("MoveUp"))
             {
-                if (myPosition.Y < 11)
+                if (myPosition.Y < myGrid.GetHeight() - 1)
                 {
                     myPosition.Y += 1;
                 }

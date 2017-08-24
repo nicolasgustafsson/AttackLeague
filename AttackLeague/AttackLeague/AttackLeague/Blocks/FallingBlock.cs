@@ -71,7 +71,7 @@ namespace AttackLeague.AttackLeague
 
         public bool WillPassTile()
         {
-            return myYOffset - BaseSpeed <= 0.0f;
+            return myYOffset - BaseSpeed < 0.0f;
         }
 
         public void PassTile()

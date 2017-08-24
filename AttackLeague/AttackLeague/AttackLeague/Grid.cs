@@ -385,5 +385,10 @@ namespace AttackLeague.AttackLeague
         {
             //DO DA RAISINS
         }
+
+        public int GetWidth()
+        {
+            return myWidth;
+        }
     }
 }

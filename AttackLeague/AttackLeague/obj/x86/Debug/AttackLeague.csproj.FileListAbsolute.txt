@@ -24,3 +24,4 @@ C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLea
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CoreCompileInputs.cache
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\ColorBlock.xnb
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache
+C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayerMarker.xnb

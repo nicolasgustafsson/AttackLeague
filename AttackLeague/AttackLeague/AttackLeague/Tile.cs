@@ -11,9 +11,16 @@ namespace AttackLeague.AttackLeague
 {
     public class Tile
     {
-        void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset)
+        private AbstractBlock myBlock;
+
+        public void SetBlock(AbstractBlock aBlock)
         {
-            Console.WriteLine(":(");
+            myBlock = aBlock;
+        }
+
+        public AbstractBlock GetBlock()
+        {
+            return myBlock;
         }
 
     }

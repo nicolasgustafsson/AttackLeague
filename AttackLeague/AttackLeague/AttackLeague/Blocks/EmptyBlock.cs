@@ -44,7 +44,7 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset)
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight)
         {
         }
     }

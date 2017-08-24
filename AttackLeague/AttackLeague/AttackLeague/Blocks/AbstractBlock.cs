@@ -37,6 +37,10 @@ namespace AttackLeague.AttackLeague
             return aFirst.GetHeight() > aSecond.GetHeight();
         }
 
+        public void SetPosition(Point aPosition)
+        {
+            SetPosition(aPosition.X, aPosition.Y);
+        }
 
         public void SetPosition(int aX, int aY)
         {
@@ -54,7 +58,7 @@ namespace AttackLeague.AttackLeague
 
         public abstract void Update();
 
-        public abstract void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset);
+        public abstract void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight);
 
 
         public int CompareTo(object obj)

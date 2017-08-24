@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    enum BlockColor
+    enum EBlockColor
     {
         Cyan,
         Magenta,
@@ -25,7 +25,7 @@ namespace AttackLeague.AttackLeague
 
     class ColorBlock : AbstractBlock
     {
-        private BlockColor myColor = (BlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
+        private EBlockColor myColor = (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
 
         public ColorBlock()
         {
@@ -39,23 +39,23 @@ namespace AttackLeague.AttackLeague
 
         }
 
-        private Color GetColorFromEnum()
+        public Color GetColorFromEnum()
         {
             switch (myColor)
             {
-                case BlockColor.Cyan:
+                case EBlockColor.Cyan:
                     return Color.Cyan;
-                case BlockColor.Magenta:
+                case EBlockColor.Magenta:
                     return Color.Magenta;
-                case BlockColor.Yellow:
+                case EBlockColor.Yellow:
                     return Color.Yellow;
-                case BlockColor.Red:
+                case EBlockColor.Red:
                     return Color.Red;
-                case BlockColor.Green:
-                    return Color.Green;
-                case BlockColor.Blue:
+                case EBlockColor.Green:
+                    return Color.Chartreuse;
+                case EBlockColor.Blue:
                     return Color.DarkBlue;
-                case BlockColor.Grey:
+                case EBlockColor.Grey:
                     return Color.HotPink;
                 default:
                     return Color.White;
@@ -76,13 +76,13 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset)
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight)
         {
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X, myGridArea.Y) * mySprite.GetSize());
+            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
             mySprite.Draw(aSpriteBatch);
         }
 
-        public BlockColor GetColor()
+        public EBlockColor GetColor()
         {
             return myColor;
         }

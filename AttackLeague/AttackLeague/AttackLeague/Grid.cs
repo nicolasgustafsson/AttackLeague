@@ -17,12 +17,16 @@ namespace AttackLeague.AttackLeague
         private List<AbstractBlock> myBlocks;
         private int myHeight = 12;
         private int myWidth = 6;
+        private ContentManager myContent;
+        private Vector2 myOffset = new Vector2(100, 100);
 
-        public Grid()
+        public Grid(ContentManager aContent)
         {
+            myContent = aContent;
+            GenerateGrid();
         }
 
-        public void GenerateGrid(ContentManager aContent)
+        public void GenerateGrid()
         {
             myGrid = new List<List<Tile>>();
             myBlocks = new List<AbstractBlock>();
@@ -32,24 +36,20 @@ namespace AttackLeague.AttackLeague
                 myGrid.Add(new List<Tile>());
                 for (int columns = 0; columns < myWidth; ++columns)
                 {
-                    myGrid[rows].Add(new Tile());
-
                     ColorBlock block = new ColorBlock();
                     block.SetPosition(columns, rows);
                     myBlocks.Add(block);
+
+                    Tile tiley = new Tile();
+                    tiley.SetBlock(block);
+                    myGrid[rows].Add(tiley);                  
                 }
             }
 
             foreach (AbstractBlock block in myBlocks)
             {
-                block.LoadContent(aContent);
+                block.LoadContent(myContent);
             }
-        }
-
-        public void LoadContent(ContentManager aContent)
-        {
-            GenerateGrid(aContent);
-
         }
 
         public void Update()
@@ -60,65 +60,88 @@ namespace AttackLeague.AttackLeague
             {
                 AbstractBlock block = myBlocks[i];
                 block.Update();
+
+                if (block is DisappearingBlock)
+                {
+                    if (((DisappearingBlock) block).IsAlive() == false)
+                    {
+                        EliminateBlock(i);
+                    }
+                }
+                else if (block is FallingBlock)
+                {
+                    
+                }
             }
 
             CheckForMatches();
         }
 
+        private void EliminateBlock(int aBlockIndex)
+        {
+            Point position = myBlocks[aBlockIndex].GetPosition();
+
+            myBlocks[aBlockIndex] = new EmptyBlock();
+
+            myBlocks[aBlockIndex].SetPosition(position.X, position.Y);
+        }
+
         private void CheckForMatches()
         {
-            HashSet<int> matchedBlocks = new HashSet<int>();
+            List<AbstractBlock> matchedBlocks = new List<AbstractBlock>();
             for (int i = myBlocks.Count - 1; i >= 0; --i)
             {
                 AbstractBlock block = myBlocks[i];
 
-                matchedBlocks.UnionWith(CheckMatches(block));
+                matchedBlocks.AddRange(CheckMatches(block));
             }
 
             if (matchedBlocks.Count > 0 )
             {
-                foreach (int index in matchedBlocks)
+                int i = 0;
+                foreach (AbstractBlock blocky in matchedBlocks)
                 {
-                    Console.WriteLine(myBlocks[index].GetPosition());
-                    RemoveBlock(index);
+                    Console.WriteLine(blocky.GetPosition());
+                    RemoveBlock(blocky, matchedBlocks.Count, i);
+                    i++;
                 }
             }
         }
 
-        private HashSet<int> CheckMatches(AbstractBlock aBlock)
+        private List<AbstractBlock> CheckMatches(AbstractBlock aBlock)
         {
-            HashSet<int> matchingIndices = new HashSet<int>();
+            List<AbstractBlock> matchingBlocks = new List<AbstractBlock>();
             if (aBlock is ColorBlock )
             {
                 ColorBlock block = (ColorBlock)aBlock;
-                BlockColor currentColor = block.GetColor();
+                EBlockColor currentColor = block.GetColor();
 
 
-                CheckMatchHorizontal(matchingIndices, block, currentColor);
+                CheckMatchHorizontal(matchingBlocks, block, currentColor);
 
-                CheckMatchVertical(matchingIndices, block, currentColor);
+                CheckMatchVertical(matchingBlocks, block, currentColor);
 
             }
-            return matchingIndices;
+            return matchingBlocks;
         }
 
         /// <summary>
         /// Checks for matches to the ups
         /// </summary>
-        private void CheckMatchVertical(HashSet<int> aMatchingIndices, ColorBlock aBlock, BlockColor aBlockColor)
+        private void CheckMatchVertical(List<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
         {
             Point blockPosition = aBlock.GetPosition();
             if (blockPosition.Y > 1)
             {
-                AbstractBlock upBlock = myBlocks[GetIndexFromPosition(blockPosition.X, blockPosition.Y - 1)];
+                AbstractBlock upBlock = GetBlockAtPosition(blockPosition.X, blockPosition.Y - 1);
                 if (upBlock is ColorBlock && ((ColorBlock)upBlock).GetColor() == aBlockColor)
                 {
-                    AbstractBlock upUpBlock = myBlocks[GetIndexFromPosition(blockPosition.X, blockPosition.Y - 2)];
+                    AbstractBlock upUpBlock = GetBlockAtPosition(blockPosition.X, blockPosition.Y - 2);
                     if (upUpBlock is ColorBlock && ((ColorBlock)upUpBlock).GetColor() == aBlockColor)
                     {
-                        aMatchingIndices.Add(GetIndexFromBlock(aBlock));
-                        aMatchingIndices.Add(GetIndexFromBlock(upBlock));
-                        aMatchingIndices.Add(GetIndexFromBlock(upUpBlock));
+                        aMatchingBlocks.Add(aBlock);
+                        aMatchingBlocks.Add(upBlock);
+                        aMatchingBlocks.Add(upUpBlock);
                     }
                 }
             }
@@ -127,30 +150,46 @@ namespace AttackLeague.AttackLeague
         /// <summary>
         /// Checks for matches to the left
         /// </summary>
-        private void CheckMatchHorizontal(HashSet<int> aMatchingIndices, ColorBlock aBlock, BlockColor aBlockColor)
+        private void CheckMatchHorizontal(List<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
         {
             Point blockPosition = aBlock.GetPosition();
             if (blockPosition.X > 1)
             {
-                AbstractBlock leftBlock = myBlocks[GetIndexFromPosition(blockPosition.X - 1, blockPosition.Y)];
+                AbstractBlock leftBlock = GetBlockAtPosition(blockPosition.X - 1, blockPosition.Y);
                 if (leftBlock is ColorBlock && ((ColorBlock)leftBlock).GetColor() == aBlockColor)
                 {
                     AbstractBlock leftLeftBlock =
-                        myBlocks[GetIndexFromPosition(blockPosition.X - 2, blockPosition.Y)];
+                        GetBlockAtPosition(blockPosition.X - 2, blockPosition.Y);
                     if (leftLeftBlock is ColorBlock && ((ColorBlock)leftLeftBlock).GetColor() == aBlockColor)
                     {
-                        aMatchingIndices.Add(GetIndexFromBlock(aBlock));
-                        aMatchingIndices.Add(GetIndexFromBlock(leftBlock));
-                        aMatchingIndices.Add(GetIndexFromBlock(leftLeftBlock));
+                        aMatchingBlocks.Add(aBlock);
+                        aMatchingBlocks.Add(leftBlock);
+                        aMatchingBlocks.Add(leftLeftBlock);
                     }
                 }
             }
         }
 
-        private int GetIndexFromBlock(AbstractBlock aBlock)
+        public void SwapRight(Point aPosition)
         {
-            return GetIndexFromPosition(aBlock.GetPosition());
+            AbstractBlock leftBlock = GetBlockAtPosition(aPosition);
+            AbstractBlock rightBlock = GetBlockAtPosition(aPosition + new Point(1, 0));
+
+            if (leftBlock is ColorBlock || leftBlock is EmptyBlock)
+            {
+                if (rightBlock is ColorBlock ||
+                    rightBlock is EmptyBlock)
+                {
+                    leftBlock.SetPosition(aPosition + new Point(1, 0));
+                    rightBlock.SetPosition(aPosition);
+                }
+            }
         }
+
+        //private int GetIndexFromBlock(AbstractBlock aBlock)
+        //{
+        //    return GetIndexFromPosition(aBlock.GetPosition());
+        //}
 
         private AbstractBlock GetBlockAtPosition(Point aPosition)
         {
@@ -164,41 +203,57 @@ namespace AttackLeague.AttackLeague
                 return null;
             }
 
-            return myBlocks[aX * aY];
+            return myGrid[aY][aX].GetBlock();
         }
 
 
-        private int GetIndexFromPosition(Point aPosition)
+        //private int GetIndexFromPosition(Point aPosition)
+        //{
+        //    return GetIndexFromPosition(aPosition.X, aPosition.Y);
+        //}
+
+        //private int GetIndexFromPosition(int aX, int aY)
+        //{
+        //    return aX + aY * myWidth;
+        //}
+
+        private void RemoveBlock(AbstractBlock aBlock, int aAmountOfDisappearingBlocks, int aCurrentBlock)
         {
-            return GetIndexFromPosition(aPosition.X, aPosition.Y);
-        }
 
-        private int GetIndexFromPosition(int aX, int aY)
-        {
-            return aX + aY * myWidth;
-        }
+            Point position = aBlock.GetPosition();
 
-        private void RemoveBlock(int aIndex)
-        {
-            if (aIndex >= myBlocks.Count)
-            {
-                Console.WriteLine("Removal???");
-                return;
-            }
+            int animationTime = 30;
 
-            Point position = myBlocks[aIndex].GetPosition();
+            int delayBetweenAnimations = 15;
 
-            myBlocks[aIndex] = new EmptyBlock();
+            int currentBlockDelta = aCurrentBlock * delayBetweenAnimations;
 
-            myBlocks[aIndex].SetPosition(position.X, position.Y);
+            int totalAnimationtime = aAmountOfDisappearingBlocks * delayBetweenAnimations + animationTime;
+
+            aBlock = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
+                totalAnimationtime,
+                currentBlockDelta);
+
+            aBlock.SetPosition(position.X, position.Y);
+            aBlock.LoadContent(myContent);
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
             foreach (AbstractBlock iBlock in myBlocks)
             {
-                iBlock.Draw(aSpriteBatch, new Vector2(100, 100));
+                iBlock.Draw(aSpriteBatch, myOffset, myHeight - 1);
             }
+        }
+
+        public Vector2 GetOffset()
+        {
+            return myOffset;
+        }
+
+        public int GetHeight()
+        {
+            return myHeight;
         }
     }
 }

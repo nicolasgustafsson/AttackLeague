@@ -11,11 +11,11 @@ namespace AttackLeague
         private SpriteBatch spriteBatch;
 
         private Grid myGrid;
+        private Player myPlayer;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            myGrid = new Grid();
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
@@ -31,7 +31,8 @@ namespace AttackLeague
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            myGrid.LoadContent(Content);
+            myGrid = new Grid(Content);
+            myPlayer = new Player(Content, myGrid);
         }
 
         protected override void UnloadContent()
@@ -45,10 +46,11 @@ namespace AttackLeague
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
-                myGrid.GenerateGrid(Content);
+                myGrid.GenerateGrid();
             }
 
             myGrid.Update();
+            myPlayer.Update();
             base.Update(gameTime);
         }
 
@@ -58,6 +60,8 @@ namespace AttackLeague
             spriteBatch.Begin();
 
             myGrid.Draw(spriteBatch);
+            const int MagicTileSize = 48;
+            myPlayer.Draw(spriteBatch, MagicTileSize);
 
             spriteBatch.End();
             base.Draw(gameTime);

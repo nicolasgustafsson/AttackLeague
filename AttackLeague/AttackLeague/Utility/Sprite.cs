@@ -13,6 +13,7 @@ namespace AttackLeague.Utility
     {
         private Texture2D myTexture;
         private Vector2 myPosition;
+        private Vector2 myScale = Vector2.One;
         private Color myColor;
 
         public Sprite(string aTextureName, ContentManager aContent)
@@ -26,6 +27,10 @@ namespace AttackLeague.Utility
             return new Vector2(myTexture.Width, myTexture.Height);
         }
 
+        public void SetScale(Vector2 aNewScale)
+        {
+            myScale = aNewScale;
+        }
         public void SetColor(Color aColor)
         {
             myColor = aColor;
@@ -38,7 +43,7 @@ namespace AttackLeague.Utility
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            aSpriteBatch.Draw(myTexture, myPosition, null, myColor, 0f, Vector2.Zero, myScale, SpriteEffects.None, 0);
         }
     }
 }

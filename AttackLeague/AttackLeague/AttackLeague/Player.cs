@@ -16,12 +16,6 @@ namespace AttackLeague.AttackLeague
         private Sprite mySprite;
         private Point myPosition = new Point(0,0);
         private Grid myGrid;
-        private bool myPressedRight = false;
-        private bool myPressedLeft = false;
-        private bool myPressedUp = false;
-        private bool myPressedDown = false;
-        private bool myPressedSwitch = false;
-        private bool myPressedRaise = false;
 
         public Player(ContentManager aContent, Grid aGrid)
         {
@@ -33,79 +27,47 @@ namespace AttackLeague.AttackLeague
         {
             HandleMovement();
 
-            if (myPressedSwitch == false && Keyboard.GetState().IsKeyDown(Keys.E) )
+            if (KeyboardWrapper.KeyPressed(Keys.E))
             {
-                myPressedSwitch = true;
                 myGrid.SwapRight(myPosition);
             }
-            if (Keyboard.GetState().IsKeyUp(Keys.E))
-            {
-                myPressedSwitch = false;
-            }
 
-            if (myPressedRaise == false && Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (KeyboardWrapper.KeyPressed(Keys.Space))
             {
-                myPressedRaise = true;
                 myGrid.RaiseBlocks();
-            }
-            if (Keyboard.GetState().IsKeyUp(Keys.Space))
-            {
-                myPressedRaise = false;
             }
         }
 
         private void HandleMovement()
         {
-            if (myPressedRight == false && Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                myPressedRight = true;
+            if (KeyboardWrapper.KeyPressed(Keys.D) || KeyboardWrapper.KeyPressed(Keys.Right))
+            { 
                 if (myPosition.X < 4)
                 {
                     myPosition.X += 1;
                 }
             }
-            if (myPressedLeft == false && Keyboard.GetState().IsKeyDown(Keys.A))
+            if (KeyboardWrapper.KeyPressed(Keys.A) || KeyboardWrapper.KeyPressed(Keys.Left))
             {
-                myPressedLeft = true;
                 if (myPosition.X > 0)
                 {
                     myPosition.X -= 1;
                 }
             }
-            if (myPressedUp == false && Keyboard.GetState().IsKeyDown(Keys.W))
+            if (KeyboardWrapper.KeyPressed(Keys.W) || KeyboardWrapper.KeyPressed(Keys.Up))
             {
-                myPressedUp = true;
                 if (myPosition.Y < 11)
                 {
                     myPosition.Y += 1;
                 }
             }
-            if (myPressedDown == false && Keyboard.GetState().IsKeyDown(Keys.S))
+            if (KeyboardWrapper.KeyPressed(Keys.S) || KeyboardWrapper.KeyPressed(Keys.Down))
             {
-                myPressedDown = true;
                 if (myPosition.Y > 1)
                 {
                     myPosition.Y -= 1;
                 }
             }
-
-            if (Keyboard.GetState().IsKeyUp(Keys.D))
-            {
-                myPressedRight = false;
-            }
-            if (Keyboard.GetState().IsKeyUp(Keys.A))
-            {
-                myPressedLeft = false;
-            }
-            if (Keyboard.GetState().IsKeyUp(Keys.W))
-            {
-                myPressedUp = false;
-            }
-            if (Keyboard.GetState().IsKeyUp(Keys.S))
-            {
-                myPressedDown = false;
-            }
-
         }
 
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
@@ -113,6 +75,5 @@ namespace AttackLeague.AttackLeague
             mySprite.SetPosition(new Vector2(myPosition.X , myGrid.GetHeight() - myPosition.Y -1) * aTileSize + myGrid.GetOffset());
             mySprite.Draw(aSpriteBatch);
         }
-
     }
 }

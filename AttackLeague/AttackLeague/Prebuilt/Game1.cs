@@ -1,4 +1,5 @@
 ﻿using AttackLeague.AttackLeague;
+using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +14,7 @@ namespace AttackLeague
         private Grid myGrid;
         private Player myPlayer;
 
-        private int frameCounter = 0;
+        //private int frameCounter = 0;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,6 +44,8 @@ namespace AttackLeague
 
         protected override void Update(GameTime gameTime)
         {
+            KeyboardWrapper.UpdateState();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.R))

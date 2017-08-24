@@ -20,12 +20,6 @@ namespace AttackLeague.AttackLeague
             myGridArea = new Rectangle(0, 0, 1, 1);
         }
 
-        public void SetPosition(int aX, int aY)
-        {
-            myGridArea.X = aX;
-            myGridArea.Y = aY;
-        }
-
         public override void LoadContent(ContentManager aContent)
         {
         }

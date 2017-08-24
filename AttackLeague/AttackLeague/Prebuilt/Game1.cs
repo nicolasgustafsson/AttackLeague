@@ -14,7 +14,10 @@ namespace AttackLeague
         private Grid myGrid;
         private Player myPlayer;
 
-        //private int frameCounter = 0;
+        private bool myIsPaused = false;
+
+        //private int myFrameCounter = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -22,7 +25,8 @@ namespace AttackLeague
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
-
+            ActionMapper.BindAction("Pause", Keys.Enter, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("StepOnce", Keys.OemPeriod, KeyStatus.KeyPressed);
         }
 
         protected override void Initialize()
@@ -53,8 +57,24 @@ namespace AttackLeague
                 myGrid.GenerateGrid();
             }
 
-            myGrid.Update();
-            myPlayer.Update();
+            if (ActionMapper.ActionIsActive("Pause"))
+            {
+                myIsPaused = !myIsPaused;
+            }
+
+            if (myIsPaused == false)
+            {
+                myGrid.Update();
+                myPlayer.Update();
+            }
+            else
+            {
+                if (ActionMapper.ActionIsActive("StepOnce"))
+                {
+                    myGrid.Update();
+                    myPlayer.Update();
+                }
+            }
 
             base.Update(gameTime);
         }

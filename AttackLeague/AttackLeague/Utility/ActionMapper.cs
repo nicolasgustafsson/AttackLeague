@@ -54,6 +54,9 @@ namespace AttackLeague.Utility
         }
     }
 
+    /// <summary>
+    /// Maps actions to input
+    /// </summary>
     static class ActionMapper
     {
         public static void BindAction(string aActionName, Keys aKey, KeyStatus aKeyStatus)

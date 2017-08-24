@@ -75,9 +75,8 @@ namespace AttackLeague.AttackLeague
                         EliminateBlock(i);
                     }
                 }
-                else if (block is FallingBlock)
+                else if (block is FallingBlock fallingBlock)
                 {
-                    FallingBlock fallingBlock = (FallingBlock) block;
                     //Speed, might pass through many tiles?
                     if (fallingBlock.WillPassTile())
                     {
@@ -204,9 +203,8 @@ namespace AttackLeague.AttackLeague
         private HashSet<AbstractBlock> CheckMatches(AbstractBlock aBlock)
         {
             HashSet<AbstractBlock> matchingBlocks = new HashSet<AbstractBlock>();
-            if (aBlock is ColorBlock )
+            if (aBlock is ColorBlock block)
             {
-                ColorBlock block = (ColorBlock)aBlock;
                 EBlockColor currentColor = block.GetColor();
 
                 CheckMatchHorizontal(matchingBlocks, block, currentColor);
@@ -348,9 +346,8 @@ namespace AttackLeague.AttackLeague
                 {
                     string color = "X";
                     AbstractBlock blocky = myGrid[iRow][iColumn].GetBlock();
-                    if (blocky is ColorBlock)
+                    if (blocky is ColorBlock colorBlock)
                     {
-                        ColorBlock colorBlock = (ColorBlock)blocky;
                         switch (colorBlock.GetColor())
                         {
                             case EBlockColor.Blue:

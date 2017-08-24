@@ -20,10 +20,12 @@ namespace AttackLeague
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 720
+            };
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
             ActionMapper.BindAction("Pause", Keys.Enter, KeyStatus.KeyPressed);
             ActionMapper.BindAction("StepOnce", Keys.OemPeriod, KeyStatus.KeyPressed);

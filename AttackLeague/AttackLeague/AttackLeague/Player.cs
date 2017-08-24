@@ -14,7 +14,7 @@ namespace AttackLeague.AttackLeague
     class Player
     {
         private Sprite mySprite;
-        private Point myPosition = new Point(0,0);
+        private Point myPosition = new Point(2,5);
         private Grid myGrid;
 
         public Player(ContentManager aContent, Grid aGrid)

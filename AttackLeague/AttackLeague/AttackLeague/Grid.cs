@@ -19,6 +19,7 @@ namespace AttackLeague.AttackLeague
         private int myWidth = 6;
         private ContentManager myContent;
         private Vector2 myOffset = new Vector2(100, 100);
+        private bool myPressedPrint = false;
 
         public Grid(ContentManager aContent)
         {
@@ -54,7 +55,19 @@ namespace AttackLeague.AttackLeague
 
         public void Update()
         {
+            //if it crashes here there are big chances that they have same position
             myBlocks.Sort();
+
+            if (myPressedPrint == false && Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                myPressedPrint = true;
+                PrintGrid();
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.P))
+            {
+                myPressedPrint = false;
+            }
+           
 
             for (int i = myBlocks.Count - 1; i >= 0; --i)
             {
@@ -84,6 +97,8 @@ namespace AttackLeague.AttackLeague
             myBlocks[aBlockIndex] = new EmptyBlock();
 
             myBlocks[aBlockIndex].SetPosition(position.X, position.Y);
+
+            myGrid[position.Y][position.X].SetBlock(myBlocks[aBlockIndex]);
         }
 
         private void CheckForMatches()
@@ -101,7 +116,7 @@ namespace AttackLeague.AttackLeague
                 int i = 0;
                 foreach (AbstractBlock blocky in matchedBlocks)
                 {
-                    Console.WriteLine(blocky.GetPosition());
+                    //Console.WriteLine(blocky.GetPosition());
                     RemoveBlock(blocky, matchedBlocks.Count, i);
                     i++;
                 }
@@ -182,6 +197,9 @@ namespace AttackLeague.AttackLeague
                 {
                     leftBlock.SetPosition(aPosition + new Point(1, 0));
                     rightBlock.SetPosition(aPosition);
+
+                    myGrid[aPosition.Y][aPosition.X].SetBlock(rightBlock);
+                    myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
                 }
             }
         }
@@ -230,9 +248,16 @@ namespace AttackLeague.AttackLeague
 
             int totalAnimationtime = aAmountOfDisappearingBlocks * delayBetweenAnimations + animationTime;
 
-            aBlock = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
+            int blockIndex = myBlocks.LastIndexOf(aBlock);
+
+            if (blockIndex == -1)
+            {
+                return;
+            }
+            aBlock = myBlocks[blockIndex] = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
                 totalAnimationtime,
                 currentBlockDelta);
+            myGrid[position.Y][position.X].SetBlock(myBlocks[blockIndex]);
 
             aBlock.SetPosition(position.X, position.Y);
             aBlock.LoadContent(myContent);
@@ -254,6 +279,47 @@ namespace AttackLeague.AttackLeague
         public int GetHeight()
         {
             return myHeight;
+        }
+
+        void PrintGrid()
+        {
+            for (int iRow = myHeight - 1; iRow >= 0; iRow--)
+            {
+                for (int iColumn = 0; iColumn < myWidth; ++iColumn)
+                {
+                    string color = "X";
+                    AbstractBlock blocky = myGrid[iRow][iColumn].GetBlock();
+                    if (blocky is ColorBlock)
+                    {
+                        ColorBlock colorBlock = (ColorBlock)blocky;
+                        switch (colorBlock.GetColor())
+                        {
+                            case EBlockColor.Blue:
+                                color = "B";
+                                break;
+                            case EBlockColor.Cyan:
+                                color = "C";
+                                break;
+                            case EBlockColor.Green:
+                                color = "G";
+                                break;
+                            case EBlockColor.Magenta:
+                                color = "M";
+                                break;
+                            case EBlockColor.Red:
+                                color = "R";
+                                break;
+                            case EBlockColor.Yellow:
+                                color = "Y";
+                                break;
+                        }
+
+
+                    }
+                    Console.Write(color + " ");
+                }
+                Console.Write("\n");
+            }
         }
     }
 }

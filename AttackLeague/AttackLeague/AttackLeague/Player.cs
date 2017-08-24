@@ -21,6 +21,7 @@ namespace AttackLeague.AttackLeague
         private bool myPressedUp = false;
         private bool myPressedDown = false;
         private bool myPressedSwitch = false;
+        private bool myPressedRaise = false;
 
         public Player(ContentManager aContent, Grid aGrid)
         {
@@ -40,6 +41,16 @@ namespace AttackLeague.AttackLeague
             if (Keyboard.GetState().IsKeyUp(Keys.E))
             {
                 myPressedSwitch = false;
+            }
+
+            if (myPressedRaise == false && Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                myPressedRaise = true;
+                myGrid.RaiseBlocks();
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.Space))
+            {
+                myPressedRaise = false;
             }
         }
 

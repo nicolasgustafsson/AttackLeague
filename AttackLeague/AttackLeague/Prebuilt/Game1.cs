@@ -13,6 +13,7 @@ namespace AttackLeague
         private Grid myGrid;
         private Player myPlayer;
 
+        private int frameCounter = 0;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -51,6 +52,7 @@ namespace AttackLeague
 
             myGrid.Update();
             myPlayer.Update();
+
             base.Update(gameTime);
         }
 

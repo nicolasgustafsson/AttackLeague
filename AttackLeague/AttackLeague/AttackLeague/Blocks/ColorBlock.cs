@@ -32,6 +32,12 @@ namespace AttackLeague.AttackLeague
             myGridArea = new Rectangle(0, 0, 1, 1);
         }
 
+        public ColorBlock(EBlockColor aColor)
+        {
+            myGridArea = new Rectangle(0, 0, 1, 1);
+            myColor = aColor;
+        }
+
         public override void LoadContent(ContentManager aContent)
         {
             mySprite = new Sprite("ColorBlock", aContent);
@@ -76,15 +82,20 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight)
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
+            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, aRaisingOffset + (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
             mySprite.Draw(aSpriteBatch);
         }
 
         public EBlockColor GetColor()
         {
             return myColor;
+        }
+
+        public Rectangle GetRectangle()
+        {
+            return myGridArea;
         }
     }
 }

@@ -67,9 +67,8 @@ namespace AttackLeague.AttackLeague
             {
                 myPressedPrint = false;
             }
-           
-
-            for (int i = myBlocks.Count - 1; i >= 0; --i)
+            
+            for (int i = 0; i < myBlocks.Count; i++)
             {
                 AbstractBlock block = myBlocks[i];
                 block.Update();
@@ -83,32 +82,116 @@ namespace AttackLeague.AttackLeague
                 }
                 else if (block is FallingBlock)
                 {
-                    
+                    FallingBlock fallingBlock = (FallingBlock) block;
+                    //Speed, might pass through many tiles?
+                    if (fallingBlock.WillPassTile())
+                    {
+                        if (fallingBlock.GetPosition().Y == 0 ||
+                            myGrid[fallingBlock.GetPosition().Y - 1][fallingBlock.GetPosition().X].IsEmpty() == false)
+                        {
+                            CreateBlock(fallingBlock.GetPosition(), new ColorBlock(fallingBlock.GetColor()));
+                        }
+                        else
+                        {
+                            fallingBlock.PassTile();
+                            CreateBlock(fallingBlock.GetPosition() + new Point(0, 1), new EmptyBlock());
+
+                            SetBlock(fallingBlock.GetPosition(), fallingBlock);
+                        }
+                    }
+
+                }
+                else if (block is ColorBlock)
+                {
+                    ColorBlock colorBlock = block as ColorBlock;
+                    Rectangle blockRectangle = colorBlock.GetRectangle();
+
+                    if (blockRectangle.Y != 0)
+                    {
+                        blockRectangle.Y--;
+                        if (!RectangleIntersectsForFallingPurposes(blockRectangle))
+                        {
+                            Point position = colorBlock.GetPosition();
+                            CreateBlock(position, new FallingBlock(colorBlock.GetColor()));
+                       }
+                    }
                 }
             }
 
             CheckForMatches();
         }
 
+        private bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
+        {
+            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
+            {
+                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
+                {
+
+                    if (myGrid[y][x].CanFallThrough() == false )
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void SetBlock(Point aPosition, AbstractBlock aBlock)
+        {
+            aBlock.SetPosition(aPosition);
+
+            AbstractBlock previousBlock = myGrid[aPosition.Y][aPosition.X].GetBlock();
+
+            myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
+
+            myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
+        }
+
+        //fixes everything
+        private void CreateBlock(Point aPosition, AbstractBlock aBlock)
+        {
+            aBlock.SetPosition(aPosition);
+            aBlock.LoadContent(myContent);
+
+            AbstractBlock previousBlock = myGrid[aPosition.Y][aPosition.X].GetBlock();
+
+            myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
+
+            myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
+        }
+
+        private bool RectangleIntersects(Rectangle aRectangle)
+        {
+            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
+            {
+                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
+                {
+                    
+                    if (myGrid[y][x].IsEmpty() == false)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private void EliminateBlock(int aBlockIndex)
         {
             Point position = myBlocks[aBlockIndex].GetPosition();
 
-            myBlocks[aBlockIndex] = new EmptyBlock();
-
-            myBlocks[aBlockIndex].SetPosition(position.X, position.Y);
-
-            myGrid[position.Y][position.X].SetBlock(myBlocks[aBlockIndex]);
+            CreateBlock(position, new EmptyBlock());
         }
 
         private void CheckForMatches()
         {
-            List<AbstractBlock> matchedBlocks = new List<AbstractBlock>();
+            HashSet<AbstractBlock> matchedBlocks = new HashSet<AbstractBlock>();
             for (int i = myBlocks.Count - 1; i >= 0; --i)
             {
                 AbstractBlock block = myBlocks[i];
 
-                matchedBlocks.AddRange(CheckMatches(block));
+                matchedBlocks.UnionWith(CheckMatches(block));
             }
 
             if (matchedBlocks.Count > 0 )
@@ -123,14 +206,13 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        private List<AbstractBlock> CheckMatches(AbstractBlock aBlock)
+        private HashSet<AbstractBlock> CheckMatches(AbstractBlock aBlock)
         {
-            List<AbstractBlock> matchingBlocks = new List<AbstractBlock>();
+            HashSet<AbstractBlock> matchingBlocks = new HashSet<AbstractBlock>();
             if (aBlock is ColorBlock )
             {
                 ColorBlock block = (ColorBlock)aBlock;
                 EBlockColor currentColor = block.GetColor();
-
 
                 CheckMatchHorizontal(matchingBlocks, block, currentColor);
 
@@ -143,7 +225,7 @@ namespace AttackLeague.AttackLeague
         /// <summary>
         /// Checks for matches to the ups
         /// </summary>
-        private void CheckMatchVertical(List<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
+        private void CheckMatchVertical(HashSet<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
         {
             Point blockPosition = aBlock.GetPosition();
             if (blockPosition.Y > 1)
@@ -165,7 +247,7 @@ namespace AttackLeague.AttackLeague
         /// <summary>
         /// Checks for matches to the left
         /// </summary>
-        private void CheckMatchHorizontal(List<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
+        private void CheckMatchHorizontal(HashSet<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
         {
             Point blockPosition = aBlock.GetPosition();
             if (blockPosition.X > 1)
@@ -204,11 +286,6 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        //private int GetIndexFromBlock(AbstractBlock aBlock)
-        //{
-        //    return GetIndexFromPosition(aBlock.GetPosition());
-        //}
-
         private AbstractBlock GetBlockAtPosition(Point aPosition)
         {
             return GetBlockAtPosition(aPosition.X, aPosition.Y);
@@ -223,17 +300,6 @@ namespace AttackLeague.AttackLeague
 
             return myGrid[aY][aX].GetBlock();
         }
-
-
-        //private int GetIndexFromPosition(Point aPosition)
-        //{
-        //    return GetIndexFromPosition(aPosition.X, aPosition.Y);
-        //}
-
-        //private int GetIndexFromPosition(int aX, int aY)
-        //{
-        //    return aX + aY * myWidth;
-        //}
 
         private void RemoveBlock(AbstractBlock aBlock, int aAmountOfDisappearingBlocks, int aCurrentBlock)
         {
@@ -254,20 +320,18 @@ namespace AttackLeague.AttackLeague
             {
                 return;
             }
-            aBlock = myBlocks[blockIndex] = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
+            aBlock = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
                 totalAnimationtime,
                 currentBlockDelta);
-            myGrid[position.Y][position.X].SetBlock(myBlocks[blockIndex]);
 
-            aBlock.SetPosition(position.X, position.Y);
-            aBlock.LoadContent(myContent);
+            CreateBlock(position, aBlock);
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
             foreach (AbstractBlock iBlock in myBlocks)
             {
-                iBlock.Draw(aSpriteBatch, myOffset, myHeight - 1);
+                iBlock.Draw(aSpriteBatch, myOffset, myHeight - 1, 0.0f);
             }
         }
 
@@ -320,6 +384,11 @@ namespace AttackLeague.AttackLeague
                 }
                 Console.Write("\n");
             }
+        }
+
+        public void RaiseBlocks()
+        {
+            //DO DA RAISINS
         }
     }
 }

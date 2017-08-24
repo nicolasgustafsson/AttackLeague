@@ -15,6 +15,8 @@ namespace AttackLeague.AttackLeague
         protected Sprite mySprite;
         public Rectangle myGridArea = new Rectangle(0, 0, 1, 1);
 
+        //protected float myRaisingOffset = 0.0f;
+
         public virtual void LoadContent(ContentManager aContent)
         {
         }
@@ -58,7 +60,7 @@ namespace AttackLeague.AttackLeague
 
         public abstract void Update();
 
-        public abstract void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight);
+        public abstract void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset);
 
 
         public int CompareTo(object obj)

@@ -16,8 +16,9 @@ namespace AttackLeague.AttackLeague
     class FallingBlock : AbstractBlock
     {
         private EBlockColor myColor;
-        private float myYOffset = 0.0f;
-        private const float BaseSpeed = 0.5f;
+        private const float BaseSpeed = 0.25f;
+        protected float myYOffset = 0.0f;
+
         public FallingBlock(EBlockColor aColor)
         {
             myGridArea = new Rectangle(0, 0, 1, 2);
@@ -65,24 +66,34 @@ namespace AttackLeague.AttackLeague
 
         public override void Update()
         {
-            myYOffset += BaseSpeed;
+            myYOffset -= BaseSpeed;
         }
 
         public bool WillPassTile()
         {
-            return myYOffset + BaseSpeed > 1.0f;
+            return myYOffset - BaseSpeed <= 0.0f;
         }
 
         public void PassTile()
         {
             myGridArea.Y--;
-            myYOffset -= 1.0f;
+            myYOffset += 1.0f;
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight)
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y + myYOffset * mySprite.GetSize().Y));
+            mySprite.SetPosition(aGridOffset + 
+                new Vector2(myGridArea.X * mySprite.GetSize().X, (
+                aGridHeight - myGridArea.Y) 
+                * mySprite.GetSize().Y 
+                - myYOffset * mySprite.GetSize().Y
+                + aRaisingOffset));
             mySprite.Draw(aSpriteBatch);
+        }
+
+        public EBlockColor GetColor()
+        {
+            return myColor;
         }
     }
 }

@@ -23,5 +23,14 @@ namespace AttackLeague.AttackLeague
             return myBlock;
         }
 
+        public bool IsEmpty()
+        {
+            return myBlock is EmptyBlock;
+        }
+
+        public bool CanFallThrough()
+        {
+            return myBlock is EmptyBlock || myBlock is FallingBlock;
+        }
     }
 }

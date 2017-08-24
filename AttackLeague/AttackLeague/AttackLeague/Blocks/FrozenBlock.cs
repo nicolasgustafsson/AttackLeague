@@ -42,9 +42,9 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight)
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
+            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, aRaisingOffset + (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
             mySprite.Draw(aSpriteBatch);
         }
     }

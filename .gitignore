@@ -12,7 +12,6 @@
 ExportedObj/
 */obj/*
 .consulo/
-*.csproj
 *.unityproj
 *.suo
 *.tmp

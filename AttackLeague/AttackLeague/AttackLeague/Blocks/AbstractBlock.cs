@@ -55,12 +55,29 @@ namespace AttackLeague.AttackLeague
             return new Point(myGridArea.X, myGridArea.Y);
         }
 
+        public Vector2 GetScreenPosition(Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
+        {
+            float invertedGridYPosition = (aGridHeight - myGridArea.Y);
+            float xPosition = myGridArea.X * mySprite.GetSize().X;
+            float yPosition = (aRaisingOffset + invertedGridYPosition) * mySprite.GetSize().Y;
+            return aGridOffset + new Vector2(xPosition, yPosition);
+        }
+
+        public static float GetTileSize()
+        {
+            return 48f;
+        }
+
         public abstract int GetHeight();
         public abstract int GetXCoordinate();
 
         public abstract void Update();
 
-        public abstract void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset);
+        public virtual void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
+        {
+            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+            mySprite.Draw(aSpriteBatch);
+        }
 
 
         public int CompareTo(object obj)

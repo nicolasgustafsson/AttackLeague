@@ -12,40 +12,41 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    class FrozenBlock : AbstractBlock
+    class FrozenBlock : AbstractColorBlock
     {
-       private Color myColor;
-       public FrozenBlock(Color aColor)
-       {
-            myColor = aColor * 0.3f;
-            myColor.A = 255;
-            myGridArea = new Rectangle(0, 0, 1, 1);
+        public FrozenBlock()
+        {
+        }
+
+        public FrozenBlock(EBlockColor aColor)
+        {
+            myColor = aColor;
+        }
+
+        public virtual void RandomizeColor()
+        {
+            myColor = (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
+            if (mySprite != null)
+            {
+                UpdateColor();
+            }
         }
 
         public override void LoadContent(ContentManager aContent)
         {
             mySprite = new Sprite("ColorBlock", aContent);
-            mySprite.SetColor(myColor);
+            UpdateColor();
         }
-
-        public override int GetHeight()
+        
+        private void UpdateColor()
         {
-            return myGridArea.Bottom;
-        }
-
-        public override int GetXCoordinate()
-        {
-            return myGridArea.Right;
+            Color color = GetColorFromEnum() * 0.3f;
+            color.A = 255;
+            mySprite.SetColor(color);
         }
 
         public override void Update()
         {
-        }
-
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
-        {
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, aRaisingOffset + (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
-            mySprite.Draw(aSpriteBatch);
         }
     }
 }

@@ -13,55 +13,14 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    class FallingBlock : AbstractBlock
+    class FallingBlock : AbstractColorBlock
     {
-        private EBlockColor myColor;
         private const float BaseSpeed = 0.25f;
         protected float myYOffset = 0.0f;
 
         public FallingBlock(EBlockColor aColor)
         {
-            myGridArea = new Rectangle(0, 0, 1, 2);
             myColor = aColor;
-        }
-
-        public override void LoadContent(ContentManager aContent)
-        {
-            mySprite = new Sprite("ColorBlock", aContent);
-            mySprite.SetColor(GetColorFromEnum());
-        }
-
-        public Color GetColorFromEnum()
-        {
-            switch (myColor)
-            {
-                case EBlockColor.Cyan:
-                    return Color.Cyan;
-                case EBlockColor.Magenta:
-                    return Color.Magenta;
-                case EBlockColor.Yellow:
-                    return Color.Yellow;
-                case EBlockColor.Red:
-                    return Color.Red;
-                case EBlockColor.Green:
-                    return Color.Chartreuse;
-                case EBlockColor.Blue:
-                    return Color.DarkBlue;
-                case EBlockColor.Grey:
-                    return Color.HotPink;
-                default:
-                    return Color.White;
-            }
-        }
-
-        public override int GetHeight()
-        {
-            return myGridArea.Bottom;
-        }
-
-        public override int GetXCoordinate()
-        {
-            return myGridArea.Right;
         }
 
         public override void Update()
@@ -82,18 +41,10 @@ namespace AttackLeague.AttackLeague
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            mySprite.SetPosition(aGridOffset + 
-                new Vector2(myGridArea.X * mySprite.GetSize().X, (
-                aGridHeight - myGridArea.Y) 
-                * mySprite.GetSize().Y 
-                - myYOffset * mySprite.GetSize().Y
-                + aRaisingOffset));
+            Vector2 position = GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset);
+            position.Y -= myYOffset * mySprite.GetSize().Y;
+            mySprite.SetPosition(position);
             mySprite.Draw(aSpriteBatch);
-        }
-
-        public EBlockColor GetColor()
-        {
-            return myColor;
         }
     }
 }

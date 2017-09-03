@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttackLeague\Blocks\AbstractBlock.cs" />
+    <Compile Include="AttackLeague\Blocks\AbstractColorBlock.cs" />
     <Compile Include="AttackLeague\Blocks\DisappearingBlock.cs" />
     <Compile Include="AttackLeague\Blocks\FallingBlock.cs" />
     <Compile Include="AttackLeague\Blocks\FrozenBlock.cs" />
@@ -52,11 +53,14 @@
     <Compile Include="AttackLeague\Blocks\ColorBlock.cs" />
     <Compile Include="AttackLeague\Grid.cs" />
     <Compile Include="AttackLeague\Player.cs" />
+    <Compile Include="AttackLeague\Replays\ReplayPlayer.cs" />
+    <Compile Include="AttackLeague\Replays\ReplayRecorder.cs" />
     <Compile Include="AttackLeague\Tile.cs" />
     <Compile Include="Prebuilt\Game1.cs" />
     <Compile Include="Prebuilt\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ActionMapper.cs" />
+    <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="Utility\Sprite.cs" />

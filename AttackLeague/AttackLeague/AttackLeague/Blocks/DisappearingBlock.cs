@@ -12,37 +12,25 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    class DisappearingBlock : AbstractBlock
+    class DisappearingBlock : AbstractColorBlock
     {
-        private Color myColor;
         private int myCurrentFrame = 0;
         private int myStartFrame;
         private int myTotalFrames;
 
-        public DisappearingBlock(Color aColor, int aTotalFrames, int aStartFrame)
+        public DisappearingBlock(EBlockColor aColor, int aTotalFrames, int aStartFrame)
         {
             myTotalFrames = aTotalFrames;
             myStartFrame = aStartFrame;
-
-            myColor = aColor * 0.3f;
-            myColor.A = 255;
-            myGridArea = new Rectangle(0, 0, 1, 1);
+            myColor = aColor;
         }
 
         public override void LoadContent(ContentManager aContent)
         {
             mySprite = new Sprite("ColorBlock", aContent);
-            mySprite.SetColor(myColor);
-        }
-
-        public override int GetHeight()
-        {
-            return myGridArea.Bottom;
-        }
-
-        public override int GetXCoordinate()
-        {
-            return myGridArea.Right;
+            Color color = GetColorFromEnum() * 0.3f;
+            color.A = 255;
+            mySprite.SetColor(color);
         }
 
         public override void Update()
@@ -65,7 +53,7 @@ namespace AttackLeague.AttackLeague
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
             mySprite.SetScale(Vector2.One - Vector2.One * GetAnimationProgress());
-            mySprite.SetPosition(aGridOffset + new Vector2(myGridArea.X * mySprite.GetSize().X, aRaisingOffset + (aGridHeight - myGridArea.Y) * mySprite.GetSize().Y));
+            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
             mySprite.Draw(aSpriteBatch);
         }
     }

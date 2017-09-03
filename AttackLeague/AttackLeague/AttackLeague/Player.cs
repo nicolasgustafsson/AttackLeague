@@ -19,6 +19,14 @@ namespace AttackLeague.AttackLeague
 
         public Player(ContentManager aContent, Grid aGrid)
         {
+            BindActions();
+
+            myGrid = aGrid;
+            mySprite = new Sprite("PlayerMarker", aContent);
+        }
+
+        protected virtual void BindActions()
+        {
             ActionMapper.BindAction("MoveLeft", Keys.A, KeyStatus.KeyPressed);
             ActionMapper.BindAction("MoveLeft", Keys.Left, KeyStatus.KeyPressed);
 
@@ -33,25 +41,20 @@ namespace AttackLeague.AttackLeague
 
             ActionMapper.BindAction("SwapBlocks", Keys.E, KeyStatus.KeyPressed);
 
-            ActionMapper.BindAction("RaiseBlocks", Keys.Space, KeyStatus.KeyPressed);
-
-            myGrid = aGrid;
-            mySprite = new Sprite("PlayerMarker", aContent);
+            ActionMapper.BindAction("RaiseBlocks", Keys.Space, KeyStatus.KeyDown);
         }
 
         public void Update()
         {
+            if (myGrid.HasRaisedGridThisFrame())
+                myPosition.Y++;
             HandleMovement();
 
             if (ActionMapper.ActionIsActive("SwapBlocks"))
-            {
                 myGrid.SwapRight(myPosition);
-            }
 
             if (ActionMapper.ActionIsActive("RaiseBlocks"))
-            {
-                myGrid.RaiseBlocks();
-            }
+                myGrid.SetIsRaisingBlocks();
         }
 
         private void HandleMovement()
@@ -88,7 +91,9 @@ namespace AttackLeague.AttackLeague
 
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
         {
-            mySprite.SetPosition(new Vector2(myPosition.X , myGrid.GetHeight() - myPosition.Y -1) * aTileSize + myGrid.GetOffset());
+            float invertedYPosition = myGrid.GetHeight() - myPosition.Y;
+            float yPosition = invertedYPosition - 1 + myGrid.GetRaisingOffset();
+            mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGrid.GetOffset());
             mySprite.Draw(aSpriteBatch);
         }
     }

@@ -54,6 +54,22 @@ namespace AttackLeague.Utility
         }
     }
 
+    #region RecordingActions
+
+
+    class RecordedAction : IAction
+    {
+        List<int> Frames;
+
+
+        public bool IsActive()
+        {
+            return true;
+        }
+    }
+
+
+    #endregion
     /// <summary>
     /// Maps actions to input
     /// </summary>

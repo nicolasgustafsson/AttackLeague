@@ -32,3 +32,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.ide
+AttackLeague/AttackLeague/bin/
+AttackLeague/AttackLeague/obj/

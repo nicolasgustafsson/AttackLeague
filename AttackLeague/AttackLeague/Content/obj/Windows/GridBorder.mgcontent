@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/ColorBlock.png</SourceFile>
-  <SourceTime>2017-08-27T17:13:13.9740885+02:00</SourceTime>
-  <DestFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/ColorBlock.xnb</DestFile>
-  <DestTime>2017-08-27T17:15:08.0175646+02:00</DestTime>
+  <SourceFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/GridBorder.png</SourceFile>
+  <SourceTime>2017-09-03T17:08:03.1868361+02:00</SourceTime>
+  <DestFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/GridBorder.xnb</DestFile>
+  <DestTime>2017-09-03T17:08:21.1731011+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -20,11 +20,22 @@ namespace AttackLeague.AttackLeague
         private int myWidth = 6;
         private ContentManager myContent;
         private Vector2 myOffset = new Vector2(100, 100);
+        private float myRaisingOffset = 0f;
+        private Sprite myBorderSprite;
+
+        //Super ugly pls fix
+        private bool myHasRaisedThisFrame = false;
+        private bool myWantsToRaiseBlocks = false;
+        private float myChainTimer = 0f;
+        private float myConstantRaisingSpeed = 3;
 
         public Grid(ContentManager aContent)
         {
             myContent = aContent;
+            Utility.FrameCounter.ResetFrames();
             GenerateGrid();
+
+            myBorderSprite = new Sprite("GridBorder", aContent);
         }
 
         public void GenerateGrid()
@@ -32,7 +43,19 @@ namespace AttackLeague.AttackLeague
             myGrid = new List<List<Tile>>();
             myBlocks = new List<AbstractBlock>();
 
-            for (int rows = 0; rows < myHeight; ++rows)
+            myGrid.Add(new List<Tile>());
+            for (int columns = 0; columns < myWidth; ++columns)
+            {
+                FrozenBlock block = new FrozenBlock();
+                block.SetPosition(columns, 0);
+                myBlocks.Add(block);
+
+                Tile tiley = new Tile();
+                myGrid[0].Add(tiley);
+                tiley.SetBlock(block);
+            }
+
+            for (int rows = 1; rows < myHeight; ++rows)
             {
                 myGrid.Add(new List<Tile>());
                 for (int columns = 0; columns < myWidth; ++columns)
@@ -51,10 +74,135 @@ namespace AttackLeague.AttackLeague
             {
                 block.LoadContent(myContent);
             }
+
+            PrintGrid();
+        }
+
+        public void SetIsRaisingBlocks()
+        {
+            if (IsFrozen() == false)
+                myWantsToRaiseBlocks = true;
+        }
+
+        private void RearrangeRaisedTiles()
+        {
+            for (int rows = myGrid.Count() -1; rows >= 1; rows--)
+            {
+                if (RowIsEmpty(rows) == false)
+                {
+                    if (HasRow(rows + 1) == false)
+                    {
+                        AddEmptyRow();
+                        //MoveRowUp(rows);
+                        //rows++;
+                        //continue;
+                    }
+                    
+                    MoveRowUp(rows);
+                }
+            }
+            ConvertFrozenRowToColorBlocks();
+            CreateFrozenRow();
+            PrintGrid();
+            myWantsToRaiseBlocks = false;
+        }
+
+        private void CreateFrozenRow()
+        {
+            for (int columns = 0; columns < myWidth; ++columns)
+            {
+                AbstractBlock blocky = myGrid[0][columns].GetBlock();
+                Debug.Assert(blocky is FrozenBlock);
+                ((FrozenBlock)(myGrid[0][columns].GetBlock())).RandomizeColor();
+            }
+        }
+
+        private void ConvertFrozenRowToColorBlocks()
+        {
+            for (int column = 0; column < myWidth; column++)
+            {
+                AbstractBlock blocky = myGrid[0][column].GetBlock();
+                Debug.Assert(blocky is FrozenBlock);
+                ColorBlock colorBlocky = new ColorBlock(((FrozenBlock)blocky).GetColor());
+                colorBlocky.SetPosition(new Point(column, 1));
+                Tile tiley = new Tile();
+                tiley.SetBlock(colorBlocky);
+
+                myGrid[1][column] = tiley;
+                myBlocks.Add(colorBlocky);
+                colorBlocky.LoadContent(myContent);
+
+            }
+        }
+
+        private void MoveRowUp(int aRowNumber)
+        {
+            for (int columns = 0; columns < myWidth; ++columns)
+            {
+                myGrid[aRowNumber + 1][columns] = myGrid[aRowNumber][columns];
+                myGrid[aRowNumber + 1][columns].GetBlock().SetPosition(columns, aRowNumber + 1);
+            }
+        }
+
+        private void AddEmptyRow()
+        {
+            myGrid.Add(new List<Tile>());
+            int row = myGrid.Count() - 1;
+            for (int columns = 0; columns < myWidth; ++columns)
+            {
+                EmptyBlock block = new EmptyBlock();
+                block.SetPosition(columns, row);
+                myBlocks.Add(block);
+
+                Tile tiley = new Tile();
+                tiley.SetBlock(block);
+                myGrid[row].Add(tiley);
+            }
+        }
+
+        private bool RowIsEmpty(int aRowNumber)
+        {
+            for (int columns = 0; columns < myWidth; columns++)
+            {
+                if ((myGrid[aRowNumber][columns].GetBlock() is EmptyBlock) == false)
+                    return false;
+            }
+            return true;
+        }
+
+        private bool HasRow(int aRowNumber)
+        {
+            return myGrid.Count() - 1 > aRowNumber;
         }
 
         public void Update()
         {
+            myHasRaisedThisFrame = false;
+            Utility.FrameCounter.IncrementFrameCount();
+
+            /*myWantsBlocks == true myChainTimer = 0*/
+            if (myWantsToRaiseBlocks == true)
+                myChainTimer = 0f;
+
+            if (IsFrozen() == false && myChainTimer <= 0f && IsExceedingRoof() == false)
+            {
+                float tilesPerSecond = 0.3f /* timeMultiplier*/;
+
+                if (myWantsToRaiseBlocks && myConstantRaisingSpeed > tilesPerSecond)
+                {
+                    tilesPerSecond = myConstantRaisingSpeed;
+                }
+
+                myRaisingOffset -= (tilesPerSecond / AbstractBlock.GetTileSize());
+
+                if (RaisingOffsetExceededTile() == true)
+                {
+                    RearrangeRaisedTiles();
+                    myRaisingOffset += 1f;
+                    myHasRaisedThisFrame = true;
+                }
+            }
+
             //if it crashes here there are big chances that they have same position
             myBlocks.Sort();
 
@@ -113,6 +261,19 @@ namespace AttackLeague.AttackLeague
             }
 
             CheckForMatches();
+        }
+
+        private bool IsExceedingRoof()
+        {
+            if (myGrid.Count() > myHeight)
+            {
+                for (int column = 0; column < myWidth; column++)
+                {
+                    if (myGrid[myHeight][column].GetBlock() is EmptyBlock == false)
+                        return true;
+                }
+            }
+            return false;
         }
 
         private bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
@@ -313,7 +474,7 @@ namespace AttackLeague.AttackLeague
             {
                 return;
             }
-            aBlock = new DisappearingBlock(((ColorBlock)aBlock).GetColorFromEnum(),
+            aBlock = new DisappearingBlock(((AbstractColorBlock)aBlock).GetColor(),
                 totalAnimationtime,
                 currentBlockDelta);
 
@@ -324,8 +485,11 @@ namespace AttackLeague.AttackLeague
         {
             foreach (AbstractBlock iBlock in myBlocks)
             {
-                iBlock.Draw(aSpriteBatch, myOffset, myHeight - 1, 0.0f);
+                iBlock.Draw(aSpriteBatch, myOffset, myHeight - 1, myRaisingOffset);
             }
+
+            myBorderSprite.SetPosition(new Vector2(myOffset.X - 2, 6 - AbstractBlock.GetTileSize()));
+            myBorderSprite.Draw(aSpriteBatch);
         }
 
         public Vector2 GetOffset()
@@ -336,6 +500,38 @@ namespace AttackLeague.AttackLeague
         public int GetHeight()
         {
             return myHeight;
+        }
+
+        public float GetRaisingOffset()
+        {
+            return myRaisingOffset;
+        }
+
+        public bool IsFrozen()
+        {
+            foreach(AbstractBlock blocky in myBlocks)
+            {
+                if (blocky is FallingBlock || blocky is DisappearingBlock)
+                {
+                    return true;
+                }
+            }
+            return false; //TODO
+        }
+
+        public int GetWidth()
+        {
+            return myWidth;
+        }
+
+        public bool HasRaisedGridThisFrame()
+        {
+            return myHasRaisedThisFrame;
+        }
+
+        private bool RaisingOffsetExceededTile()
+        {
+            return myRaisingOffset < -1f;
         }
 
         void PrintGrid()
@@ -376,16 +572,7 @@ namespace AttackLeague.AttackLeague
                 }
                 Console.Write("\n");
             }
-        }
-
-        public void RaiseBlocks()
-        {
-            //DO DA RAISINS
-        }
-
-        public int GetWidth()
-        {
-            return myWidth;
+            Console.Write("\n--\n");
         }
     }
 }

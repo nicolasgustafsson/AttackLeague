@@ -13,6 +13,8 @@ namespace AttackLeague.AttackLeague
 {
     class ColorBlock : AbstractColorBlock
     {
+        private bool myCanChain = false;
+
 
         public ColorBlock()
         {
@@ -23,8 +25,20 @@ namespace AttackLeague.AttackLeague
             myColor = aColor;
         }
 
+        public ColorBlock(FallingBlock aBlock)
+        {
+            myColor = aBlock.GetColor();
+            CanChain = aBlock.CanChain;
+        }
+
         public override void Update()
         {
+        }
+
+        public bool CanChain
+        {
+            get { return myCanChain; }
+            set { myCanChain = value; }
         }
     }
 }

@@ -75,7 +75,7 @@ namespace AttackLeague.AttackLeague
             }
             if (ActionMapper.ActionIsActive("MoveUp"))
             {
-                if (myPosition.Y < myGrid.GetHeight() - 1)
+                if (myPosition.Y < myGrid.GetHeight())
                 {
                     myPosition.Y += 1;
                 }

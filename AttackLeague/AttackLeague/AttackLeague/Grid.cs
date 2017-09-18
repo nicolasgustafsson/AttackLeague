@@ -27,7 +27,15 @@ namespace AttackLeague.AttackLeague
         private bool myHasRaisedThisFrame = false;
         private bool myWantsToRaiseBlocks = false;
         private float myChainTimer = 0f;
-        private float myConstantRaisingSpeed = 3;
+
+        private float myGameSpeed = 1.0f;
+
+        private const float MyConstantRaisingSpeed = 3;
+
+        private const float MyMaxMercyTimer = 3.0f;
+        private float myMercyTimer = MyMaxMercyTimer;
+
+        private int myChainCounter = 1;
 
         public Grid(ContentManager aContent)
         {
@@ -180,28 +188,56 @@ namespace AttackLeague.AttackLeague
             myHasRaisedThisFrame = false;
             Utility.FrameCounter.IncrementFrameCount();
 
-            /*myWantsBlocks == true myChainTimer = 0*/
+            const float DeltaTime = 1.0f / 60.0f;
+
+            if (!BlocksAreBusy())
+                myChainTimer -= DeltaTime * myGameSpeed;
+
             if (myWantsToRaiseBlocks == true)
                 myChainTimer = 0f;
 
-            if (IsFrozen() == false && myChainTimer <= 0f && IsExceedingRoof() == false)
+            if (IsFrozen() == false)
             {
-                float tilesPerSecond = 0.3f /* timeMultiplier*/;
-
-                if (myWantsToRaiseBlocks && myConstantRaisingSpeed > tilesPerSecond)
+                if (myChainCounter > 1)
                 {
-                    tilesPerSecond = myConstantRaisingSpeed;
-                }
-
-                myRaisingOffset -= (tilesPerSecond / AbstractBlock.GetTileSize());
-
-                if (RaisingOffsetExceededTile() == true)
-                {
-                    RearrangeRaisedTiles();
-                    myRaisingOffset += 1f;
-                    myHasRaisedThisFrame = true;
+                    OnChainEnd(myChainCounter);
+                    myChainCounter = 1;
                 }
             }
+
+            if (IsFrozen() == false && myChainTimer <= 0f)
+            {
+                if (IsExceedingRoof() == true)
+                {
+                    myMercyTimer -= DeltaTime * myGameSpeed;
+                    if (myMercyTimer < 0)
+                    {
+                        Lose();
+                    }
+                }
+                else
+                {
+                    float tilesPerSecond = 0.3f * myGameSpeed;
+
+                    if (myWantsToRaiseBlocks && MyConstantRaisingSpeed > tilesPerSecond)
+                    {
+                        tilesPerSecond = MyConstantRaisingSpeed;
+                    }
+
+                    myRaisingOffset -= (tilesPerSecond / AbstractBlock.GetTileSize());
+
+                    if (RaisingOffsetExceededTile() == true)
+                    {
+                        RearrangeRaisedTiles();
+                        myRaisingOffset += 1f;
+                        myHasRaisedThisFrame = true;
+                    }
+
+                    //reset mercy timer
+                    myMercyTimer = MyMaxMercyTimer;
+                }
+            }
+
 
             //if it crashes here there are big chances that they have same position
             myBlocks.Sort();
@@ -221,6 +257,23 @@ namespace AttackLeague.AttackLeague
                     if (((DisappearingBlock) block).IsAlive() == false)
                     {
                         EliminateBlock(i);
+
+                        //Get tile position
+                        Point blockPosition = block.GetPosition();
+                        int column = blockPosition.X;
+
+                        for (int row = blockPosition.Y +1; row < myGrid.Count; row++)
+                        {
+                            AbstractBlock becomeFallingBlock = myGrid[row][column].GetBlock();
+                            if (becomeFallingBlock is ColorBlock colorBecomeFallingBlock)
+                            {
+                                colorBecomeFallingBlock.CanChain = true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
                 }
                 else if (block is FallingBlock fallingBlock)
@@ -231,7 +284,7 @@ namespace AttackLeague.AttackLeague
                         if (fallingBlock.GetPosition().Y == 0 ||
                             myGrid[fallingBlock.GetPosition().Y - 1][fallingBlock.GetPosition().X].IsEmpty() == false)
                         {
-                            CreateBlock(fallingBlock.GetPosition(), new ColorBlock(fallingBlock.GetColor()));
+                            CreateBlock(fallingBlock.GetPosition(), new ColorBlock(fallingBlock));
                         }
                         else
                         {
@@ -251,16 +304,45 @@ namespace AttackLeague.AttackLeague
                     if (blockRectangle.Y != 0)
                     {
                         blockRectangle.Y--;
-                        if (!RectangleIntersectsForFallingPurposes(blockRectangle))
+                        if (RectangleIntersectsForFallingPurposes(blockRectangle) == false)
                         {
                             Point position = colorBlock.GetPosition();
-                            CreateBlock(position, new FallingBlock(colorBlock.GetColor()));
+                            CreateBlock(position, new FallingBlock(colorBlock));
                        }
                     }
                 }
             }
 
             CheckForMatches();
+
+            ResetCanChain();
+        }
+
+        private void OnChainIncrement(int ChainLength)
+        {
+            Console.WriteLine($"Chain {ChainLength}!");
+            myChainTimer = Math.Max(1.0f, myChainTimer + 1.0f);
+        }
+
+        private void OnChainEnd(int ChainLength)
+        {
+            Console.WriteLine($"Chain ended at {ChainLength}!");
+        }
+
+        private void ResetCanChain()
+        {
+            foreach(AbstractBlock block in myBlocks)
+            {
+                if (block is ColorBlock colorBlock)
+                {
+                    colorBlock.CanChain = false;
+                }
+            }
+        }
+
+        private void Lose()
+        {
+            Console.WriteLine("Thou art Losar");
         }
 
         private bool IsExceedingRoof()
@@ -341,6 +423,7 @@ namespace AttackLeague.AttackLeague
 
         private void CheckForMatches()
         {
+            bool hasChained = false;
             HashSet<AbstractBlock> matchedBlocks = new HashSet<AbstractBlock>();
             for (int i = myBlocks.Count - 1; i >= 0; --i)
             {
@@ -354,11 +437,35 @@ namespace AttackLeague.AttackLeague
                 int i = 0;
                 foreach (AbstractBlock blocky in matchedBlocks)
                 {
+                    if (blocky is ColorBlock colorBlocky)
+                    {
+                        if (colorBlocky.CanChain == true)
+                        {
+                            hasChained = true;
+                        }
+                    }
                     //Console.WriteLine(blocky.GetPosition());
                     RemoveBlock(blocky, matchedBlocks.Count, i);
                     i++;
                 }
             }
+
+            if (matchedBlocks.Count > 3)
+            {
+                OnCombo(matchedBlocks);
+            }
+
+            if (hasChained)
+            {
+                myChainCounter++;
+                OnChainIncrement(myChainCounter);
+            }
+        }
+
+        private static void OnCombo(HashSet<AbstractBlock> matchedBlocks)
+        {
+            
+            Console.WriteLine($"Combo! {matchedBlocks.Count}");
         }
 
         private HashSet<AbstractBlock> CheckMatches(AbstractBlock aBlock)
@@ -509,14 +616,22 @@ namespace AttackLeague.AttackLeague
 
         public bool IsFrozen()
         {
-            foreach(AbstractBlock blocky in myBlocks)
+            if (myChainTimer > 0f)
+                return true;
+
+            return BlocksAreBusy();
+        }
+
+        private bool BlocksAreBusy()
+        {
+            foreach (AbstractBlock blocky in myBlocks)
             {
                 if (blocky is FallingBlock || blocky is DisappearingBlock)
                 {
                     return true;
                 }
             }
-            return false; //TODO
+            return false;
         }
 
         public int GetWidth()

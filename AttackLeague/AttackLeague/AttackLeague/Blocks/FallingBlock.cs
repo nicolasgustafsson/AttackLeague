@@ -42,8 +42,9 @@ namespace AttackLeague.AttackLeague
         }
 
         private static float GetFallingSpeed(float aGameSpeed)
-        {
-            return MyBaseSpeed + 0.75f * ((aGameSpeed -1f) * 0.1f); // todo un-hardcode if needed
+        {//0.15 + 0.75 * (3.0 - 1.0) * 0.1 = +0.3
+            return MyBaseSpeed + 0.15f * ((aGameSpeed) * 0.1f); // todo un-hardcode if needed
+            // return MyBaseSpeed + 0.75f * ((aGameSpeed - 1f) * 0.1f); // todo un-hardcode if needed
         }
 
         public void PassTile()

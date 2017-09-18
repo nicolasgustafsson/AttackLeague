@@ -15,7 +15,7 @@ namespace AttackLeague.AttackLeague
 
     class FallingBlock : AbstractColorBlock
     {
-        private const float MyBaseSpeed = 0f;
+        private const float MyBaseSpeed = 0.15f;
         private const float MyAdditionalSpeed = 0.1f;
         private bool myCanChain = false;
         protected float myYOffset = 0.0f;
@@ -43,7 +43,7 @@ namespace AttackLeague.AttackLeague
 
         private static float GetFallingSpeed(float aGameSpeed)
         {
-            return MyBaseSpeed + MyAdditionalSpeed * (aGameSpeed);
+            return MyBaseSpeed + 0.75f * ((aGameSpeed -1f) * 0.1f); // todo un-hardcode if needed
         }
 
         public void PassTile()

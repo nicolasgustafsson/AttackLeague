@@ -31,6 +31,7 @@ namespace AttackLeague.AttackLeague
         private bool myHasStarted = true; // should be false inherently
         private float myChainTimer = 0f;
         private float myGameTime = 0f;
+        private float myAdditionalGameSpeed = 0.0f;
         private float myGameSpeed = 1.0f;
 
         private const float MyConstantRaisingSpeed = 3;
@@ -49,6 +50,8 @@ namespace AttackLeague.AttackLeague
             myBorderSprite = new Sprite("GridBorder", aContent);
 
             myFont = aContent.Load<SpriteFont>("raditascartoon");
+
+            ActionMapper.BindAction("IncreaseGameSpeed", Keys.T, KeyStatus.KeyPressed);
         }
 
         public void GenerateGrid()
@@ -190,6 +193,8 @@ namespace AttackLeague.AttackLeague
 
         public void Update() //HEREISUPDATE ----------------------------------------------------------------------------------------------------------
         {
+            if (ActionMapper.ActionIsActive("IncreaseGameSpeed"))
+                myAdditionalGameSpeed += 0.5f;
             myHasRaisedThisFrame = false;
             Utility.FrameCounter.IncrementFrameCount();
 
@@ -197,7 +202,7 @@ namespace AttackLeague.AttackLeague
             if (myIsPaused == false && myHasStarted == true)
             {
                 myGameTime += DeltaTime;
-                myGameSpeed = Math.Min(1.0f + (myGameTime / 60f), 10f);
+                myGameSpeed = Math.Min(1.0f + (myGameTime / 60f) + myAdditionalGameSpeed, 10f);
             }
 
             if (!BlocksAreBusy())

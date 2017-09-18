@@ -34,7 +34,7 @@ namespace AttackLeague.AttackLeague
             return myGridArea.Right;
         }
 
-        public override void Update()
+        public override void Update(float aGameSpeed)
         {
         }
 

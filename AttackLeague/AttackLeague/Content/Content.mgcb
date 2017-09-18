@@ -61,3 +61,10 @@
 /processorParam:TextureFormat=Color
 /build:GridBorder.png
 
+#begin raditascartoon.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:raditascartoon.spritefont
+

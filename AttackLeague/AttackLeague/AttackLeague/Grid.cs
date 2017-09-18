@@ -22,12 +22,15 @@ namespace AttackLeague.AttackLeague
         private Vector2 myOffset = new Vector2(100, 100);
         private float myRaisingOffset = 0f;
         private Sprite myBorderSprite;
+        private SpriteFont myFont;
 
         //Super ugly pls fix
         private bool myHasRaisedThisFrame = false;
         private bool myWantsToRaiseBlocks = false;
+        private bool myIsPaused = false;
+        private bool myHasStarted = true; // should be false inherently
         private float myChainTimer = 0f;
-
+        private float myGameTime = 0f;
         private float myGameSpeed = 1.0f;
 
         private const float MyConstantRaisingSpeed = 3;
@@ -44,6 +47,8 @@ namespace AttackLeague.AttackLeague
             GenerateGrid();
 
             myBorderSprite = new Sprite("GridBorder", aContent);
+
+            myFont = aContent.Load<SpriteFont>("raditascartoon");
         }
 
         public void GenerateGrid()
@@ -88,7 +93,7 @@ namespace AttackLeague.AttackLeague
 
         public void SetIsRaisingBlocks()
         {
-            if (IsFrozen() == false)
+            if (BlocksAreBusy() == false)
                 myWantsToRaiseBlocks = true;
         }
 
@@ -183,12 +188,17 @@ namespace AttackLeague.AttackLeague
             return myGrid.Count() - 1 > aRowNumber;
         }
 
-        public void Update()
+        public void Update() //HEREISUPDATE ----------------------------------------------------------------------------------------------------------
         {
             myHasRaisedThisFrame = false;
             Utility.FrameCounter.IncrementFrameCount();
 
             const float DeltaTime = 1.0f / 60.0f;
+            if (myIsPaused == false && myHasStarted == true)
+            {
+                myGameTime += DeltaTime;
+                myGameSpeed = Math.Min(1.0f + (myGameTime / 60f), 10f);
+            }
 
             if (!BlocksAreBusy())
                 myChainTimer -= DeltaTime * myGameSpeed;
@@ -234,7 +244,7 @@ namespace AttackLeague.AttackLeague
                     }
 
                     //reset mercy timer
-                    myMercyTimer = MyMaxMercyTimer;
+                    myMercyTimer = MyMaxMercyTimer / myGameSpeed;
                 }
             }
 
@@ -250,7 +260,7 @@ namespace AttackLeague.AttackLeague
             for (int i = 0; i < myBlocks.Count; i++)
             {
                 AbstractBlock block = myBlocks[i];
-                block.Update();
+                block.Update(myGameSpeed);
 
                 if (block is DisappearingBlock)
                 {
@@ -279,7 +289,7 @@ namespace AttackLeague.AttackLeague
                 else if (block is FallingBlock fallingBlock)
                 {
                     //Speed, might pass through many tiles?
-                    if (fallingBlock.WillPassTile())
+                    if (fallingBlock.WillPassTile(myGameSpeed))
                     {
                         if (fallingBlock.GetPosition().Y == 0 ||
                             myGrid[fallingBlock.GetPosition().Y - 1][fallingBlock.GetPosition().X].IsEmpty() == false)
@@ -597,6 +607,12 @@ namespace AttackLeague.AttackLeague
 
             myBorderSprite.SetPosition(new Vector2(myOffset.X - 2, 6 - AbstractBlock.GetTileSize()));
             myBorderSprite.Draw(aSpriteBatch);
+
+            aSpriteBatch.DrawString(myFont, 
+                "Bonus time: " + myChainTimer.ToString() + 
+                "\nGame Time: " + myGameTime.ToString() + 
+                "\nGame Speed: " + myGameSpeed.ToString()
+                , new Vector2(500, 100), Color.MidnightBlue);
         }
 
         public Vector2 GetOffset()

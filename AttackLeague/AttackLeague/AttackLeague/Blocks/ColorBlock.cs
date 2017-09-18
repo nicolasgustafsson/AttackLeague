@@ -31,7 +31,7 @@ namespace AttackLeague.AttackLeague
             CanChain = aBlock.CanChain;
         }
 
-        public override void Update()
+        public override void Update(float aGameSpeed)
         {
         }
 

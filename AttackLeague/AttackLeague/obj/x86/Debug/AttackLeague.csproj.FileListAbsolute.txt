@@ -53,3 +53,4 @@ E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\D
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.pdb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CoreCompileInputs.cache
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\GridBorder.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\raditascartoon.xnb

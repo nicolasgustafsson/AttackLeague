@@ -15,7 +15,8 @@ namespace AttackLeague.AttackLeague
 
     class FallingBlock : AbstractColorBlock
     {
-        private const float MyBaseSpeed = 0.25f;
+        private const float MyBaseSpeed = 0f;
+        private const float MyAdditionalSpeed = 0.1f;
         private bool myCanChain = false;
         protected float myYOffset = 0.0f;
 
@@ -30,14 +31,19 @@ namespace AttackLeague.AttackLeague
             myCanChain = aBlock.CanChain;
         }
 
-        public override void Update()
+        public override void Update(float aGameSpeed)
         {
-            myYOffset -= MyBaseSpeed;
+            myYOffset -= GetFallingSpeed(aGameSpeed);
         }
 
-        public bool WillPassTile()
+        public bool WillPassTile(float aGameSpeed)
         {
-            return myYOffset - MyBaseSpeed < 0.0f;
+            return (myYOffset - GetFallingSpeed(aGameSpeed)) < 0.0f;
+        }
+
+        private static float GetFallingSpeed(float aGameSpeed)
+        {
+            return MyBaseSpeed + MyAdditionalSpeed * (aGameSpeed);
         }
 
         public void PassTile()

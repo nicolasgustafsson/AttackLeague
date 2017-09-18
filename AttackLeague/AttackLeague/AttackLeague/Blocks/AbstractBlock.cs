@@ -71,7 +71,7 @@ namespace AttackLeague.AttackLeague
         public abstract int GetHeight();
         public abstract int GetXCoordinate();
 
-        public abstract void Update();
+        public abstract void Update(float aGameSpeed);
 
         public virtual void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {

@@ -33,7 +33,7 @@ namespace AttackLeague.AttackLeague
             mySprite.SetColor(color);
         }
 
-        public override void Update()
+        public override void Update(float aGameSpeed)
         {
             myCurrentFrame++;
         }

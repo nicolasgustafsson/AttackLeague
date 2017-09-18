@@ -14,7 +14,7 @@ namespace AttackLeague.AttackLeague
 
     class DisappearingBlock : AbstractColorBlock
     {
-        private int myCurrentFrame = 0;
+        private float myCurrentFrame = 0;
         private int myStartFrame;
         private int myTotalFrames;
 
@@ -35,19 +35,19 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
-            myCurrentFrame++;
+            myCurrentFrame += 1f + (aGameSpeed / 3.0f);
         }
 
         private float GetAnimationProgress()
         {
             float animationLength = 30;
-            float currentFrameInAnimation = myCurrentFrame - myStartFrame;
+            float currentFrameInAnimation = (int)myCurrentFrame - myStartFrame;
             return Math.Max(0f, Math.Min(currentFrameInAnimation / animationLength, 1.0f));
         }
 
         public bool IsAlive()
         {
-            return myCurrentFrame < myTotalFrames;
+            return (int)myCurrentFrame < myTotalFrames;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)

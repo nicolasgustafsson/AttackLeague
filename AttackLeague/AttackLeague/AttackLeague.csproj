@@ -60,6 +60,7 @@
     <Compile Include="Prebuilt\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ActionMapper.cs" />
+    <Compile Include="Utility\Betweenxt\Betweenxt.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Randomizer.cs" />

@@ -41,6 +41,9 @@ namespace AttackLeague.AttackLeague
 
         private int myChainCounter = 1;
 
+        private AbstractBlock myLeftBlock = null;
+        private AbstractBlock myRightBlock = null;
+
         public Grid(ContentManager aContent)
         {
             myContent = aContent;
@@ -56,6 +59,10 @@ namespace AttackLeague.AttackLeague
 
         public void GenerateGrid()
         {
+            myChainTimer = 0;
+            myChainCounter = 0;
+            myMercyTimer = MyMaxMercyTimer;
+
             myGrid = new List<List<Tile>>();
             myBlocks = new List<AbstractBlock>();
 
@@ -129,7 +136,14 @@ namespace AttackLeague.AttackLeague
             {
                 AbstractBlock blocky = myGrid[0][columns].GetBlock();
                 Debug.Assert(blocky is FrozenBlock);
-                ((FrozenBlock)(myGrid[0][columns].GetBlock())).RandomizeColor();
+                HashSet<AbstractBlock> matchingBlocks = new HashSet<AbstractBlock>();
+                do
+                {
+                    matchingBlocks.Clear();
+                    ((FrozenBlock)(myGrid[0][columns].GetBlock())).RandomizeColor();
+                    CheckMatchesDirection((AbstractColorBlock) blocky, new Point(0, 1), matchingBlocks);
+                    CheckMatchesDirection((AbstractColorBlock) blocky, new Point(-1, 0), matchingBlocks);
+                } while (matchingBlocks.Any());
             }
         }
 
@@ -477,10 +491,13 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        private static void OnCombo(HashSet<AbstractBlock> matchedBlocks)
+        private void OnCombo(HashSet<AbstractBlock> matchedBlocks)
         {
-            
             Console.WriteLine($"Combo! {matchedBlocks.Count}");
+            const float MagicNumber = 0.3f;
+            if (myChainTimer < 0.0f)
+                myChainTimer = 0.0f;
+            myChainTimer += (matchedBlocks.Count * MagicNumber) / myGameSpeed;
         }
 
         private HashSet<AbstractBlock> CheckMatches(AbstractBlock aBlock)
@@ -488,62 +505,31 @@ namespace AttackLeague.AttackLeague
             HashSet<AbstractBlock> matchingBlocks = new HashSet<AbstractBlock>();
             if (aBlock is ColorBlock block)
             {
-                EBlockColor currentColor = block.GetColor();
-
-                CheckMatchHorizontal(matchingBlocks, block, currentColor);
-
-                CheckMatchVertical(matchingBlocks, block, currentColor);
-
+                CheckMatchesDirection(block, new Point(1, 0), matchingBlocks);
+                CheckMatchesDirection(block, new Point(0, 1), matchingBlocks);
             }
             return matchingBlocks;
         }
 
-        /// <summary>
-        /// Checks for matches to the ups
-        /// </summary>
-        private void CheckMatchVertical(HashSet<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
+        private void CheckMatchesDirection(AbstractColorBlock aBlock, Point aOffset, HashSet<AbstractBlock> aMatchingBlocks)
         {
             Point blockPosition = aBlock.GetPosition();
-            if (blockPosition.Y > 1)
+            Point offsetPosition = blockPosition + aOffset;
+            AbstractBlock directionBlock = GetBlockAtPosition(offsetPosition.X, offsetPosition.Y);
+            if (directionBlock is AbstractColorBlock && ((AbstractColorBlock) directionBlock).GetColor() == aBlock.GetColor())
             {
-                AbstractBlock upBlock = GetBlockAtPosition(blockPosition.X, blockPosition.Y - 1);
-                if (upBlock is ColorBlock && ((ColorBlock)upBlock).GetColor() == aBlockColor)
+                Point offsetOffsetPosition = blockPosition + new Point(aOffset.X * 2, aOffset.Y * 2);
+                AbstractBlock directionDirectionBlock = GetBlockAtPosition(offsetOffsetPosition.X, offsetOffsetPosition.Y);
+                if (directionDirectionBlock is AbstractColorBlock && ((AbstractColorBlock) directionDirectionBlock).GetColor() == aBlock.GetColor())
                 {
-                    AbstractBlock upUpBlock = GetBlockAtPosition(blockPosition.X, blockPosition.Y - 2);
-                    if (upUpBlock is ColorBlock && ((ColorBlock)upUpBlock).GetColor() == aBlockColor)
-                    {
-                        aMatchingBlocks.Add(aBlock);
-                        aMatchingBlocks.Add(upBlock);
-                        aMatchingBlocks.Add(upUpBlock);
-                    }
+                    aMatchingBlocks.Add(aBlock);
+                    aMatchingBlocks.Add(directionBlock);
+                    aMatchingBlocks.Add(directionDirectionBlock);
                 }
             }
         }
 
-        /// <summary>
-        /// Checks for matches to the left
-        /// </summary>
-        private void CheckMatchHorizontal(HashSet<AbstractBlock> aMatchingBlocks, ColorBlock aBlock, EBlockColor aBlockColor)
-        {
-            Point blockPosition = aBlock.GetPosition();
-            if (blockPosition.X > 1)
-            {
-                AbstractBlock leftBlock = GetBlockAtPosition(blockPosition.X - 1, blockPosition.Y);
-                if (leftBlock is ColorBlock && ((ColorBlock)leftBlock).GetColor() == aBlockColor)
-                {
-                    AbstractBlock leftLeftBlock =
-                        GetBlockAtPosition(blockPosition.X - 2, blockPosition.Y);
-                    if (leftLeftBlock is ColorBlock && ((ColorBlock)leftLeftBlock).GetColor() == aBlockColor)
-                    {
-                        aMatchingBlocks.Add(aBlock);
-                        aMatchingBlocks.Add(leftBlock);
-                        aMatchingBlocks.Add(leftLeftBlock);
-                    }
-                }
-            }
-        }
-
-        public void SwapRight(Point aPosition)
+        public void SwapBlocksRight(Point aPosition)
         {
             AbstractBlock leftBlock = GetBlockAtPosition(aPosition);
             AbstractBlock rightBlock = GetBlockAtPosition(aPosition + new Point(1, 0));
@@ -553,11 +539,14 @@ namespace AttackLeague.AttackLeague
                 if (rightBlock is ColorBlock ||
                     rightBlock is EmptyBlock)
                 {
-                    leftBlock.SetPosition(aPosition + new Point(1, 0));
-                    rightBlock.SetPosition(aPosition);
+                    myLeftBlock = leftBlock;
+                    myRightBlock = rightBlock;
 
-                    myGrid[aPosition.Y][aPosition.X].SetBlock(rightBlock);
-                    myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
+                    //leftBlock.SetPosition(aPosition + new Point(1, 0));
+                    //rightBlock.SetPosition(aPosition);
+
+                    //myGrid[aPosition.Y][aPosition.X].SetBlock(rightBlock);
+                    //myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
                 }
             }
         }
@@ -569,7 +558,7 @@ namespace AttackLeague.AttackLeague
 
         private AbstractBlock GetBlockAtPosition(int aX, int aY)
         {
-            if (aX < 0 || aX >= myWidth || aY < 0 || aY > myHeight)
+            if (aX < 0 || aX >= myWidth || aY < 0 || aY >= myGrid.Count)
             {
                 return null;
             }

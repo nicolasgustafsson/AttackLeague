@@ -51,7 +51,7 @@ namespace AttackLeague.AttackLeague
             HandleMovement();
 
             if (ActionMapper.ActionIsActive("SwapBlocks"))
-                myGrid.SwapRight(myPosition);
+                myGrid.SwapBlocksRight(myPosition);
 
             if (ActionMapper.ActionIsActive("RaiseBlocks"))
                 myGrid.SetIsRaisingBlocks();

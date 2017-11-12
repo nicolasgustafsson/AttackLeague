@@ -54,6 +54,7 @@ namespace AttackLeague
         protected override void Update(GameTime gameTime)
         {
             KeyboardWrapper.UpdateState();
+            FrameCounter.IncrementFrameCount();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();

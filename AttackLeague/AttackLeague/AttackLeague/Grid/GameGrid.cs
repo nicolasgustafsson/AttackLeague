@@ -120,7 +120,7 @@ namespace AttackLeague.AttackLeague.Grid
 
         private void UpdateAbstractColorBlock(AbstractColorBlock aBlock)
         {
-            aBlock.UpdateIconAnimation(ColumnIsExceedingRoof(aBlock.GetPosition().X));
+            aBlock.UpdateIconAnimation(ColumnIsExceedingRoof(aBlock.GetPosition().X), ColumnIsCloseToExceedingRoof(aBlock.GetPosition().X));
         }
 
         private void UpdateColorBlock(ColorBlock aBlock)

@@ -10,6 +10,16 @@ namespace AttackLeague.Utility.Betweenxt
 
     public class Betweenxt
     {
+        private float myStartValue;
+        private float myEndValue;
+
+        private float myStartKey;
+        private float myEndKey;
+
+        private float myCurrentKey = 0.0f;
+
+        private BetweenxtingFunction myBetweenxtingFunction;
+
         public Betweenxt(BetweenxtingFunction aBetweenxtingFunction, float aStartValue, float aEndValue, float aStartKey = 0.0f, float aEndKey = 1.0f)
         {
             myStartValue = aStartValue;
@@ -38,9 +48,27 @@ namespace AttackLeague.Utility.Betweenxt
             return GetProgress() * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
         }
 
+        public float GetValueAtKey(float aKey)
+        {
+            return GetProgressAtKey(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+        }
+
+        public float GetValueAtKeyReverse(float aKey)
+        {
+            return GetProgressAtKeyReverse(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+        }
+
         public void Reset()
         {
             myCurrentKey = myStartKey;
+        }
+
+        public void ResetReverse()
+        {
+            float tempStart = myStartKey;
+            myCurrentKey = myEndKey;
+            myStartKey = myEndKey;
+            myEndKey = tempStart;
         }
 
         public float GetProgress()
@@ -48,16 +76,15 @@ namespace AttackLeague.Utility.Betweenxt
             return Math.Max(Math.Min(myBetweenxtingFunction(myStartKey, myEndKey, myCurrentKey), 1.0f), 0.0f);
         }
 
-        private readonly float myStartValue;
-        private readonly float myEndValue;
+        public float GetProgressAtKey(float aKey)
+        {
+            return Math.Max(Math.Min(myBetweenxtingFunction(myStartKey, myEndKey, aKey), 1.0f), 0.0f);
+        }
 
-        private readonly float myStartKey;
-        private readonly float myEndKey;
-
-        private float myCurrentKey = 0.0f;
-
-        private BetweenxtingFunction myBetweenxtingFunction;
-
+        public float GetProgressAtKeyReverse(float aKey)
+        {
+            return Math.Max(Math.Min(myBetweenxtingFunction(myEndKey, myStartKey, aKey), 1.0f), 0.0f);
+        }
 
         public static BetweenxtingFunction Lerp = delegate(float aStartKey, float aEndKey, float aCurrentKey)
         {

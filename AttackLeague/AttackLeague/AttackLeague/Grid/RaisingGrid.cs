@@ -141,6 +141,15 @@ namespace AttackLeague.AttackLeague.Grid
             return false;
         }
 
+        public bool ColumnIsCloseToExceedingRoof(int aColumn)
+        {
+            if (myGrid.Count() <= myHeight - 3)
+                return false;
+            if (myGrid[myHeight - 3][aColumn].GetBlock() is EmptyBlock == false)
+                return true;
+            return false;
+        }
+
         //           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //            | | | | | | | | | | NO ENTRY | | | | | | | | |
         private void CheckMatchesDirectionFrozenPurposes(AbstractColorBlock aBlock, Point aOffset, HashSet<AbstractBlock> aMatchingBlocks)

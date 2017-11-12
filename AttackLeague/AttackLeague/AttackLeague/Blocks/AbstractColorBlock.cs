@@ -1,4 +1,5 @@
 ﻿using AttackLeague.Utility;
+using AttackLeague.Utility.Betweenxt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,6 +44,7 @@ namespace AttackLeague.AttackLeague
         protected EBlockColor myColor = EBlockColor.None;
         protected EIconPassiveAnimation myPassiveAnimation = EIconPassiveAnimation.None;
         protected EIconActiveAnimation myActiveAnimation = EIconActiveAnimation.None;
+        protected static Betweenxt myJumpyBetwinxt = new Betweenxt(Betweenxt.Lerp, 0.0f, 0.4f);
 
         public AbstractColorBlock()
         {
@@ -114,12 +116,14 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        public void UpdateIconAnimation(bool aIsExceedingRoof)
+        public void UpdateIconAnimation(bool aIsExceedingRoof, bool aIsCloseToExceedingRoof)
         {
             EIconPassiveAnimation ResolvedIconAnimation = EIconPassiveAnimation.None;
 
             if (aIsExceedingRoof)
                 ResolvedIconAnimation = EIconPassiveAnimation.Squeeze;
+            else if (aIsCloseToExceedingRoof)
+                ResolvedIconAnimation = EIconPassiveAnimation.Jump;
 
             myPassiveAnimation = ResolvedIconAnimation;
             //etc etc
@@ -138,6 +142,15 @@ namespace AttackLeague.AttackLeague
                     case EIconPassiveAnimation.Squeeze:
                         myIcon.SetScale(new Vector2(1.1f, 0.8f));
                         myIcon.SetPosition(myIcon.GetPosition() + new Vector2(-GetTileSize() * 0.05f, GetTileSize() * 0.2f));
+                        break;
+
+                    case EIconPassiveAnimation.Jump:
+                        // ResetReverse();
+                        //YLF CODE
+
+
+                        myIcon.SetScale(new Vector2(1.1f, 0.8f));
+                        myIcon.SetPosition(myIcon.GetPosition() + new Vector2(0.0f, GetTileSize() * (float)Math.Abs(Math.Sin((FrameCounter.GetCurrentFrame() / 60.0f)))));
                         break;
 
                     case EIconPassiveAnimation.None:

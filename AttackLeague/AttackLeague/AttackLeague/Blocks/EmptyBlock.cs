@@ -14,13 +14,14 @@ namespace AttackLeague.AttackLeague
 
     class EmptyBlock : AbstractBlock
     {
+        private float mySwitchTimer = 0.0f;
 
         public EmptyBlock()
         {
             myGridArea = new Rectangle(0, 0, 1, 1);
         }
 
-        public override void LoadContent(ContentManager aContent)
+        public override void LoadContent()
         {
         }
 
@@ -36,10 +37,22 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
+            mySwitchTimer -= 0.15f + 0.15f * ((aGameSpeed) * 0.1f);
         }
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
         }
+
+        public override void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
+        {
+            mySwitchTimer = aSwitchTime;
+        }
+
+        public override bool IsSwitching()
+        {
+            return mySwitchTimer > 0.0f;
+        }
+
     }
 }

@@ -30,7 +30,7 @@ namespace AttackLeague.AttackLeague
 
         public bool CanFallThrough()
         {
-            return myBlock is EmptyBlock || myBlock is FallingBlock;
+            return (myBlock is EmptyBlock || myBlock is FallingBlock) && myBlock.IsSwitching() == false;
         }
     }
 }

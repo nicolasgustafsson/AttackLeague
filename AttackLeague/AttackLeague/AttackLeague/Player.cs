@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AttackLeague.Utility;
+using AttackLeague.AttackLeague.Grid;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,14 +16,14 @@ namespace AttackLeague.AttackLeague
     {
         private Sprite mySprite;
         private Point myPosition = new Point(2,5);
-        private Grid myGrid;
+        private GameGrid myGrid;
 
-        public Player(ContentManager aContent, Grid aGrid)
+        public Player( GameGrid aGrid)
         {
             BindActions();
 
             myGrid = aGrid;
-            mySprite = new Sprite("PlayerMarker", aContent);
+            mySprite = new Sprite("PlayerMarker");
         }
 
         protected virtual void BindActions()

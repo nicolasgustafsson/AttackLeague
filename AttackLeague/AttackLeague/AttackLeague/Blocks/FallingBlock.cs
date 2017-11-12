@@ -33,18 +33,12 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
-            myYOffset -= GetFallingSpeed(aGameSpeed);
+            myYOffset -= GetMagicalSpeed(aGameSpeed);
         }
 
         public bool WillPassTile(float aGameSpeed)
         {
-            return (myYOffset - GetFallingSpeed(aGameSpeed)) < 0.0f;
-        }
-
-        private static float GetFallingSpeed(float aGameSpeed)
-        {//0.15 + 0.75 * (3.0 - 1.0) * 0.1 = +0.3
-            return MyBaseSpeed + 0.15f * ((aGameSpeed) * 0.1f); // todo un-hardcode if needed
-            // return MyBaseSpeed + 0.75f * ((aGameSpeed - 1f) * 0.1f); // todo un-hardcode if needed
+            return (myYOffset - GetMagicalSpeed(aGameSpeed)) < 0.0f;
         }
 
         public void PassTile()
@@ -59,6 +53,9 @@ namespace AttackLeague.AttackLeague
             position.Y -= myYOffset * mySprite.GetSize().Y;
             mySprite.SetPosition(position);
             mySprite.Draw(aSpriteBatch);
+
+            myIcon.SetPosition(position);
+            myIcon.Draw(aSpriteBatch);
         }
 
         public bool CanChain

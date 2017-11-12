@@ -35,7 +35,12 @@ namespace AttackLeague.Utility.Betweenxt
 
         public float GetValue()
         {
-            return GetProgress() * (myEndValue - myStartValue);
+            return GetProgress() * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+        }
+
+        public void Reset()
+        {
+            myCurrentKey = myStartKey;
         }
 
         public float GetProgress()
@@ -59,7 +64,7 @@ namespace AttackLeague.Utility.Betweenxt
             if (aStartKey == aEndKey)
                 return 1.0f;
 
-            float total = aEndKey - aStartKey;
+            float total = (Math.Max(aEndKey, aStartKey) - Math.Min(aEndKey, aStartKey));
 
             return (aCurrentKey - aStartKey) / total;
         };

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using AttackLeague.AttackLeague.Grid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace AttackLeague.AttackLeague.Replays
     //replays all actions
     class ReplayPlayer : Player
     {
-        public ReplayPlayer(ContentManager aContent, Grid aGrid)
-            : base(aContent, aGrid)
+        public ReplayPlayer( GameGrid aGrid)
+            : base(aGrid)
         {
 
         }

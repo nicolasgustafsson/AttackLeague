@@ -1,4 +1,5 @@
 ﻿using AttackLeague.AttackLeague;
+using AttackLeague.AttackLeague.Grid;
 using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +12,7 @@ namespace AttackLeague
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private Grid myGrid;
+        private GameGrid myGrid;
         private Player myPlayer;
 
         private bool myIsPaused = false;
@@ -29,6 +30,8 @@ namespace AttackLeague
             Content.RootDirectory = "Content";
             ActionMapper.BindAction("Pause", Keys.Enter, KeyStatus.KeyPressed);
             ActionMapper.BindAction("StepOnce", Keys.OemPeriod, KeyStatus.KeyPressed);
+
+            ContentManagerInstance.Content = Content;
         }
 
         protected override void Initialize()
@@ -39,8 +42,8 @@ namespace AttackLeague
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            myGrid = new Grid(Content);
-            myPlayer = new Player(Content, myGrid);
+            myGrid = new GameGrid();
+            myPlayer = new Player(myGrid);
         }
 
         protected override void UnloadContent()
@@ -64,6 +67,8 @@ namespace AttackLeague
                 myIsPaused = !myIsPaused;
             }
 
+            myPlayer.Update();
+
             if (myIsPaused == false)
             {
                 myGrid.Update();
@@ -76,7 +81,6 @@ namespace AttackLeague
                 }
             }
 
-            myPlayer.Update();
 
             base.Update(gameTime);
         }

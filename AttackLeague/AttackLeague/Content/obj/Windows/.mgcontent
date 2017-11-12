@@ -5,9 +5,16 @@
   <Config />
   <SourceFiles>
     <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Pixel.png</File>
-    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/ColorBlock.png</File>
     <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/PlayerMarker.png</File>
     <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/GridBorder.png</File>
     <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/raditascartoon.spritefont</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Droppy.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/LightningThunderLoudThingie.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Moonie.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Star.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Strom.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/Sunnie.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/SnowStar.png</File>
+    <File>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/tiley.png</File>
   </SourceFiles>
 </SourceFileCollection>

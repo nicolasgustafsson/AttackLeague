@@ -23,7 +23,7 @@ namespace AttackLeague.AttackLeague
             myColor = aColor;
         }
 
-        public virtual void RandomizeColor()
+        public override void RandomizeColor()
         {
             myColor = (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
             if (mySprite != null)
@@ -32,17 +32,18 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        public override void LoadContent(ContentManager aContent)
+        public override void LoadContent()
         {
-            mySprite = new Sprite("ColorBlock", aContent);
+            mySprite = new Sprite("tiley");
             UpdateColor();
         }
-        
+
         private void UpdateColor()
         {
             Color color = GetColorFromEnum() * 0.3f;
             color.A = 255;
             mySprite.SetColor(color);
+            myIcon = GetIconFromEnum();
         }
 
         public override void Update(float aGameSpeed)

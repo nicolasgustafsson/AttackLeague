@@ -16,10 +16,10 @@ namespace AttackLeague.Utility
         private Vector2 myScale = Vector2.One;
         private Color myColor;
 
-        public Sprite(string aTextureName, ContentManager aContent)
+        public Sprite(string aTextureName)
         {
             myColor = Color.White;
-            myTexture = aContent.Load<Texture2D>(aTextureName);
+            myTexture = ContentManagerInstance.Content.Load<Texture2D>(aTextureName);
         }
 
         public Vector2 GetSize()

@@ -26,7 +26,6 @@ C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLea
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayerMarker.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache
-E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\ColorBlock.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Pixel.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayerMarker.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\AttackLeague.exe
@@ -54,3 +53,16 @@ E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\D
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CoreCompileInputs.cache
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\GridBorder.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\raditascartoon.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Droppy.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\LightningThunderLoudThingie.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Moonie.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\SpecialSnowflake.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Star.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Strom.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Sunnie.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Snow4u.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\SnowTake2.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\SnowThirdTimesTheCharm.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Snow5pun.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\SnowStar.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\tiley.xnb

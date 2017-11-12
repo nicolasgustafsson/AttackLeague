@@ -1,6 +1,7 @@
 ﻿using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,21 @@ using System.Threading.Tasks;
 namespace AttackLeague.AttackLeague
 {
     enum EBlockColor
-    {
-        Cyan,
-        Magenta,
-        Yellow,
-        Red,
-        Green,
-        Blue,
-        Grey,
+    {                                     //blixt, måne, sol, tornado, moln, regndroppe, snöflinga stjärna
+        Cyan,      //Snöflinga
+        Magenta,   //Måne
+        Yellow,    //Blixt
+        Red,       //Sol
+        Green,     //Stjärna
+        Blue,      //Regndroppe
+        Grey,      //Tornado
         None
     }
 
     abstract class AbstractColorBlock : AbstractBlock
     {
+        protected Sprite mySprite;
+        protected Sprite myIcon;
         protected EBlockColor myColor = EBlockColor.None;
 
         public AbstractColorBlock()
@@ -31,6 +34,8 @@ namespace AttackLeague.AttackLeague
             {
                 RandomizeColor();
             }
+
+
         }
 
         public virtual void RandomizeColor()
@@ -42,10 +47,11 @@ namespace AttackLeague.AttackLeague
             }
         }
 
-        public override void LoadContent(ContentManager aContent)
+        public override void LoadContent()
         {
-            mySprite = new Sprite("ColorBlock", aContent);
+            mySprite = new Sprite("tiley");
             mySprite.SetColor(GetColorFromEnum());
+            myIcon = GetIconFromEnum();
         }
 
         public Color GetColorFromEnum()
@@ -53,15 +59,15 @@ namespace AttackLeague.AttackLeague
             switch (myColor)
             {
                 case EBlockColor.Cyan:
-                    return Color.Cyan;
+                    return new Color(0, 255, 255);
                 case EBlockColor.Magenta:
-                    return Color.Magenta;
+                    return new Color(186, 0, 186);
                 case EBlockColor.Yellow:
                     return Color.Yellow;
                 case EBlockColor.Red:
-                    return Color.Red;
+                    return new Color(215, 0, 0, 255);
                 case EBlockColor.Green:
-                    return Color.Chartreuse;
+                    return Color.LimeGreen;
                 case EBlockColor.Blue:
                     return Color.DarkBlue;
                 case EBlockColor.Grey:
@@ -69,6 +75,41 @@ namespace AttackLeague.AttackLeague
                 default:
                     return Color.White;
             }
+        }
+
+        public Sprite GetIconFromEnum()
+        {
+            switch (myColor)
+            {
+                case EBlockColor.Cyan:
+                    return new Sprite("SnowStar");
+                case EBlockColor.Magenta:
+                    return new Sprite("Moonie");
+                case EBlockColor.Yellow:
+                    return new Sprite("LightningThunderLoudThingie");
+                case EBlockColor.Red:
+                    return new Sprite("Sunnie");
+                case EBlockColor.Green:
+                    return new Sprite("Star");
+                case EBlockColor.Blue:
+                    return new Sprite("Droppy");
+                case EBlockColor.Grey:
+                    return new Sprite("Strom");
+                default:
+                    return null;
+            }
+        }
+
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset) 
+        {
+            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+            mySprite.Draw(aSpriteBatch);
+
+            if (myIcon == null)
+                return;
+
+            myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+            myIcon.Draw(aSpriteBatch);
         }
 
         public override int GetHeight()

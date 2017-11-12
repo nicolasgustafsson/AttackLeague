@@ -25,9 +25,10 @@ namespace AttackLeague.AttackLeague
             myColor = aColor;
         }
 
-        public override void LoadContent(ContentManager aContent)
+        public override void LoadContent()
         {
-            mySprite = new Sprite("ColorBlock", aContent);
+            base.LoadContent();
+            //make block darky
             Color color = GetColorFromEnum() * 0.3f;
             color.A = 255;
             mySprite.SetColor(color);
@@ -55,6 +56,13 @@ namespace AttackLeague.AttackLeague
             mySprite.SetScale(Vector2.One - Vector2.One * GetAnimationProgress());
             mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
             mySprite.Draw(aSpriteBatch);
+
+            if (myIcon == null)
+                return;
+
+            myIcon.SetScale(Vector2.One - Vector2.One * GetAnimationProgress());
+            myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+            myIcon.Draw(aSpriteBatch);
         }
     }
 }

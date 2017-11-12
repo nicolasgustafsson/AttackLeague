@@ -51,7 +51,9 @@
     <Compile Include="AttackLeague\Blocks\FrozenBlock.cs" />
     <Compile Include="AttackLeague\Blocks\EmptyBlock.cs" />
     <Compile Include="AttackLeague\Blocks\ColorBlock.cs" />
-    <Compile Include="AttackLeague\Grid.cs" />
+    <Compile Include="AttackLeague\Grid\BaseGrid.cs" />
+    <Compile Include="AttackLeague\Grid\GameGrid.cs" />
+    <Compile Include="AttackLeague\Grid\RaisingGrid.cs" />
     <Compile Include="AttackLeague\Player.cs" />
     <Compile Include="AttackLeague\Replays\ReplayPlayer.cs" />
     <Compile Include="AttackLeague\Replays\ReplayRecorder.cs" />
@@ -61,10 +63,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ActionMapper.cs" />
     <Compile Include="Utility\Betweenxt\Betweenxt.cs" />
+    <Compile Include="Utility\ContentManagerInstance.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="Utility\Sprite.cs" />
+    <Compile Include="Utility\StateStack\State.cs" />
+    <Compile Include="Utility\StateStack\StateCommand.cs" />
+    <Compile Include="Utility\StateStack\StateStack.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

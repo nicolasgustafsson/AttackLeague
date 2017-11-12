@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,20 @@ using Microsoft.Xna.Framework.Content;
 
 namespace AttackLeague.AttackLeague
 {
+    public enum ESwitchDirection
+    {
+        ToTheLeft,
+        ToTheRight,
+        Nope
+    }
+
     public abstract class AbstractBlock : IComparable
     {
-        protected Sprite mySprite;
         public Rectangle myGridArea = new Rectangle(0, 0, 1, 1);
 
         //protected float myRaisingOffset = 0.0f;
 
-        public virtual void LoadContent(ContentManager aContent)
+        public virtual void LoadContent()
         {
         }
 
@@ -55,11 +62,16 @@ namespace AttackLeague.AttackLeague
             return new Point(myGridArea.X, myGridArea.Y);
         }
 
+        public virtual void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
+        {
+            Debug.Assert(false, "Implement this function in subclass!");
+        }
+
         public Vector2 GetScreenPosition(Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
             float invertedGridYPosition = (aGridHeight - myGridArea.Y);
-            float xPosition = myGridArea.X * mySprite.GetSize().X;
-            float yPosition = (aRaisingOffset + invertedGridYPosition) * mySprite.GetSize().Y;
+            float xPosition = myGridArea.X * GetTileSize();
+            float yPosition = (aRaisingOffset + invertedGridYPosition) * GetTileSize();
             return aGridOffset + new Vector2(xPosition, yPosition);
         }
 
@@ -75,10 +87,8 @@ namespace AttackLeague.AttackLeague
 
         public virtual void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
-            mySprite.Draw(aSpriteBatch);
+            //Intentionally left empty
         }
-
 
         public int CompareTo(object obj)
         {
@@ -95,6 +105,17 @@ namespace AttackLeague.AttackLeague
                 return -1;
             }
             return 0;
+        }
+
+        public virtual bool IsSwitching()
+        {
+            return false;
+        }
+
+        protected float GetMagicalSpeed(float aGameSpeed)
+        {
+            //0.15 is the magic number
+            return 0.15f + 0.15f * ((aGameSpeed) * 0.1f);
         }
     }
 }

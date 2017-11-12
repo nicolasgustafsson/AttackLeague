@@ -55,6 +55,7 @@ namespace AttackLeague.AttackLeague
             mySprite.Draw(aSpriteBatch);
 
             myIcon.SetPosition(position);
+            SetIconAnimation();
             myIcon.Draw(aSpriteBatch);
         }
 

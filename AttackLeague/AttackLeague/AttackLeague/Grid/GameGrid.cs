@@ -118,6 +118,11 @@ namespace AttackLeague.AttackLeague.Grid
             }
         }
 
+        private void UpdateAbstractColorBlock(AbstractColorBlock aBlock)
+        {
+            aBlock.UpdateIconAnimation(ColumnIsExceedingRoof(aBlock.GetPosition().X));
+        }
+
         private void UpdateColorBlock(ColorBlock aBlock)
         {
             Rectangle blockRectangle = aBlock.GetRectangle();
@@ -175,6 +180,9 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 AbstractBlock block = myBlocks[i];
                 block.Update(myGameSpeed);
+
+                if (block is AbstractColorBlock abstractColorBlock)
+                    UpdateAbstractColorBlock(abstractColorBlock);
 
                 if (block is DisappearingBlock disappearingBlock)
                     UpdateDisappearingBlock(disappearingBlock, i);

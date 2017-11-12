@@ -60,8 +60,10 @@ namespace AttackLeague.AttackLeague
             if (myIcon == null)
                 return;
 
-            myIcon.SetScale(Vector2.One - Vector2.One * GetAnimationProgress());
             myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+
+            SetIconAnimation();
+            myIcon.SetScale(Vector2.One - Vector2.One * GetAnimationProgress());
             myIcon.Draw(aSpriteBatch);
         }
     }

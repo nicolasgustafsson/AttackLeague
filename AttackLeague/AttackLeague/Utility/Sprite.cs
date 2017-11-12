@@ -22,6 +22,11 @@ namespace AttackLeague.Utility
             myTexture = ContentManagerInstance.Content.Load<Texture2D>(aTextureName);
         }
 
+        public Vector2 GetPosition()
+        {
+            return myPosition;
+        }
+
         public Vector2 GetSize()
         {
             return new Vector2(myTexture.Width, myTexture.Height);

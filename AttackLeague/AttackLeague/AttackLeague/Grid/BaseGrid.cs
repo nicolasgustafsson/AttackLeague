@@ -12,8 +12,8 @@ namespace AttackLeague.AttackLeague.Grid
     {
         protected List<List<Tile>> myGrid;
         protected List<AbstractBlock> myBlocks;
-        protected int myHeight = 12;
-        protected int myWidth = 6;
+        protected const int myHeight = 12;
+        protected const int myWidth = 6;
 
         protected virtual void OnGridReset() { }
 

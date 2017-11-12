@@ -77,6 +77,7 @@ namespace AttackLeague.AttackLeague
                 return;
 
             myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset) + new Vector2((1.0f - myDanceOffset) * danceDirection, 0.0f));
+            SetIconAnimation();
             myIcon.Draw(aSpriteBatch);
         }
 

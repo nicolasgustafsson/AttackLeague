@@ -10,6 +10,20 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague
 {
+    enum EIconPassiveAnimation
+    {
+        None, 
+        Jump,
+        Squeeze
+    }
+
+    enum EIconActiveAnimation
+    {
+        None,
+        FallBounce,
+        Disappearing
+    }
+
     enum EBlockColor
     {                                     //blixt, måne, sol, tornado, moln, regndroppe, snöflinga stjärna
         Cyan,      //Snöflinga
@@ -27,6 +41,8 @@ namespace AttackLeague.AttackLeague
         protected Sprite mySprite;
         protected Sprite myIcon;
         protected EBlockColor myColor = EBlockColor.None;
+        protected EIconPassiveAnimation myPassiveAnimation = EIconPassiveAnimation.None;
+        protected EIconActiveAnimation myActiveAnimation = EIconActiveAnimation.None;
 
         public AbstractColorBlock()
         {
@@ -34,8 +50,6 @@ namespace AttackLeague.AttackLeague
             {
                 RandomizeColor();
             }
-
-
         }
 
         public virtual void RandomizeColor()
@@ -100,6 +114,42 @@ namespace AttackLeague.AttackLeague
             }
         }
 
+        public void UpdateIconAnimation(bool aIsExceedingRoof)
+        {
+            EIconPassiveAnimation ResolvedIconAnimation = EIconPassiveAnimation.None;
+
+            if (aIsExceedingRoof)
+                ResolvedIconAnimation = EIconPassiveAnimation.Squeeze;
+
+            myPassiveAnimation = ResolvedIconAnimation;
+            //etc etc
+        }
+
+        protected void SetIconAnimation()
+        {
+            if (myActiveAnimation != EIconActiveAnimation.None)
+            {
+                // do active animation stuff
+            }
+            else
+            {
+                switch (myPassiveAnimation)
+                {
+                    case EIconPassiveAnimation.Squeeze:
+                        myIcon.SetScale(new Vector2(1.1f, 0.8f));
+                        myIcon.SetPosition(myIcon.GetPosition() + new Vector2(-GetTileSize() * 0.05f, GetTileSize() * 0.2f));
+                        break;
+
+                    case EIconPassiveAnimation.None:
+                        myIcon.SetScale(new Vector2(1.0f, 1.0f));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset) 
         {
             mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
@@ -109,6 +159,7 @@ namespace AttackLeague.AttackLeague
                 return;
 
             myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset));
+            SetIconAnimation();
             myIcon.Draw(aSpriteBatch);
         }
 

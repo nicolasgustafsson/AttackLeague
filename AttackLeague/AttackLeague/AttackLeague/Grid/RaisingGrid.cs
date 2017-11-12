@@ -123,14 +123,21 @@ namespace AttackLeague.AttackLeague.Grid
 
         protected bool IsExceedingRoof()
         {
-            if (myGrid.Count() > myHeight)
+            for (int column = 0; column < myWidth; column++)
             {
-                for (int column = 0; column < myWidth; column++)
-                {
-                    if (myGrid[myHeight][column].GetBlock() is EmptyBlock == false)
-                        return true;
-                }
+                if (ColumnIsExceedingRoof(column) == true)
+                    return true;
             }
+
+            return false;
+        }
+
+        public bool ColumnIsExceedingRoof(int aColumn)
+        {
+            if (myGrid.Count() <= myHeight)
+                return false;
+            if (myGrid[myHeight][aColumn].GetBlock() is EmptyBlock == false)
+                return true;
             return false;
         }
 

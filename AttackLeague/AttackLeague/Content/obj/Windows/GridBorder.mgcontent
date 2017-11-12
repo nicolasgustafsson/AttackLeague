@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/GridBorder.png</SourceFile>
-  <SourceTime>2017-09-03T17:08:03.1868361+02:00</SourceTime>
-  <DestFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/GridBorder.xnb</DestFile>
-  <DestTime>2017-09-18T19:41:26.9027422+02:00</DestTime>
+  <SourceFile>C:/Users/Ylva/Documents/Visual Studio 2015/Projects/AttackLeague/AttackLeague/AttackLeague/Content/GridBorder.png</SourceFile>
+  <SourceTime>2017-09-18T19:36:08.9186252+02:00</SourceTime>
+  <DestFile>C:/Users/Ylva/Documents/Visual Studio 2015/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/GridBorder.xnb</DestFile>
+  <DestTime>2017-11-12T17:33:06.4676627+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

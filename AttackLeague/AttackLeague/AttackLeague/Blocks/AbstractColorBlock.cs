@@ -145,12 +145,14 @@ namespace AttackLeague.AttackLeague
                         break;
 
                     case EIconPassiveAnimation.Jump:
-                        // ResetReverse();
-                        //YLF CODE
+                        const float FramesBetweenJumps = 10.0f;
+                        float wrappedFrames = FrameCounter.GetCurrentFrame() / FramesBetweenJumps;
+                        float jumpProgress = (float)Math.Abs(Math.Sin(wrappedFrames));
+                        const float JumpHeightPercent = 0.05f;
 
-
-                        myIcon.SetScale(new Vector2(1.1f, 0.8f));
-                        myIcon.SetPosition(myIcon.GetPosition() + new Vector2(0.0f, GetTileSize() * (float)Math.Abs(Math.Sin((FrameCounter.GetCurrentFrame() / 60.0f)))));
+                        //float extraXScale = (1f - jumpProgress) * 0.1f;
+                        //myIcon.SetScale(new Vector2(1f + extraXScale, 1f));
+                        myIcon.SetPosition(myIcon.GetPosition() + new Vector2(0.0f, -JumpHeightPercent * GetTileSize() * jumpProgress));// + new Vector2(-extraXScale / 2f, 0.0f));
                         break;
 
                     case EIconPassiveAnimation.None:

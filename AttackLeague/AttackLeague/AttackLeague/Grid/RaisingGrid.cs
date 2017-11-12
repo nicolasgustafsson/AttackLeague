@@ -143,9 +143,9 @@ namespace AttackLeague.AttackLeague.Grid
 
         public bool ColumnIsCloseToExceedingRoof(int aColumn)
         {
-            if (myGrid.Count() <= myHeight - 3)
+            if (myGrid.Count() <= myHeight - 2)
                 return false;
-            if (myGrid[myHeight - 3][aColumn].GetBlock() is EmptyBlock == false)
+            if (myGrid[myHeight - 2][aColumn].GetBlock() is EmptyBlock == false)
                 return true;
             return false;
         }

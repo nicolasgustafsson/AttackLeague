@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/raditascartoon.spritefont</SourceFile>
-  <SourceTime>2017-09-18T19:44:00.3200138+02:00</SourceTime>
-  <DestFile>E:/Users/MyMan/Desktop/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/raditascartoon.xnb</DestFile>
-  <DestTime>2017-09-18T19:44:04.1917305+02:00</DestTime>
+  <SourceFile>C:/Users/Ylva/Documents/Visual Studio 2015/Projects/AttackLeague/AttackLeague/AttackLeague/Content/raditascartoon.spritefont</SourceFile>
+  <SourceTime>2017-09-18T20:31:53.0527197+02:00</SourceTime>
+  <DestFile>C:/Users/Ylva/Documents/Visual Studio 2015/Projects/AttackLeague/AttackLeague/AttackLeague/Content/bin/Windows/raditascartoon.xnb</DestFile>
+  <DestTime>2017-11-12T17:33:06.6648512+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

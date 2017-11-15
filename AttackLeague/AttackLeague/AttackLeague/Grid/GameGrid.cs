@@ -39,7 +39,7 @@ namespace AttackLeague.AttackLeague.Grid
 
             myFont = ContentManagerInstance.Content.Load<SpriteFont>("raditascartoon");
 
-            ActionMapper.BindAction("IncreaseGameSpeed", Keys.T, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("IncreaseGameSpeed", Keys.T, InputStatus.KeyPressed);
         }
 
         protected override void OnGridReset()

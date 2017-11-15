@@ -28,8 +28,8 @@ namespace AttackLeague
             };
 
             Content.RootDirectory = "Content";
-            ActionMapper.BindAction("Pause", Keys.Enter, KeyStatus.KeyPressed);
-            ActionMapper.BindAction("StepOnce", Keys.OemPeriod, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("Pause", Keys.Enter, InputStatus.KeyPressed);
+            ActionMapper.BindAction("StepOnce", Keys.OemPeriod, InputStatus.KeyPressed);
 
             ContentManagerInstance.Content = Content;
         }
@@ -54,10 +54,12 @@ namespace AttackLeague
         protected override void Update(GameTime gameTime)
         {
             KeyboardWrapper.UpdateState();
+            GamePadWrapper.UpdateAllGamePads();
             FrameCounter.IncrementFrameCount();
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
+
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
                 myGrid.GenerateGrid();

@@ -65,6 +65,7 @@
     <Compile Include="Utility\Betweenxt\Betweenxt.cs" />
     <Compile Include="Utility\ContentManagerInstance.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
+    <Compile Include="Utility\GamePadWrapper.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="Utility\Sprite.cs" />

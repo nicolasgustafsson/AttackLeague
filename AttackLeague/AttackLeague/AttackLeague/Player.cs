@@ -23,26 +23,49 @@ namespace AttackLeague.AttackLeague
             BindActions();
 
             myGrid = aGrid;
-            mySprite = new Sprite("PlayerMarker");
+            mySprite = new Sprite("curse");
         }
 
         protected virtual void BindActions()
         {
-            ActionMapper.BindAction("MoveLeft", Keys.A, KeyStatus.KeyPressed);
-            ActionMapper.BindAction("MoveLeft", Keys.Left, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveLeft", Keys.A, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveLeft", Keys.Left, InputStatus.KeyPressed);
 
-            ActionMapper.BindAction("MoveRight", Keys.D, KeyStatus.KeyPressed);
-            ActionMapper.BindAction("MoveRight", Keys.Right, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveRight", Keys.D, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveRight", Keys.Right, InputStatus.KeyPressed);
 
-            ActionMapper.BindAction("MoveUp", Keys.W, KeyStatus.KeyPressed);
-            ActionMapper.BindAction("MoveUp", Keys.Up, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveUp", Keys.W, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveUp", Keys.Up, InputStatus.KeyPressed);
 
-            ActionMapper.BindAction("MoveDown", Keys.S, KeyStatus.KeyPressed);
-            ActionMapper.BindAction("MoveDown", Keys.Down, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("MoveDown", Keys.S, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveDown", Keys.Down, InputStatus.KeyPressed);
 
-            ActionMapper.BindAction("SwapBlocks", Keys.E, KeyStatus.KeyPressed);
+            ActionMapper.BindAction("SwapBlocks", Keys.E, InputStatus.KeyPressed);
 
-            ActionMapper.BindAction("RaiseBlocks", Keys.Space, KeyStatus.KeyDown);
+            ActionMapper.BindAction("RaiseBlocks", Keys.Space, InputStatus.KeyDown);
+
+            //--
+
+            ActionMapper.BindAction("MoveLeft", Buttons.DPadLeft, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveLeft", Buttons.LeftThumbstickLeft, InputStatus.KeyPressed, 0);
+
+            ActionMapper.BindAction("MoveRight", Buttons.DPadRight, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveRight", Buttons.LeftThumbstickRight, InputStatus.KeyPressed, 0);
+
+            ActionMapper.BindAction("MoveUp", Buttons.DPadUp, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveUp", Buttons.LeftThumbstickUp, InputStatus.KeyPressed, 0);
+
+            ActionMapper.BindAction("MoveDown", Buttons.DPadDown, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveDown", Buttons.LeftThumbstickDown, InputStatus.KeyPressed, 0);
+
+            ActionMapper.BindAction("SwapBlocks", Buttons.A, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("SwapBlocks", Buttons.B, InputStatus.KeyPressed, 0);
+
+            ActionMapper.BindAction("RaiseBlocks", Buttons.RightShoulder, InputStatus.KeyDown, 0);
+            ActionMapper.BindAction("RaiseBlocks", Buttons.RightTrigger, InputStatus.KeyDown, 0);
+
+            ActionMapper.BindAction("RaiseBlocks", Buttons.LeftShoulder, InputStatus.KeyDown, 0);
+            ActionMapper.BindAction("RaiseBlocks", Buttons.LeftTrigger, InputStatus.KeyDown, 0);
         }
 
         public void Update()
@@ -94,7 +117,7 @@ namespace AttackLeague.AttackLeague
         {
             float invertedYPosition = myGrid.GetHeight() - myPosition.Y;
             float yPosition = invertedYPosition - 1 + myGrid.GetRaisingOffset();
-            mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGrid.GetOffset());
+            mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGrid.GetOffset() + new Vector2(-1, -1));
             mySprite.Draw(aSpriteBatch);
         }
     }

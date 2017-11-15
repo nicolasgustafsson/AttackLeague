@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace AttackLeague.Utility
 {
-    enum KeyStatus
+    enum InputStatus
     {
         KeyDown,
         KeyPressed,
@@ -23,10 +23,10 @@ namespace AttackLeague.Utility
 
     class KeyboardAction : IAction
     {
-        private KeyStatus myKeyTriggerStatus;
+        private InputStatus myKeyTriggerStatus;
         private Keys myKeyboardKey;
 
-        public KeyboardAction(KeyStatus aKeyTriggerStatus, Keys aKey)
+        public KeyboardAction(InputStatus aKeyTriggerStatus, Keys aKey)
         {
             myKeyTriggerStatus = aKeyTriggerStatus;
             myKeyboardKey = aKey;
@@ -36,22 +36,67 @@ namespace AttackLeague.Utility
         {
             switch (myKeyTriggerStatus)
             {
-                case KeyStatus.KeyDown:
+                case InputStatus.KeyDown:
                     return KeyboardWrapper.KeyDown(myKeyboardKey);
 
-                case KeyStatus.KeyPressed:
+                case InputStatus.KeyPressed:
                     return KeyboardWrapper.KeyPressed(myKeyboardKey);
 
-                case KeyStatus.KeyUp:
+                case InputStatus.KeyUp:
                     return KeyboardWrapper.KeyUp(myKeyboardKey);
 
-                case KeyStatus.KeyReleased:
+                case InputStatus.KeyReleased:
                     return KeyboardWrapper.KeyReleased(myKeyboardKey);
 
                 default:
                     return false;
             }
         }
+    }
+
+    class GamePadAction : IAction
+    {
+        private InputStatus myButtonTriggerStatus; 
+        private Buttons myButton;
+        private int myControllerIndex;
+
+        public GamePadAction(InputStatus aButtonTriggerStatus, Buttons aButton, int aControllerIndex)
+        {
+            myControllerIndex = aControllerIndex;
+            myButtonTriggerStatus = aButtonTriggerStatus;
+            myButton = aButton;
+        }
+
+        public bool Connected()
+        {
+            return GamePad.GetCapabilities(myControllerIndex).IsConnected;
+        }
+
+        public bool IsActive()
+        {
+            GamePadCapabilities capabilities = GamePad.GetCapabilities(myControllerIndex);
+            if (capabilities.IsConnected == false)
+                return false;
+
+            switch (myButtonTriggerStatus)
+            {
+                case InputStatus.KeyDown:
+                    return GamePadWrapper.ButtonDown(myButton, myControllerIndex);
+
+                case InputStatus.KeyPressed:
+                    return GamePadWrapper.ButtonPressed(myButton, myControllerIndex);
+
+                case InputStatus.KeyUp:
+                    return GamePadWrapper.ButtonUp(myButton, myControllerIndex);
+
+                case InputStatus.KeyReleased:
+                    return GamePadWrapper.ButtonReleased(myButton, myControllerIndex);
+
+                default:
+                    return false;
+            }
+        }
+
     }
 
     #region RecordingActions
@@ -75,7 +120,16 @@ namespace AttackLeague.Utility
     /// </summary>
     static class ActionMapper
     {
-        public static void BindAction(string aActionName, Keys aKey, KeyStatus aKeyStatus)
+        public static void BindAction(string aActionName, Buttons aButton, InputStatus aButtonTriggerStatus, int aControllerIndex)
+        {
+            if (!myMappedActions.ContainsKey(aActionName))
+            {
+                myMappedActions[aActionName] = new List<IAction>();
+            }
+            myMappedActions[aActionName].Add(new GamePadAction(aButtonTriggerStatus, aButton, aControllerIndex));
+        }
+
+        public static void BindAction(string aActionName, Keys aKey, InputStatus aKeyStatus)
         {
             if (!myMappedActions.ContainsKey(aActionName))
             {

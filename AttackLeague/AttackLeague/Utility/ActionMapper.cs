@@ -13,7 +13,8 @@ namespace AttackLeague.Utility
         KeyDown,
         KeyPressed,
         KeyUp,
-        KeyReleased
+        KeyReleased,
+        KeyCooldown // TODO RENAME
     }
 
     interface IAction
@@ -47,6 +48,9 @@ namespace AttackLeague.Utility
 
                 case InputStatus.KeyReleased:
                     return KeyboardWrapper.KeyReleased(myKeyboardKey);
+
+                case InputStatus.KeyCooldown:
+                    return KeyboardWrapper.KeyCooldown(myKeyboardKey);
 
                 default:
                     return false;
@@ -91,6 +95,9 @@ namespace AttackLeague.Utility
 
                 case InputStatus.KeyReleased:
                     return GamePadWrapper.ButtonReleased(myButton, myControllerIndex);
+
+                case InputStatus.KeyCooldown:
+                    return GamePadWrapper.ButtonCooldown(myButton, myControllerIndex);
 
                 default:
                     return false;

@@ -11,6 +11,7 @@ namespace AttackLeague.Utility
     {
         public static void UpdateState()
         {
+            myFramesSinceLastPressed++;
             myPreviousState = myCurrentState;
             myCurrentState = Keyboard.GetState();
         }
@@ -34,6 +35,24 @@ namespace AttackLeague.Utility
         {
             return myCurrentState.IsKeyUp(aKey);
         }
+
+        public static bool KeyCooldown(Keys aKey)
+        {
+            if (KeyPressed(aKey))
+            {
+                myLastCooldownKeyPressed = aKey;
+                myFramesSinceLastPressed = 0;
+                return true;
+            }
+            else if (myLastCooldownKeyPressed == aKey && myFramesSinceLastPressed > myMagicFramesNumberStuff)
+                return KeyDown(aKey);
+            else
+                return false;
+        }
+
+        private static int myMagicFramesNumberStuff = 20;
+        private static int myFramesSinceLastPressed;
+        private static Keys myLastCooldownKeyPressed;
 
         private static KeyboardState myCurrentState;
         private static KeyboardState myPreviousState;

@@ -28,17 +28,17 @@ namespace AttackLeague.AttackLeague
 
         protected virtual void BindActions()
         {
-            ActionMapper.BindAction("MoveLeft", Keys.A, InputStatus.KeyPressed);
-            ActionMapper.BindAction("MoveLeft", Keys.Left, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveLeft", Keys.A, InputStatus.KeyCooldown);
+            ActionMapper.BindAction("MoveLeft", Keys.Left, InputStatus.KeyCooldown);
 
-            ActionMapper.BindAction("MoveRight", Keys.D, InputStatus.KeyPressed);
-            ActionMapper.BindAction("MoveRight", Keys.Right, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveRight", Keys.D, InputStatus.KeyCooldown);
+            ActionMapper.BindAction("MoveRight", Keys.Right, InputStatus.KeyCooldown);
 
-            ActionMapper.BindAction("MoveUp", Keys.W, InputStatus.KeyPressed);
-            ActionMapper.BindAction("MoveUp", Keys.Up, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveUp", Keys.W, InputStatus.KeyCooldown);
+            ActionMapper.BindAction("MoveUp", Keys.Up, InputStatus.KeyCooldown);
 
-            ActionMapper.BindAction("MoveDown", Keys.S, InputStatus.KeyPressed);
-            ActionMapper.BindAction("MoveDown", Keys.Down, InputStatus.KeyPressed);
+            ActionMapper.BindAction("MoveDown", Keys.S, InputStatus.KeyCooldown);
+            ActionMapper.BindAction("MoveDown", Keys.Down, InputStatus.KeyCooldown);
 
             ActionMapper.BindAction("SwapBlocks", Keys.E, InputStatus.KeyPressed);
 
@@ -46,17 +46,17 @@ namespace AttackLeague.AttackLeague
 
             //--
 
-            ActionMapper.BindAction("MoveLeft", Buttons.DPadLeft, InputStatus.KeyPressed, 0);
-            ActionMapper.BindAction("MoveLeft", Buttons.LeftThumbstickLeft, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveLeft", Buttons.DPadLeft, InputStatus.KeyCooldown, 0);
+            ActionMapper.BindAction("MoveLeft", Buttons.LeftThumbstickLeft, InputStatus.KeyCooldown, 0);
 
-            ActionMapper.BindAction("MoveRight", Buttons.DPadRight, InputStatus.KeyPressed, 0);
-            ActionMapper.BindAction("MoveRight", Buttons.LeftThumbstickRight, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveRight", Buttons.DPadRight, InputStatus.KeyCooldown, 0);
+            ActionMapper.BindAction("MoveRight", Buttons.LeftThumbstickRight, InputStatus.KeyCooldown, 0);
 
-            ActionMapper.BindAction("MoveUp", Buttons.DPadUp, InputStatus.KeyPressed, 0);
-            ActionMapper.BindAction("MoveUp", Buttons.LeftThumbstickUp, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveUp", Buttons.DPadUp, InputStatus.KeyCooldown, 0);
+            ActionMapper.BindAction("MoveUp", Buttons.LeftThumbstickUp, InputStatus.KeyCooldown, 0);
 
-            ActionMapper.BindAction("MoveDown", Buttons.DPadDown, InputStatus.KeyPressed, 0);
-            ActionMapper.BindAction("MoveDown", Buttons.LeftThumbstickDown, InputStatus.KeyPressed, 0);
+            ActionMapper.BindAction("MoveDown", Buttons.DPadDown, InputStatus.KeyCooldown, 0);
+            ActionMapper.BindAction("MoveDown", Buttons.LeftThumbstickDown, InputStatus.KeyCooldown, 0);
 
             ActionMapper.BindAction("SwapBlocks", Buttons.A, InputStatus.KeyPressed, 0);
             ActionMapper.BindAction("SwapBlocks", Buttons.B, InputStatus.KeyPressed, 0);

@@ -17,6 +17,7 @@ namespace AttackLeague.Utility
 
         public static void UpdateState(int aControllerIndex)
         {
+            myControllerStates[aControllerIndex].myFramesSinceLastPressed++;
             myControllerStates[aControllerIndex].myPreviousState = myControllerStates[aControllerIndex].myCurrentState;
             myControllerStates[aControllerIndex].myCurrentState = GamePad.GetState(aControllerIndex);
         }
@@ -43,12 +44,31 @@ namespace AttackLeague.Utility
             return myControllerStates[aControllerIndex].myCurrentState.IsButtonUp(aButton);
         }
 
+        public static bool ButtonCooldown(Buttons aButton, int aControllerIndex)
+        {
+            if (ButtonPressed(aButton, aControllerIndex))
+            {
+                myControllerStates[aControllerIndex].myLastCooldownButtonPressed = aButton;
+                myControllerStates[aControllerIndex].myFramesSinceLastPressed = 0;
+                return true;
+            }
+            else if (myControllerStates[aControllerIndex].myLastCooldownButtonPressed == aButton && myControllerStates[aControllerIndex].myFramesSinceLastPressed > myMagicFramesNumberStuff)
+                return ButtonDown(aButton, aControllerIndex);
+            else
+                return false;
+        }
+
+        private static int myMagicFramesNumberStuff = 20;
+
         private static ControllerInfo[] myControllerStates = new ControllerInfo[4] { new ControllerInfo(), new ControllerInfo(), new ControllerInfo(), new ControllerInfo() };
 
         internal class ControllerInfo
         {
             public GamePadState myCurrentState;
             public GamePadState myPreviousState;
+
+            public int myFramesSinceLastPressed;
+            public Buttons myLastCooldownButtonPressed;
         }
 
     }

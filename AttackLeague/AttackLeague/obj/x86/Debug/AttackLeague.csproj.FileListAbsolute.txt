@@ -108,3 +108,4 @@ C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\At
 C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.exe
 C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.pdb
 C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\curse.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\curse.xnb

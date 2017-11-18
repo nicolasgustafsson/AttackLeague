@@ -103,7 +103,6 @@ namespace AttackLeague.Utility
                     return false;
             }
         }
-
     }
 
     #region RecordingActions
@@ -125,9 +124,14 @@ namespace AttackLeague.Utility
     /// <summary>
     /// Maps actions to input
     /// </summary>
-    static class ActionMapper
+    class ActionMapper
     {
-        public static void BindAction(string aActionName, Buttons aButton, InputStatus aButtonTriggerStatus, int aControllerIndex)
+        public ActionMapper()
+        {
+            myMappedActions = new Dictionary<string, List<IAction>>();
+        }
+
+        public void BindAction(string aActionName, Buttons aButton, InputStatus aButtonTriggerStatus, int aControllerIndex)
         {
             if (!myMappedActions.ContainsKey(aActionName))
             {
@@ -136,7 +140,7 @@ namespace AttackLeague.Utility
             myMappedActions[aActionName].Add(new GamePadAction(aButtonTriggerStatus, aButton, aControllerIndex));
         }
 
-        public static void BindAction(string aActionName, Keys aKey, InputStatus aKeyStatus)
+        public void BindAction(string aActionName, Keys aKey, InputStatus aKeyStatus)
         {
             if (!myMappedActions.ContainsKey(aActionName))
             {
@@ -145,12 +149,12 @@ namespace AttackLeague.Utility
             myMappedActions[aActionName].Add(new KeyboardAction(aKeyStatus, aKey));
         }
 
-        public static void UnbindAction(string aActionName)
+        public void UnbindAction(string aActionName)
         {
             myMappedActions.Remove(aActionName);
         }
 
-        public static bool ActionIsActive(string aActionName)
+        public bool ActionIsActive(string aActionName)
         {
             Debug.Assert(myMappedActions.ContainsKey(aActionName), "Action " + aActionName + " not bound!");
 
@@ -165,6 +169,6 @@ namespace AttackLeague.Utility
             return false;
         }
 
-        private static Dictionary<string, List<IAction>> myMappedActions = new Dictionary<string, List<IAction>>();
+        private Dictionary<string, List<IAction>> myMappedActions;
     }
 }

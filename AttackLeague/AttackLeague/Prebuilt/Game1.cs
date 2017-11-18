@@ -1,9 +1,12 @@
 ﻿using AttackLeague.AttackLeague;
 using AttackLeague.AttackLeague.Grid;
 using AttackLeague.Utility;
+using AttackLeague.AttackLeague.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using AttackLeague.AttackLeague.GameInfo;
 
 namespace AttackLeague
 {
@@ -11,27 +14,28 @@ namespace AttackLeague
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private List<Vector2> myGridsPositions;
 
-        private GameGrid myGrid;
-        private Player myPlayer;
-
-        private bool myIsPaused = false;
-
-        //private int myFrameCounter = 0;
+        private List<Player> myPlayers;
 
         public Game1()
         {
+            GameInfo.myPlayerCount = 0;
+
             graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
                 PreferredBackBufferHeight = 720
             };
 
+            GameInfo.myScreenSize.X = graphics.PreferredBackBufferWidth;
+            GameInfo.myScreenSize.Y = graphics.PreferredBackBufferHeight;
+
             Content.RootDirectory = "Content";
-            ActionMapper.BindAction("Pause", Keys.Enter, InputStatus.KeyPressed);
-            ActionMapper.BindAction("StepOnce", Keys.OemPeriod, InputStatus.KeyPressed);
 
             ContentManagerInstance.Content = Content;
+
+            myPlayers = new List<Player>();
         }
 
         protected override void Initialize()
@@ -42,8 +46,11 @@ namespace AttackLeague
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            myGrid = new GameGrid();
-            myPlayer = new Player(myGrid);
+            GameInfo.myPlayerCount++;
+            GameInfo.myPlayerCount++;
+            //myPlayers.Add(new DebugPlayer());
+            myPlayers.Add(new Player(new PlayerInfo(0, EInputType.GamePad1)));
+            myPlayers.Add(new Player(new PlayerInfo(1, EInputType.Keyboard)));
         }
 
         protected override void UnloadContent()
@@ -57,33 +64,14 @@ namespace AttackLeague
             GamePadWrapper.UpdateAllGamePads();
             FrameCounter.IncrementFrameCount();
 
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
+            /*
+             if (new input type found)
+                CreatePlayer(the new input type);
+                DoSomeSplashyUIToTellThePlayersAnotherOneHasJoinedAndStuff
+            */
 
-            if (Keyboard.GetState().IsKeyDown(Keys.R))
-            {
-                myGrid.GenerateGrid();
-            }
-
-            if (ActionMapper.ActionIsActive("Pause"))
-            {
-                myIsPaused = !myIsPaused;
-            }
-
-            myPlayer.Update();
-
-            if (myIsPaused == false)
-            {
-                myGrid.Update();
-            }
-            else
-            {
-                if (ActionMapper.ActionIsActive("StepOnce"))
-                {
-                    myGrid.Update();
-                }
-            }
-
+            foreach (var player in myPlayers)
+                player.Update();
 
             base.Update(gameTime);
         }
@@ -93,12 +81,20 @@ namespace AttackLeague
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            myGrid.Draw(spriteBatch);
             const int MagicTileSize = 48;
-            myPlayer.Draw(spriteBatch, MagicTileSize);
+            foreach (var player in myPlayers)
+                player.Draw(spriteBatch, MagicTileSize);
 
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        // ---
+
+        //private void CreatePlayer(EInputType aDefaultInputType)
+        //{
+        //    PlayerInfo playerInfo = new PlayerInfo(myPlayers.Count, aDefaultInputType); 
+        //    myPlayers.Add(new Player(playerInfo));
+        //}
     }
 }

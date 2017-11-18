@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using AttackLeague.AttackLeague.GameInfo;
+using System.Diagnostics;
 
 namespace AttackLeague.AttackLeague.Grid
 {
@@ -30,16 +32,62 @@ namespace AttackLeague.AttackLeague.Grid
 
         private int myChainCounter = 1;
 
-        public GameGrid()
+        public GameGrid(int aPlayerIndex)
         {
             Utility.FrameCounter.ResetFrames();
             GenerateGrid();
 
             myBorderSprite = new Sprite("GridBorder");
 
+            Debug.Assert(GameInfo.GameInfo.myPlayerCount > 0);
+            //float MagicBorderSize = 75f;
+
+            //float screenMiddle = GameInfo.GameInfo.myScreenSize.X / 2.0f;
+            //float xPosition = MathHelper.Lerp(MagicBorderSize, GameInfo.GameInfo.myScreenSize.X - myBorderSprite.GetSize().X - MagicBorderSize, (float)aPlayerIndex / (float)GameInfo.GameInfo.myPlayerCount);
+
+            //float screenWidth = GameInfo.GameInfo.myScreenSize.X - (MagicBorderSize * 2f);
+            //myOffset.X = ((screenWidth / GameInfo.GameInfo.myPlayerCount) * (aPlayerIndex + 1)) + MagicBorderSize;
+
+            //--
+            //float playerIndexForMathPurposes = aPlayerIndex + 1;
+            //
+            //float magicDistanceBetweenGrids = 130f;
+            //float gridSize = myBorderSprite.GetSize().X;
+            //
+            //float spaceOccupiedByGrids = (gridSize * GameInfo.GameInfo.myPlayerCount) + (magicDistanceBetweenGrids * (GameInfo.GameInfo.myPlayerCount - 1));
+            //
+            //float borderSize = GameInfo.GameInfo.myScreenSize.X - spaceOccupiedByGrids;
+            //float mostLeft = borderSize / 2f;
+            //
+            //float thisPlayerWidth = (gridSize * playerIndexForMathPurposes) + (magicDistanceBetweenGrids * (playerIndexForMathPurposes - 1));
+            //float halfGridSprite = (gridSize / 2f);
+            //
+            //myOffset.X = mostLeft; // + PLAYERiNDEXoFFSET
+
+            //--
+
+            /*
+             1280 / 3 = 427
+             
+             */
+
+            myOffset.X = (GameInfo.GameInfo.myScreenSize.X / (GameInfo.GameInfo.myPlayerCount + 1)) * (aPlayerIndex + 1);
+            myOffset.X -= myBorderSprite.GetSize().X / 2f;
+
+            //
+
+            //float screenMiddle = GameInfo.GameInfo.myScreenSize.X / 2.0f;
+            //float spriteOffset = -myBorderSprite.GetSize().X / 2.0f;
+            //myOffset.X = spriteOffset + screenMiddle;
+
+            //float offsetPercentFromMiddle = MathHelper.Lerp(-0.5f, 0.5f, (float)aPlayerIndex / (float)GameInfo.GameInfo.myPlayerCount + 1.0f);
+
+            //float additionalOffset = screenMiddle * offsetPercentFromMiddle;
+
+            //myOffset.X = additionalOffset;
+
             myFont = ContentManagerInstance.Content.Load<SpriteFont>("raditascartoon");
 
-            ActionMapper.BindAction("IncreaseGameSpeed", Keys.T, InputStatus.KeyPressed);
         }
 
         protected override void OnGridReset()
@@ -141,8 +189,6 @@ namespace AttackLeague.AttackLeague.Grid
         public override void Update() //HEREISUPDATE ----------------------------------------------------------------------------------------------------------
         {
             base.Update();
-            if (ActionMapper.ActionIsActive("IncreaseGameSpeed"))
-                myAdditionalGameSpeed += 0.5f;
 
             const float DeltaTime = 1.0f / 60.0f;
             if (myIsPaused == false && myHasStarted == true)
@@ -354,11 +400,16 @@ namespace AttackLeague.AttackLeague.Grid
             myBorderSprite.SetPosition(new Vector2(myOffset.X - 2, 6 - AbstractBlock.GetTileSize()));
             myBorderSprite.Draw(aSpriteBatch);
 
-            aSpriteBatch.DrawString(myFont, 
-                "Bonus time: " + myChainTimer.ToString() + 
-                "\nGame Time: " + myGameTime.ToString() + 
-                "\nGame Speed: " + myGameSpeed.ToString()
-                , new Vector2(500, 100), Color.MidnightBlue);
+            //aSpriteBatch.DrawString(myFont, 
+            //    "Bonus time: " + myChainTimer.ToString() + 
+            //    "\nGame Time: " + myGameTime.ToString() + 
+            //    "\nGame Speed: " + myGameSpeed.ToString()
+            //    , new Vector2(500, 100), Color.MidnightBlue);
+        }
+
+        public void AddGameSpeed(float aAmount)
+        {
+            myAdditionalGameSpeed += aAmount; // 0.5f good value
         }
 
         public Vector2 GetOffset()

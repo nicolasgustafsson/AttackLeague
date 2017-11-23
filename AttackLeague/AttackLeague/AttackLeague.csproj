@@ -46,7 +46,10 @@
   <ItemGroup>
     <Compile Include="AttackLeague\Blocks\AbstractBlock.cs" />
     <Compile Include="AttackLeague\Blocks\AbstractColorBlock.cs" />
+    <Compile Include="AttackLeague\Blocks\Angry\AngryBlocksContainer.cs" />
+    <Compile Include="AttackLeague\Blocks\Angry\AngryPartBlock.cs" />
     <Compile Include="AttackLeague\Blocks\DisappearingBlock.cs" />
+    <Compile Include="AttackLeague\Blocks\Factory\BlockFactory.cs" />
     <Compile Include="AttackLeague\Blocks\FallingBlock.cs" />
     <Compile Include="AttackLeague\Blocks\FrozenBlock.cs" />
     <Compile Include="AttackLeague\Blocks\EmptyBlock.cs" />

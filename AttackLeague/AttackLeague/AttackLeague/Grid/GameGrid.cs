@@ -40,51 +40,9 @@ namespace AttackLeague.AttackLeague.Grid
             myBorderSprite = new Sprite("GridBorder");
 
             Debug.Assert(GameInfo.GameInfo.myPlayerCount > 0);
-            //float MagicBorderSize = 75f;
-
-            //float screenMiddle = GameInfo.GameInfo.myScreenSize.X / 2.0f;
-            //float xPosition = MathHelper.Lerp(MagicBorderSize, GameInfo.GameInfo.myScreenSize.X - myBorderSprite.GetSize().X - MagicBorderSize, (float)aPlayerIndex / (float)GameInfo.GameInfo.myPlayerCount);
-
-            //float screenWidth = GameInfo.GameInfo.myScreenSize.X - (MagicBorderSize * 2f);
-            //myOffset.X = ((screenWidth / GameInfo.GameInfo.myPlayerCount) * (aPlayerIndex + 1)) + MagicBorderSize;
-
-            //--
-            //float playerIndexForMathPurposes = aPlayerIndex + 1;
-            //
-            //float magicDistanceBetweenGrids = 130f;
-            //float gridSize = myBorderSprite.GetSize().X;
-            //
-            //float spaceOccupiedByGrids = (gridSize * GameInfo.GameInfo.myPlayerCount) + (magicDistanceBetweenGrids * (GameInfo.GameInfo.myPlayerCount - 1));
-            //
-            //float borderSize = GameInfo.GameInfo.myScreenSize.X - spaceOccupiedByGrids;
-            //float mostLeft = borderSize / 2f;
-            //
-            //float thisPlayerWidth = (gridSize * playerIndexForMathPurposes) + (magicDistanceBetweenGrids * (playerIndexForMathPurposes - 1));
-            //float halfGridSprite = (gridSize / 2f);
-            //
-            //myOffset.X = mostLeft; // + PLAYERiNDEXoFFSET
-
-            //--
-
-            /*
-             1280 / 3 = 427
-             
-             */
 
             myOffset.X = (GameInfo.GameInfo.myScreenSize.X / (GameInfo.GameInfo.myPlayerCount + 1)) * (aPlayerIndex + 1);
             myOffset.X -= myBorderSprite.GetSize().X / 2f;
-
-            //
-
-            //float screenMiddle = GameInfo.GameInfo.myScreenSize.X / 2.0f;
-            //float spriteOffset = -myBorderSprite.GetSize().X / 2.0f;
-            //myOffset.X = spriteOffset + screenMiddle;
-
-            //float offsetPercentFromMiddle = MathHelper.Lerp(-0.5f, 0.5f, (float)aPlayerIndex / (float)GameInfo.GameInfo.myPlayerCount + 1.0f);
-
-            //float additionalOffset = screenMiddle * offsetPercentFromMiddle;
-
-            //myOffset.X = additionalOffset;
 
             myFont = ContentManagerInstance.Content.Load<SpriteFont>("raditascartoon");
 
@@ -125,7 +83,7 @@ namespace AttackLeague.AttackLeague.Grid
         {
             if (aBlock.IsAlive() == false)
             {
-                EliminateBlock(aIndex);
+                EliminateBlock(aIndex);//[TODO] run this on blockfactory
 
                 //Get tile position
                 Point blockPosition = aBlock.GetPosition();
@@ -154,12 +112,12 @@ namespace AttackLeague.AttackLeague.Grid
                 if (aBlock.GetPosition().Y == 0 ||
                     myGrid[aBlock.GetPosition().Y - 1][aBlock.GetPosition().X].IsEmpty() == false)
                 {
-                    CreateBlock(aBlock.GetPosition(), new ColorBlock(aBlock));
+                    InitializeBlock(aBlock.GetPosition(), new ColorBlock(aBlock));
                 }
                 else
                 {
                     aBlock.PassTile();
-                    CreateBlock(aBlock.GetPosition() + new Point(0, 1), new EmptyBlock());
+                    InitializeBlock(aBlock.GetPosition() + new Point(0, 1), new EmptyBlock());
 
                     SetBlock(aBlock.GetPosition(), aBlock);
                 }
@@ -181,7 +139,7 @@ namespace AttackLeague.AttackLeague.Grid
                 if (RectangleIntersectsForFallingPurposes(blockRectangle) == false)
                 {
                     Point position = aBlock.GetPosition();
-                    CreateBlock(position, new FallingBlock(aBlock));
+                    InitializeBlock(position, new FallingBlock(aBlock));
                 }
             }
         }
@@ -275,7 +233,6 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
                 {
-
                     if (myGrid[y][x].CanFallThrough() == false )
                     {
                         return true;

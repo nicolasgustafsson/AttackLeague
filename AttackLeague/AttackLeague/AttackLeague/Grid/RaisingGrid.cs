@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.Grid
 {
-    public class RaisingGrid : BaseGrid
+    public class RaisingGrid : GridContainer
     {
         //Super ugly pls fix
         private bool myHasRaisedThisFrame = false;

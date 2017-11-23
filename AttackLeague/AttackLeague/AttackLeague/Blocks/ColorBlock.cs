@@ -12,8 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AttackLeague.AttackLeague
 {
-
-
     class ColorBlock : AbstractColorBlock
     {
         private bool myCanChain = false;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace AttackLeague.AttackLeague.Grid
 {
-    public class BaseGrid
+    public class GridContainer
     {
         protected List<List<Tile>> myGrid;
         protected List<AbstractBlock> myBlocks;
@@ -69,12 +69,13 @@ namespace AttackLeague.AttackLeague.Grid
             PrintGrid();
         }
 
+
         public virtual void Update()
         {
 
         }
 
-        protected void PrintGrid()
+        public void PrintGrid()
         {
             for (int iRow = myHeight - 1; iRow >= 0; iRow--)
             {
@@ -116,16 +117,17 @@ namespace AttackLeague.AttackLeague.Grid
         }
 
         //fixes everything
-        protected void CreateBlock(Point aPosition, AbstractBlock aBlock)
+        protected void InitializeBlock(Point aPosition, AbstractBlock aBlock)
         {
-            aBlock.SetPosition(aPosition);
             aBlock.LoadContent();
+            SetBlock(aPosition, aBlock);
 
-            AbstractBlock previousBlock = myGrid[aPosition.Y][aPosition.X].GetBlock();
+            //aBlock.SetPosition(aPosition);
+            //aBlock.LoadContent();
 
-            myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
-
-            myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
+            //AbstractBlock previousBlock = myGrid[aPosition.Y][aPosition.X].GetBlock();
+            //myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
+            //myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
         }
 
         protected AbstractBlock GetBlockAtPosition(Point aPosition)
@@ -163,10 +165,10 @@ namespace AttackLeague.AttackLeague.Grid
         {
             Point position = myBlocks[aBlockIndex].GetPosition();
 
-            CreateBlock(position, new EmptyBlock());
+            InitializeBlock(position, new EmptyBlock());
         }
 
-        protected void SetBlock(Point aPosition, AbstractBlock aBlock)
+        public void SetBlock(Point aPosition, AbstractBlock aBlock)
         {
             aBlock.SetPosition(aPosition);
 
@@ -200,7 +202,7 @@ namespace AttackLeague.AttackLeague.Grid
                 totalAnimationtime,
                 currentBlockDelta);
 
-            CreateBlock(position, aBlock);
+            InitializeBlock(position, aBlock);
         }
 
         protected void AddEmptyRow()

@@ -9,6 +9,7 @@ using AttackLeague.Utility.Betweenxt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
@@ -19,16 +20,19 @@ namespace AttackLeague.AttackLeague
         private float myDanceOffset = 0.0f;
         private ESwitchDirection myDancingDirection = ESwitchDirection.Nope;
 
-        public ColorBlock()
+        public ColorBlock(GridBundle aGridBundle)
+            :base(aGridBundle)
         {
         }
 
-        public ColorBlock(EBlockColor aColor)
+        public ColorBlock(GridBundle aGridBundle, EBlockColor aColor)
+            :base(aGridBundle)
         {
             myColor = aColor;
         }
 
-        public ColorBlock(FallingBlock aBlock)
+        public ColorBlock(GridBundle aGridBundle, FallingBlock aBlock)
+            :base(aGridBundle)
         {
             myColor = aBlock.GetColor();
             CanChain = aBlock.CanChain;
@@ -36,6 +40,7 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
+            base.Update(aGameSpeed);
             if (myDancingDirection != ESwitchDirection.Nope)
             {
                 myGroovyDanceMoves.Update(GetMagicalSpeed(aGameSpeed));
@@ -46,6 +51,36 @@ namespace AttackLeague.AttackLeague
                     myDancingDirection = ESwitchDirection.Nope;
                 }
             }
+
+            if (IsSwitching())
+                return;
+
+            Rectangle rectangleCopy = GetRectangle();
+
+            if (rectangleCopy.Y != 0)
+            {
+                rectangleCopy.Y--;
+                if (RectangleIntersectsForFallingPurposes(rectangleCopy) == false)
+                {
+                    Point position = GetPosition();
+                    myGridBundle.Container.InitializeBlock(position, new FallingBlock(myGridBundle, this));
+                }
+            }
+        }
+
+        private bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
+        {
+            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
+            {
+                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
+                {
+                    if (myGridBundle.Container.myGrid[y][x].CanFallThrough() == false)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public override void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)

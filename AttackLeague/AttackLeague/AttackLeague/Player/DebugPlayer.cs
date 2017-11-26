@@ -10,24 +10,23 @@ namespace AttackLeague.AttackLeague.Player
     {
         public DebugPlayer()
             :base(new DebugPlayerInfo())
-        {
-        }
+        {}
 
         public override void Update()
         {
             base.Update();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("RandomizeGrid"))
-                myGridBehavior.DebugRerandomizeGrid();
+                myGridBundle.Generator.GenerateGrid();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("Pause"))
                 myIsPaused = !myIsPaused;
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("StepOnce"))
-                myGridBehavior.Update();
+                myGridBundle.Behavior.Update();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("IncreaseGameSpeed"))
-                myGridBehavior.AddGameSpeed(0.5f);
+                myGridBundle.Behavior.AddGameSpeed(0.5f);
         }
 
     }

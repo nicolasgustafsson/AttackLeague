@@ -1,4 +1,5 @@
-﻿using AttackLeague.Utility;
+﻿using AttackLeague.AttackLeague.Grid;
+using AttackLeague.Utility;
 using AttackLeague.Utility.Betweenxt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -46,12 +47,18 @@ namespace AttackLeague.AttackLeague
         protected EIconActiveAnimation myActiveAnimation = EIconActiveAnimation.None;
         protected static Betweenxt myJumpyBetwinxt = new Betweenxt(Betweenxt.Lerp, 0.0f, 0.4f);
 
-        public AbstractColorBlock()
+        public AbstractColorBlock(GridBundle aGridBundle)
+            :base(aGridBundle)
         {
             if(myColor == EBlockColor.None)
             {
                 RandomizeColor();
             }
+        }
+
+        public override void Update(float aGameSpeed)
+        {
+            UpdateIconAnimation(myGridBundle.Container.ColumnIsExceedingRoof(GetPosition().X), myGridBundle.Container.ColumnIsCloseToExceedingRoof(GetPosition().X));
         }
 
         public virtual void RandomizeColor()

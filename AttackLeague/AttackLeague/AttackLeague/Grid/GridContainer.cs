@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using AttackLeague.AttackLeague.Blocks.Generator;
+using System.Diagnostics;
 
 namespace AttackLeague.AttackLeague.Grid
 {
@@ -15,18 +16,23 @@ namespace AttackLeague.AttackLeague.Grid
         public List<AbstractBlock> myBlocks;
         private const int myHeight = 12;
         private const int myWidth = 6;
-        private BlockGenerator myBlockFactory;
+        private BlockGenerator myBlockGenerator;
 
         public virtual void OnGridReset() { }
 
         public GridContainer()
         {
-            myBlockFactory = new BlockGenerator(this);
         }
 
-        public BlockGenerator GetBlockFactory()
+        public void SetGenerator(BlockGenerator aBlockGenerator)
         {
-            return myBlockFactory;
+            myBlockGenerator = aBlockGenerator;
+        }
+
+        public BlockGenerator GetBlockGenerator()
+        {
+            Debug.Assert(myBlockGenerator != null);
+            return myBlockGenerator;
         }
 
         public int GetHeight()
@@ -39,10 +45,10 @@ namespace AttackLeague.AttackLeague.Grid
             return myWidth;
         }
 
-        public void DebugRerandomizeGrid()
-        {
-            myBlockFactory.GenerateGrid();
-        }
+        //public void DebugRerandomizeGrid()
+        //{
+        //    myBlockGenerator.GenerateGrid();
+        //}
 
         public void GenerateTiles()
         {
@@ -141,13 +147,6 @@ namespace AttackLeague.AttackLeague.Grid
             return false;
         }
 
-        public void EliminateBlock(int aBlockIndex)
-        {
-            Point position = myBlocks[aBlockIndex].GetPosition();
-
-            InitializeBlock(position, new EmptyBlock());
-        }
-
         public void SetBlock(Point aPosition, AbstractBlock aBlock)
         {
             aBlock.SetPosition(aPosition);
@@ -174,5 +173,33 @@ namespace AttackLeague.AttackLeague.Grid
             return myGrid.Count() - 1 > aRowNumber;
         }
 
+        public bool IsExceedingRoof()
+        {
+            for (int column = 0; column < myWidth; column++)
+            {
+                if (ColumnIsExceedingRoof(column) == true)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool ColumnIsExceedingRoof(int aColumn)
+        {
+            if (myGrid.Count() <= myHeight)
+                return false;
+            if (myGrid[myHeight][aColumn].GetBlock() is EmptyBlock == false)
+                return true;
+            return false;
+        }
+
+        public bool ColumnIsCloseToExceedingRoof(int aColumn)
+        {
+            if (myGrid.Count() <= myHeight - 2)
+                return false;
+            if (myGrid[myHeight - 2][aColumn].GetBlock() is EmptyBlock == false)
+                return true;
+            return false;
+        }
     }
 }

@@ -8,17 +8,20 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
 
     public class FrozenBlock : AbstractColorBlock
     {
-        public FrozenBlock()
+        public FrozenBlock(GridBundle aGridBundle)
+            :base(aGridBundle)
         {
         }
 
-        public FrozenBlock(EBlockColor aColor)
+        public FrozenBlock(GridBundle aGridBundle, EBlockColor aColor)
+            :base(aGridBundle)
         {
             myColor = aColor;
         }

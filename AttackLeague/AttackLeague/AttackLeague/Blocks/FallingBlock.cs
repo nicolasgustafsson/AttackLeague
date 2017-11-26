@@ -9,6 +9,7 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
@@ -20,12 +21,14 @@ namespace AttackLeague.AttackLeague
         private bool myCanChain = false;
         protected float myYOffset = 0.0f;
 
-        public FallingBlock(EBlockColor aColor)
+        public FallingBlock(GridBundle aGridBundle, EBlockColor aColor)
+            :base(aGridBundle)
         {
             myColor = aColor;
         }
 
-        public FallingBlock(ColorBlock aBlock)
+        public FallingBlock(GridBundle aGridBundle, ColorBlock aBlock)
+            :base(aGridBundle)
         {
             myColor = aBlock.GetColor();
             myCanChain = aBlock.CanChain;
@@ -33,7 +36,30 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
+            base.Update(aGameSpeed);
             myYOffset -= GetMagicalSpeed(aGameSpeed);
+
+            Point position = GetPosition();
+
+            //Speed, might pass through many tiles?
+            if (WillPassTile(aGameSpeed))
+            {
+                if (position.Y == 0 ||
+                    myGridBundle.Container.myGrid[position.Y - 1][position.X].IsEmpty() == false)
+                {
+                    myGridBundle.Container.InitializeBlock(position, new ColorBlock(myGridBundle, this)); // MOVE TO GENERATOR I GUESS, or blocks who tell GENERATOR
+                }
+                else
+                {
+                    PassTile();
+                    //passtile changes position, update
+                    position = GetPosition();
+                    myGridBundle.Container.InitializeBlock(position + new Point(0, 1), new EmptyBlock(myGridBundle));
+
+                    myGridBundle.Container.SetBlock(position, this);
+                }
+            }
+
         }
 
         public bool WillPassTile(float aGameSpeed)

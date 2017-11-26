@@ -8,6 +8,7 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
@@ -16,7 +17,8 @@ namespace AttackLeague.AttackLeague
     {
         private float mySwitchTimer = 0.0f;
 
-        public EmptyBlock()
+        public EmptyBlock(GridBundle aGridBundle)
+            :base(aGridBundle)
         {
             myGridArea = new Rectangle(0, 0, 1, 1);
         }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
@@ -22,7 +23,14 @@ namespace AttackLeague.AttackLeague
     {
         public Rectangle myGridArea = new Rectangle(0, 0, 1, 1);
 
+        protected GridBundle myGridBundle;
+
         //protected float myRaisingOffset = 0.0f;
+
+        public AbstractBlock(GridBundle aGridBundle)
+        {
+            myGridBundle = aGridBundle;
+        }
 
         public virtual void LoadContent()
         {

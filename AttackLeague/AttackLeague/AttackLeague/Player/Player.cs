@@ -17,7 +17,7 @@ namespace AttackLeague.AttackLeague.Player
     {
         protected Sprite mySprite;
         protected Point myPosition = new Point(2,5);
-        protected GridBehavior myGridBehavior;
+        protected GridBundle myGridBundle;
         protected bool myIsPaused = false;
         public PlayerInfo myPlayerInfo;
 
@@ -25,7 +25,8 @@ namespace AttackLeague.AttackLeague.Player
         {
             myPlayerInfo = aInfo;
 
-            myGridBehavior = new GridBehavior(myPlayerInfo.myPlayerIndex); //gridcontainer?
+            myGridBundle = new GridBundle(myPlayerInfo.myPlayerIndex);
+            //myGridBehavior = new GridBehavior(myPlayerInfo.myPlayerIndex); //gridcontainer?
             mySprite = new Sprite("curse");
         }
 
@@ -34,20 +35,20 @@ namespace AttackLeague.AttackLeague.Player
             HandleMovement();
 
             if (myIsPaused == false)
-                myGridBehavior.Update();
+                myGridBundle.Behavior.Update();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("SwapBlocks"))
-                myGridBehavior.SwapBlocksRight(myPosition);
+                myGridBundle.Behavior.SwapBlocksRight(myPosition);
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("RaiseBlocks"))
-                myGridBehavior.SetIsRaisingBlocks();
+                myGridBundle.Behavior.SetIsRaisingBlocks();
         }
 
         private void HandleMovement()
         {
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveRight"))
             { 
-                if (myPosition.X < myGridBehavior.GetWidth() - 2)
+                if (myPosition.X < myGridBundle.Container.GetWidth() - 2)
                     myPosition.X += 1;
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveLeft"))
@@ -57,7 +58,7 @@ namespace AttackLeague.AttackLeague.Player
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveUp"))
             {
-                if (myPosition.Y < myGridBehavior.GetHeight())
+                if (myPosition.Y < myGridBundle.Container.GetHeight())
                     myPosition.Y += 1;
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveDown"))
@@ -69,14 +70,14 @@ namespace AttackLeague.AttackLeague.Player
 
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
         {
-            if (myGridBehavior.HasRaisedGridThisFrame())
+            if (myGridBundle.Behavior.HasRaisedGridThisFrame())
                 myPosition.Y++;
 
-            myGridBehavior.Draw(aSpriteBatch);
+            myGridBundle.Behavior.Draw(aSpriteBatch);
 
-            float invertedYPosition = myGridBehavior.GetHeight() - myPosition.Y;
-            float yPosition = invertedYPosition - 1 + myGridBehavior.GetRaisingOffset();
-            mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGridBehavior.GetOffset() + new Vector2(-1, -1));
+            float invertedYPosition = myGridBundle.Container.GetHeight() - myPosition.Y;
+            float yPosition = invertedYPosition - 1 + myGridBundle.Behavior.GetRaisingOffset();
+            mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGridBundle.Behavior.GetOffset() + new Vector2(-1, -1));
             mySprite.Draw(aSpriteBatch);
         }
     }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.Grid
 {
-    class GridBehavior
+    public class GridBehavior
     {
         private BlockGenerator myBlockGenerator;
         private GridContainer myGridContainer;
@@ -37,10 +37,10 @@ namespace AttackLeague.AttackLeague.Grid
 
         private int myChainCounter = 1;
 
-        public GridBehavior(/*BlockFactory aBlockFactory, GridContainer aGridContainer,*/ int aPlayerIndex)
+        public GridBehavior(GridContainer aGridContainer, int aPlayerIndex)
         {
-            myGridContainer = new GridContainer();
-            myBlockGenerator = myGridContainer.GetBlockFactory();
+            myGridContainer = aGridContainer;
+            myBlockGenerator = myGridContainer.GetBlockGenerator();
 
             myBlockGenerator.GenerateGrid();
             myBorderSprite = new Sprite("GridBorder");
@@ -83,71 +83,21 @@ namespace AttackLeague.AttackLeague.Grid
             }
         }
 
-        // move to disappearing block
-        private void UpdateDisappearingBlock(DisappearingBlock aBlock, int aIndex)
+        public void OnBlockEliminated(Point aPosition)
         {
-            if (aBlock.IsAlive() == false)
+            //Get tile position
+            int column = aPosition.X;
+
+            for (int row = aPosition.Y + 1; row < myGridContainer.myGrid.Count; row++)
             {
-                myGridContainer.EliminateBlock(aIndex);//[TODO] run this on blockfactory
-
-                //Get tile position
-                Point blockPosition = aBlock.GetPosition();
-                int column = blockPosition.X;
-
-                for (int row = blockPosition.Y + 1; row < myGridContainer.myGrid.Count; row++)
+                AbstractBlock becomeFallingBlock = myGridContainer.myGrid[row][column].GetBlock();
+                if (becomeFallingBlock is ColorBlock colorBecomeFallingBlock)
                 {
-                    AbstractBlock becomeFallingBlock = myGridContainer.myGrid[row][column].GetBlock();
-                    if (becomeFallingBlock is ColorBlock colorBecomeFallingBlock)
-                    {
-                        colorBecomeFallingBlock.CanChain = true;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-
-        // move to falling block
-        private void UpdateFallingBlock(FallingBlock aBlock)
-        {
-            //Speed, might pass through many tiles?
-            if (aBlock.WillPassTile(myGameSpeed))
-            {
-                if (aBlock.GetPosition().Y == 0 ||
-                    myGridContainer.myGrid[aBlock.GetPosition().Y - 1][aBlock.GetPosition().X].IsEmpty() == false)
-                {
-                    myGridContainer.InitializeBlock(aBlock.GetPosition(), new ColorBlock(aBlock)); // MOVE TO FACTORY I GUESS, or blocks who tell factory
+                    colorBecomeFallingBlock.CanChain = true;
                 }
                 else
                 {
-                    aBlock.PassTile();
-                    myGridContainer.InitializeBlock(aBlock.GetPosition() + new Point(0, 1), new EmptyBlock());
-
-                    myGridContainer.SetBlock(aBlock.GetPosition(), aBlock);
-                }
-            }
-        }
-
-        // move to abstract color block
-        private void UpdateAbstractColorBlock(AbstractColorBlock aBlock)
-        {
-            aBlock.UpdateIconAnimation(ColumnIsExceedingRoof(aBlock.GetPosition().X), ColumnIsCloseToExceedingRoof(aBlock.GetPosition().X));
-        }
-
-        // move to colorblock
-        private void UpdateColorBlock(ColorBlock aBlock)
-        {
-            Rectangle blockRectangle = aBlock.GetRectangle();
-
-            if (blockRectangle.Y != 0)
-            {
-                blockRectangle.Y--;
-                if (RectangleIntersectsForFallingPurposes(blockRectangle) == false)
-                {
-                    Point position = aBlock.GetPosition();
-                    myGridContainer.InitializeBlock(position, new FallingBlock(aBlock));
+                    break;
                 }
             }
         }
@@ -167,7 +117,7 @@ namespace AttackLeague.AttackLeague.Grid
 
             if (IsFrozen() == false && myChainTimer <= 0f)
             {
-                if (IsExceedingRoof() == true)
+                if (myGridContainer.IsExceedingRoof() == true)
                 {
                     myMercyTimer -= DeltaTime * myGameSpeed;
                     if (myMercyTimer < 0)
@@ -190,16 +140,6 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 AbstractBlock block = myGridContainer.myBlocks[i];
                 block.Update(myGameSpeed);
-
-                if (block is AbstractColorBlock abstractColorBlock)
-                    UpdateAbstractColorBlock(abstractColorBlock);
-
-                if (block is DisappearingBlock disappearingBlock)
-                    UpdateDisappearingBlock(disappearingBlock, i);
-                else if (block is FallingBlock fallingBlock)
-                    UpdateFallingBlock(fallingBlock);
-                else if (block is ColorBlock colorBlock && block.IsSwitching() == false)
-                    UpdateColorBlock(colorBlock);
             }
 
             CheckForMatches();
@@ -231,22 +171,6 @@ namespace AttackLeague.AttackLeague.Grid
         private void Lose()
         {
             Console.WriteLine("Thou art Losar");
-        }
-
-        // duplicated in gridcontainer?
-        private bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
-        {
-            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
-            {
-                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
-                {
-                    if (myGridContainer.myGrid[y][x].CanFallThrough() == false)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         private void CheckForMatches()
@@ -328,11 +252,6 @@ namespace AttackLeague.AttackLeague.Grid
                     aMatchingBlocks.Add(directionDirectionBlock);
                 }
             }
-        }
-
-        public void DebugRerandomizeGrid()
-        {
-            myGridContainer.DebugRerandomizeGrid();
         }
 
         public void SwapBlocksRight(Point aPosition)
@@ -442,48 +361,6 @@ namespace AttackLeague.AttackLeague.Grid
         public bool HasRaisedGridThisFrame()
         {
             return myHasRaisedThisFrame;
-        }
-
-        public int GetWidth()
-        {
-            return myGridContainer.GetWidth();
-        }
-
-        public int GetHeight()
-        {
-            return myGridContainer.GetHeight();
-        }
-
-        // could be moved to gridcontainer
-        private bool IsExceedingRoof()
-        {
-            for (int column = 0; column < myGridContainer.GetWidth(); column++)
-            {
-                if (ColumnIsExceedingRoof(column) == true)
-                    return true;
-            }
-
-            return false;
-        }
-
-        // could be moved to grid container
-        public bool ColumnIsExceedingRoof(int aColumn)
-        {
-            if (myGridContainer.myGrid.Count() <= myGridContainer.GetHeight())
-                return false;
-            if (myGridContainer.myGrid[myGridContainer.GetHeight()][aColumn].GetBlock() is EmptyBlock == false)
-                return true;
-            return false;
-        }
-
-        // could be moved to grid container
-        public bool ColumnIsCloseToExceedingRoof(int aColumn)
-        {
-            if (myGridContainer.myGrid.Count() <= myGridContainer.GetHeight() - 2)
-                return false;
-            if (myGridContainer.myGrid[myGridContainer.GetHeight() - 2][aColumn].GetBlock() is EmptyBlock == false)
-                return true;
-            return false;
         }
     }
 }

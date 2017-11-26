@@ -8,6 +8,7 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.AttackLeague.Grid;
 
 namespace AttackLeague.AttackLeague
 {
@@ -18,7 +19,8 @@ namespace AttackLeague.AttackLeague
         private int myStartFrame;
         private int myTotalFrames;
 
-        public DisappearingBlock(EBlockColor aColor, int aTotalFrames, int aStartFrame)
+        public DisappearingBlock(GridBundle aGridBundle, EBlockColor aColor, int aTotalFrames, int aStartFrame)
+            :base(aGridBundle)
         {
             myTotalFrames = aTotalFrames;
             myStartFrame = aStartFrame;
@@ -36,6 +38,15 @@ namespace AttackLeague.AttackLeague
 
         public override void Update(float aGameSpeed)
         {
+            base.Update(aGameSpeed);
+
+            if (IsAlive() == false)
+            {
+                Point position = GetPosition();
+                myGridBundle.Generator.EliminateBlock(position);
+                myGridBundle.Behavior.OnBlockEliminated(position);
+            }
+
             myCurrentFrame += 1f + (aGameSpeed / 3.0f);
         }
 

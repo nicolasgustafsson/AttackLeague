@@ -56,6 +56,7 @@
     <Compile Include="AttackLeague\Blocks\ColorBlock.cs" />
     <Compile Include="AttackLeague\GameInfo\GameInfo.cs" />
     <Compile Include="AttackLeague\Grid\GridBehavior.cs" />
+    <Compile Include="AttackLeague\Grid\GridBundle.cs" />
     <Compile Include="AttackLeague\Grid\GridContainer.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayer.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayerInfo.cs" />

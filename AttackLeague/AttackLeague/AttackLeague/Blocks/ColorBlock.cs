@@ -87,6 +87,7 @@ namespace AttackLeague.AttackLeague
         {
             myGroovyDanceMoves = new Betweenxt(Betweenxt.Lerp, 1.0f, 0.0f, 0.0f, aSwitchTime);
             myDancingDirection = aSwitchDirection;
+            myDanceOffset = 0.0f;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)

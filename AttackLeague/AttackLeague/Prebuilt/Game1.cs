@@ -14,8 +14,6 @@ namespace AttackLeague
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private List<Vector2> myGridsPositions;
-
         private List<Player> myPlayers;
 
         public Game1()
@@ -47,10 +45,8 @@ namespace AttackLeague
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameInfo.myPlayerCount++;
-            GameInfo.myPlayerCount++;
             //myPlayers.Add(new DebugPlayer());
-            myPlayers.Add(new Player(new PlayerInfo(0, EInputType.GamePad1)));
-            myPlayers.Add(new Player(new PlayerInfo(1, EInputType.Keyboard)));
+            myPlayers.Add(new DebugPlayer());
         }
 
         protected override void UnloadContent()

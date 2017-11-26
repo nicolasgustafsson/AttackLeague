@@ -11,21 +11,21 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague
 {
-    enum EIconPassiveAnimation
+    public enum EIconPassiveAnimation
     {
         None, 
         Jump,
         Squeeze
     }
 
-    enum EIconActiveAnimation
+    public enum EIconActiveAnimation
     {
         None,
         FallBounce,
         Disappearing
     }
 
-    enum EBlockColor
+    public enum EBlockColor
     {                                     //blixt, måne, sol, tornado, moln, regndroppe, snöflinga stjärna
         Cyan,      //Snöflinga
         Magenta,   //Måne
@@ -37,7 +37,7 @@ namespace AttackLeague.AttackLeague
         None
     }
 
-    abstract class AbstractColorBlock : AbstractBlock
+    public abstract class AbstractColorBlock : AbstractBlock
     {
         protected Sprite mySprite;
         protected Sprite myIcon;

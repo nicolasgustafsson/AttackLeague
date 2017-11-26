@@ -18,16 +18,16 @@ namespace AttackLeague.AttackLeague.Player
             base.Update();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("RandomizeGrid"))
-                myGrid.GenerateGrid();
+                myGridBehavior.DebugRerandomizeGrid();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("Pause"))
                 myIsPaused = !myIsPaused;
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("StepOnce"))
-                myGrid.Update();
+                myGridBehavior.Update();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("IncreaseGameSpeed"))
-                myGrid.AddGameSpeed(0.5f);
+                myGridBehavior.AddGameSpeed(0.5f);
         }
 
     }

@@ -5,17 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using AttackLeague.AttackLeague.Blocks.Generator;
 
 namespace AttackLeague.AttackLeague.Grid
 {
     public class GridContainer
     {
-        protected List<List<Tile>> myGrid;
-        protected List<AbstractBlock> myBlocks;
-        protected const int myHeight = 12;
-        protected const int myWidth = 6;
+        public List<List<Tile>> myGrid;
+        public List<AbstractBlock> myBlocks;
+        private const int myHeight = 12;
+        private const int myWidth = 6;
+        private BlockGenerator myBlockFactory;
 
-        protected virtual void OnGridReset() { }
+        public virtual void OnGridReset() { }
+
+        public GridContainer()
+        {
+            myBlockFactory = new BlockGenerator(this);
+        }
+
+        public BlockGenerator GetBlockFactory()
+        {
+            return myBlockFactory;
+        }
 
         public int GetHeight()
         {
@@ -27,48 +39,25 @@ namespace AttackLeague.AttackLeague.Grid
             return myWidth;
         }
 
-        public void GenerateGrid()
+        public void DebugRerandomizeGrid()
         {
-            OnGridReset();
-            
+            myBlockFactory.GenerateGrid();
+        }
+
+        public void GenerateTiles()
+        {
             myGrid = new List<List<Tile>>();
-            myBlocks = new List<AbstractBlock>();
 
-            myGrid.Add(new List<Tile>());
-            for (int columns = 0; columns < myWidth; ++columns)
-            {
-                FrozenBlock block = new FrozenBlock();
-                block.SetPosition(columns, 0);
-                myBlocks.Add(block);
-
-                Tile tiley = new Tile();
-                myGrid[0].Add(tiley);
-                tiley.SetBlock(block);
-            }
-
-            for (int rows = 1; rows < myHeight; ++rows)
+            for (int rows = 0; rows < myHeight; ++rows)
             {
                 myGrid.Add(new List<Tile>());
                 for (int columns = 0; columns < myWidth; ++columns)
                 {
-                    ColorBlock block = new ColorBlock();
-                    block.SetPosition(columns, rows);
-                    myBlocks.Add(block);
-
                     Tile tiley = new Tile();
-                    tiley.SetBlock(block);
                     myGrid[rows].Add(tiley);
                 }
             }
-
-            foreach (AbstractBlock block in myBlocks)
-            {
-                block.LoadContent();
-            }
-
-            PrintGrid();
         }
-
 
         public virtual void Update()
         {
@@ -106,8 +95,6 @@ namespace AttackLeague.AttackLeague.Grid
                                 color = "Y";
                                 break;
                         }
-
-
                     }
                     Console.Write(color + " ");
                 }
@@ -117,25 +104,18 @@ namespace AttackLeague.AttackLeague.Grid
         }
 
         //fixes everything
-        protected void InitializeBlock(Point aPosition, AbstractBlock aBlock)
+        public void InitializeBlock(Point aPosition, AbstractBlock aBlock)
         {
             aBlock.LoadContent();
             SetBlock(aPosition, aBlock);
-
-            //aBlock.SetPosition(aPosition);
-            //aBlock.LoadContent();
-
-            //AbstractBlock previousBlock = myGrid[aPosition.Y][aPosition.X].GetBlock();
-            //myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
-            //myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
         }
 
-        protected AbstractBlock GetBlockAtPosition(Point aPosition)
+        public AbstractBlock GetBlockAtPosition(Point aPosition)
         {
             return GetBlockAtPosition(aPosition.X, aPosition.Y);
         }
 
-        protected AbstractBlock GetBlockAtPosition(int aX, int aY)
+        public AbstractBlock GetBlockAtPosition(int aX, int aY)
         {
             if (aX < 0 || aX >= myWidth || aY < 0 || aY >= myGrid.Count)
             {
@@ -161,7 +141,7 @@ namespace AttackLeague.AttackLeague.Grid
             return false;
         }
 
-        protected void EliminateBlock(int aBlockIndex)
+        public void EliminateBlock(int aBlockIndex)
         {
             Point position = myBlocks[aBlockIndex].GetPosition();
 
@@ -179,49 +159,7 @@ namespace AttackLeague.AttackLeague.Grid
             myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
         }
 
-        protected void RemoveBlock(AbstractBlock aBlock, int aAmountOfDisappearingBlocks, int aCurrentBlock)
-        {
-
-            Point position = aBlock.GetPosition();
-
-            int animationTime = 30;
-
-            int delayBetweenAnimations = 15;
-
-            int currentBlockDelta = aCurrentBlock * delayBetweenAnimations;
-
-            int totalAnimationtime = aAmountOfDisappearingBlocks * delayBetweenAnimations + animationTime;
-
-            int blockIndex = myBlocks.LastIndexOf(aBlock);
-
-            if (blockIndex == -1)
-            {
-                return;
-            }
-            aBlock = new DisappearingBlock(((AbstractColorBlock)aBlock).GetColor(),
-                totalAnimationtime,
-                currentBlockDelta);
-
-            InitializeBlock(position, aBlock);
-        }
-
-        protected void AddEmptyRow()
-        {
-            myGrid.Add(new List<Tile>());
-            int row = myGrid.Count() - 1;
-            for (int columns = 0; columns < myWidth; ++columns)
-            {
-                EmptyBlock block = new EmptyBlock();
-                block.SetPosition(columns, row);
-                myBlocks.Add(block);
-
-                Tile tiley = new Tile();
-                tiley.SetBlock(block);
-                myGrid[row].Add(tiley);
-            }
-        }
-
-        protected bool RowIsEmpty(int aRowNumber)
+        public bool RowIsEmpty(int aRowNumber)
         {
             for (int columns = 0; columns < myWidth; columns++)
             {
@@ -231,7 +169,7 @@ namespace AttackLeague.AttackLeague.Grid
             return true;
         }
 
-        protected bool HasRow(int aRowNumber)
+        public bool HasRow(int aRowNumber)
         {
             return myGrid.Count() - 1 > aRowNumber;
         }

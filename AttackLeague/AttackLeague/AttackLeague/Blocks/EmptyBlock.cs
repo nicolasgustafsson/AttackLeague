@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    class EmptyBlock : AbstractBlock
+    public class EmptyBlock : AbstractBlock
     {
         private float mySwitchTimer = 0.0f;
 

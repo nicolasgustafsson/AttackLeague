@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace AttackLeague.AttackLeague
 {
 
-    class FrozenBlock : AbstractColorBlock
+    public class FrozenBlock : AbstractColorBlock
     {
         public FrozenBlock()
         {

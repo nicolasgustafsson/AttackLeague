@@ -13,6 +13,13 @@ namespace AttackLeague.AttackLeague.Grid
 {
     public class GridBehavior
     {
+        /*
+         TODO!
+         Keep a list of AngryBlockBundles
+         Let DebugPlayer have a SpawnAngryBlockBundle action 
+         Perhaps fiddle around with SpriteTileset 
+        */
+
         private BlockGenerator myBlockGenerator;
         private GridContainer myGridContainer;
 

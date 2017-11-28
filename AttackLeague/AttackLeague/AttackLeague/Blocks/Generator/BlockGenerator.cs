@@ -1,4 +1,5 @@
-﻿using AttackLeague.AttackLeague.Grid;
+﻿using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.AttackLeague.Grid;
 using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using System;
@@ -16,6 +17,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
     {
         private List<EBlockColor> myAllowedColors;
         public GridBundle myGridBundle; //REMOAVE DIS
+        private int myNextAngryIndex = 0;
 
         //ColorBlock GenerateColorBlock();
 
@@ -90,6 +92,22 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             myGridBundle.Container.SetBlock(aPosition, block);
 
             return block;
+        }
+
+        public AngryBlockBundle CreateAngryBlockBundleAtPosition(Point aPosition, int aHeight, int aWidth) //TETRIS!!
+        {
+            AngryBlockBundle angryBundle = new AngryBlockBundle();
+            for (int y = 0; y < aHeight; y++)
+            {
+                for (int x = 0; x < aWidth; x++)
+                {
+                    AngryBlock tempy = new AngryBlock(myGridBundle, y + 1, angryBundle);
+                    tempy.LoadContent();
+                    myGridBundle.Container.SetBlock(new Point(aPosition.X + x, aPosition.Y + y), tempy);
+                }
+            }
+            angryBundle.SetIndex(myNextAngryIndex++);
+            return angryBundle;
         }
 
         public EBlockColor GetRandomizedColor()

@@ -35,12 +35,17 @@ namespace AttackLeague.AttackLeague.Grid
             return myBlockGenerator;
         }
 
-        public int GetHeight()
+        public int GetCurrentHeight()
+        {
+            return myGrid.Count;
+        }
+
+        public int GetInitialHeight()
         {
             return myHeight;
         }
 
-        public int GetWidth()
+        public int GetInitialWidth()
         {
             return myWidth;
         }
@@ -56,12 +61,17 @@ namespace AttackLeague.AttackLeague.Grid
 
             for (int rows = 0; rows < myHeight; ++rows)
             {
-                myGrid.Add(new List<Tile>());
-                for (int columns = 0; columns < myWidth; ++columns)
-                {
-                    Tile tiley = new Tile();
-                    myGrid[rows].Add(tiley);
-                }
+                GenerateRow();
+            }
+        }
+
+        private void GenerateRow()
+        {
+            myGrid.Add(new List<Tile>());
+            for (int columns = 0; columns < myWidth; ++columns)
+            {
+                Tile tiley = new Tile();
+                myGrid.Last().Add(tiley);
             }
         }
 

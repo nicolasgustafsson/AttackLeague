@@ -48,7 +48,7 @@ namespace AttackLeague.AttackLeague.Player
         {
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveRight"))
             { 
-                if (myPosition.X < myGridBundle.Container.GetWidth() - 2)
+                if (myPosition.X < myGridBundle.Container.GetInitialWidth() - 2)
                     myPosition.X += 1;
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveLeft"))
@@ -58,7 +58,7 @@ namespace AttackLeague.AttackLeague.Player
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveUp"))
             {
-                if (myPosition.Y < myGridBundle.Container.GetHeight())
+                if (myPosition.Y < myGridBundle.Container.GetInitialHeight())
                     myPosition.Y += 1;
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveDown"))
@@ -75,7 +75,7 @@ namespace AttackLeague.AttackLeague.Player
 
             myGridBundle.Behavior.Draw(aSpriteBatch);
 
-            float invertedYPosition = myGridBundle.Container.GetHeight() - myPosition.Y;
+            float invertedYPosition = myGridBundle.Container.GetInitialHeight() - myPosition.Y;
             float yPosition = invertedYPosition - 1 + myGridBundle.Behavior.GetRaisingOffset();
             mySprite.SetPosition(new Vector2(myPosition.X , yPosition) * aTileSize + myGridBundle.Behavior.GetOffset() + new Vector2(-1, -1));
             mySprite.Draw(aSpriteBatch);

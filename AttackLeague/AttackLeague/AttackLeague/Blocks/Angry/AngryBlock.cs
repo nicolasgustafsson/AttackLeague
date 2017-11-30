@@ -21,16 +21,19 @@ namespace AttackLeague.AttackLeague.Blocks
         // and then BlockGenerator send in an increased index for every time it creates a new Angry block bundle
 
         private Sprite myTileSetSprite;
+        private Sprite myTempToDeleteSprite;
 
         private AngryBlockBundle myBundle;
         private int myLife;
         public bool CanFall { get; private set; }
+        protected float myYOffset = 0.0f;
 
         public AngryBlock(GridBundle aGridBundle, int aLife, AngryBlockBundle aBundle) : base(aGridBundle)
         {
             myLife = aLife;
             myBundle = aBundle;
             myBundle.AddBlock(this);
+            myColor = EBlockColor.Blue;
         }
 
         //public override void LoadContent()
@@ -44,6 +47,49 @@ namespace AttackLeague.AttackLeague.Blocks
             base.Update(aGameSpeed);
 
             CanFall = CheckCanFall();
+
+            myYOffset -= GetMagicalSpeed(aGameSpeed);
+
+            myYOffset = Math.Max(myYOffset, 0.0f);
+        }
+
+        public void Fall(float aGameSpeed)
+        {
+            if (myYOffset < 0f)
+                myYOffset = 0f;
+            Point position = GetPosition();
+
+            if (WillPassTile(aGameSpeed))
+            {
+                PassTile();
+                position = GetPosition();
+                myGridBundle.Container.InitializeBlock(position + new Point(0, 1), new EmptyBlock(myGridBundle));
+
+                myGridBundle.Container.SetBlock(position, this);
+            }
+        }
+
+        public bool WillPassTile(float aGameSpeed)
+        {
+            return (myYOffset - GetMagicalSpeed(aGameSpeed)) < 0.0f;
+        }
+
+        public void PassTile()
+        {
+            myGridArea.Y--;
+            myYOffset += 1.0f;
+        }
+
+        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
+        {
+            Vector2 position = GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset);
+            position.Y -= myYOffset * mySprite.GetSize().Y;
+            mySprite.SetPosition(position);
+            mySprite.Draw(aSpriteBatch);
+
+            myIcon.SetPosition(position);
+            SetIconAnimation();
+            myIcon.Draw(aSpriteBatch);
         }
 
         private bool CheckCanFall()
@@ -51,7 +97,7 @@ namespace AttackLeague.AttackLeague.Blocks
             if (GetPosition().Y <= 1)
                 return false;
 
-            var blockBeneathMe = myGridBundle.Container.GetBlockAtPosition(new Point(GetPosition().X, GetPosition().Y -1));
+            var blockBeneathMe = myGridBundle.Container.GetBlockAtPosition(new Point(GetPosition().X, GetPosition().Y - 1));
             if ((blockBeneathMe is AngryBlock angryBlock && angryBlock.myBundle.Index == myBundle.Index) || blockBeneathMe is EmptyBlock)
                 return true;
             return false;
@@ -63,11 +109,6 @@ namespace AttackLeague.AttackLeague.Blocks
         // if block is AngryBlock and myTypeColorRaceThingy  then 
         //      that block is contaminated and should check its neighbors too! unless it has been checked
         // all contaminated blocks should decrease their lives.
-
-        public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
-        {
-            base.Draw(aSpriteBatch, aGridOffset, aGridHeight, aRaisingOffset);
-        }
 
     }
 }

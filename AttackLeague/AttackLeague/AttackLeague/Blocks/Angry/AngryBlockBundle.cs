@@ -16,6 +16,7 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
         public AngryBlockBundle()
         {
+            myAngryBlocks = new List<AngryBlock>();
         }
 
         public void AddBlock(AngryBlock aBlock)
@@ -23,7 +24,7 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             myAngryBlocks.Add(aBlock);
         }
 
-        void Update()
+        public void Update(float aGameSpeed)
         {
             bool canFall = true;
             foreach (var item in myAngryBlocks)
@@ -37,6 +38,10 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
             if (canFall)
             {
+                foreach (var block in myAngryBlocks)
+                {
+                    block.Fall(aGameSpeed);
+                }
                 // they fall. All fall. in myBlocks. Convert them or do a state or something.
             }
         }

@@ -24,6 +24,7 @@ namespace AttackLeague.AttackLeague.Player
             myMappedActions.BindAction("Pause", Keys.Enter, InputStatus.KeyPressed);
             myMappedActions.BindAction("StepOnce", Keys.OemPeriod, InputStatus.KeyPressed);
             myMappedActions.BindAction("IncreaseGameSpeed", Keys.T, InputStatus.KeyPressed);
+            myMappedActions.BindAction("SpawnAngryBundle", Keys.K, InputStatus.KeyReleased);
         }
     }
 }

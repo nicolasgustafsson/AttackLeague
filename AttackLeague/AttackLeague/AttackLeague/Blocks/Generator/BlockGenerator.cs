@@ -37,7 +37,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
             myGridBundle.Container.myBlocks = new List<AbstractBlock>();
 
-            for (int columns = 0; columns < myGridBundle.Container.GetWidth(); ++columns)
+            for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
                 FrozenBlock block = new FrozenBlock(myGridBundle);
                 block.SetPosition(columns, 0);
@@ -47,9 +47,9 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
                 tiley.SetBlock(block);
             }
 
-            for (int rows = 1; rows < myGridBundle.Container.GetHeight(); ++rows)
+            for (int rows = 1; rows < myGridBundle.Container.GetInitialHeight(); ++rows)
             {
-                for (int columns = 0; columns < myGridBundle.Container.GetWidth(); ++columns)
+                for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
                 {
                     ColorBlock block = new ColorBlock(myGridBundle);
                     block.SetPosition(columns, rows);
@@ -94,9 +94,28 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             return block;
         }
 
-        public AngryBlockBundle CreateAngryBlockBundleAtPosition(Point aPosition, int aHeight, int aWidth) //TETRIS!!
+        public void ExpandToHeight(int aHeight)
+        {
+            int heightBeforePushingTheLimits = myGridBundle.Container.GetCurrentHeight();
+
+            for (int i = heightBeforePushingTheLimits; i < aHeight; i++)
+                AddEmptyRow();
+        }
+
+        public AngryBlockBundle CreateAngryBlockBundleAtPosition(Point aPosition, Point aSize)
+        {
+            return CreateAngryBlockBundleAtPosition(aPosition, aSize.X, aSize.Y);
+        }
+
+        public AngryBlockBundle CreateAngryBlockBundleAtPosition(Point aPosition, int aWidth, int aHeight) //TETRIS!!
         {
             AngryBlockBundle angryBundle = new AngryBlockBundle();
+
+            if (aPosition.Y + aHeight > myGridBundle.Container.GetInitialHeight())
+            {
+                ExpandToHeight(aPosition.Y + aHeight);
+            }
+
             for (int y = 0; y < aHeight; y++)
             {
                 for (int x = 0; x < aWidth; x++)
@@ -143,7 +162,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         private void MoveRowUp(int aRowNumber)
         {
-            for (int columns = 0; columns < myGridBundle.Container.GetWidth(); ++columns)
+            for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
                 myGridBundle.Container.myGrid[aRowNumber + 1][columns] = myGridBundle.Container.myGrid[aRowNumber][columns];
                 myGridBundle.Container.myGrid[aRowNumber + 1][columns].GetBlock().SetPosition(columns, aRowNumber + 1);
@@ -172,7 +191,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
         {
             myGridBundle.Container.myGrid.Add(new List<Tile>());
             int row = myGridBundle.Container.myGrid.Count() - 1;
-            for (int columns = 0; columns < myGridBundle.Container.GetWidth(); ++columns)
+            for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
                 EmptyBlock block = new EmptyBlock(myGridBundle);
                 block.SetPosition(columns, row);
@@ -186,7 +205,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         private void CreateFrozenRow()
         {
-            for (int columns = 0; columns < myGridBundle.Container.GetWidth(); ++columns)
+            for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
                 AbstractBlock blocky = myGridBundle.Container.myGrid[0][columns].GetBlock();
                 Debug.Assert(blocky is FrozenBlock);
@@ -203,7 +222,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         private void ConvertFrozenRowToColorBlocks()
         {
-            for (int column = 0; column < myGridBundle.Container.GetWidth(); column++)
+            for (int column = 0; column < myGridBundle.Container.GetInitialWidth(); column++)
             {
                 AbstractBlock blocky = myGridBundle.Container.myGrid[0][column].GetBlock();
                 Debug.Assert(blocky is FrozenBlock);
@@ -216,6 +235,16 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
                 myGridBundle.Container.myBlocks.Add(colorBlocky);
                 colorBlocky.LoadContent();
             }
+        }
+
+        public void ConvertFrozenBlockToColorBlock(Point aPosition)
+        {
+            AbstractBlock blocky = myGridBundle.Container.myGrid[aPosition.Y][aPosition.X].GetBlock();
+            Debug.Assert(blocky is FrozenBlock);
+            ColorBlock colorBlocky = new ColorBlock(myGridBundle, ((FrozenBlock)blocky).GetColor());
+
+            myGridBundle.Container.SetBlock(aPosition, colorBlocky);
+            colorBlocky.LoadContent();
         }
 
         private void CheckMatchesDirectionFrozenPurposes(AbstractColorBlock aBlock, Point aOffset, HashSet<AbstractBlock> aMatchingBlocks)

@@ -142,7 +142,8 @@ namespace AttackLeague.AttackLeague.Player
             "Falck",
             "Findus",
             "Håkan",
-            "Kevin"
+            "Kevin",
+            "Olle"
         };
     }
 

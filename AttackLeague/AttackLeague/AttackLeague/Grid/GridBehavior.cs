@@ -1,4 +1,5 @@
-﻿using AttackLeague.AttackLeague.Blocks.Generator;
+﻿using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.AttackLeague.Blocks.Generator;
 using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,13 +16,14 @@ namespace AttackLeague.AttackLeague.Grid
     {
         /*
          TODO!
-         Keep a list of AngryBlockBundles
-         Let DebugPlayer have a SpawnAngryBlockBundle action 
+         Angryblock disintigrate and contaminate and convert from frozen and such => ConvertFrozenBlockToColorBlock in Generator!!!@@@@@@
          Perhaps fiddle around with SpriteTileset 
         */
 
         private BlockGenerator myBlockGenerator;
         private GridContainer myGridContainer;
+
+        private List<AngryBlockBundle> myAngryBundles;
 
         private Vector2 myOffset = new Vector2(100, 100);
         private Sprite myBorderSprite;
@@ -46,6 +48,8 @@ namespace AttackLeague.AttackLeague.Grid
 
         public GridBehavior(GridContainer aGridContainer, int aPlayerIndex)
         {
+            myAngryBundles = new List<AngryBlockBundle>();
+
             myGridContainer = aGridContainer;
             myBlockGenerator = myGridContainer.GetBlockGenerator();
 
@@ -149,6 +153,11 @@ namespace AttackLeague.AttackLeague.Grid
                 block.Update(myGameSpeed);
             }
 
+            foreach (var angryBundle in myAngryBundles)
+            {
+                angryBundle.Update(myGameSpeed);
+            }
+
             CheckForMatches();
             ResetCanChain();
         }
@@ -205,6 +214,11 @@ namespace AttackLeague.AttackLeague.Grid
                     }
                     //Console.WriteLine(blocky.GetPosition());
                     myBlockGenerator.RemoveBlock(blocky, matchedBlocks.Count, i);
+                    //Check for angryblocks above and below and to the sides, if found, tell it that it should be contaminated
+                    //contaminted recusrivleky finds out all affected neighbor angrylocks.
+                    //yes.
+                    //while converting each angryblock to colorblock grid should be frozen/paused/watchemacallit
+                    //
                     i++;
                 }
             }
@@ -261,6 +275,7 @@ namespace AttackLeague.AttackLeague.Grid
             }
         }
 
+        // +Player actions!
         public void SwapBlocksRight(Point aPosition)
         {
             AbstractBlock leftBlock = myGridContainer.GetBlockAtPosition(aPosition);
@@ -284,11 +299,17 @@ namespace AttackLeague.AttackLeague.Grid
             }
         }
 
+        public void AddAngryBundle(AngryBlockBundle aAngryBundle)
+        {
+            myAngryBundles.Add(aAngryBundle);
+        }
+        // -Player Actions
+
         public void Draw(SpriteBatch aSpriteBatch)
         {
             foreach (AbstractBlock iBlock in myGridContainer.myBlocks)
             {
-                iBlock.Draw(aSpriteBatch, myOffset, myGridContainer.GetHeight() - 1, myRaisingOffset);
+                iBlock.Draw(aSpriteBatch, myOffset, myGridContainer.GetInitialHeight() - 1, myRaisingOffset);
             }
 
             myBorderSprite.SetPosition(new Vector2(myOffset.X - 2, 6 - AbstractBlock.GetTileSize()));

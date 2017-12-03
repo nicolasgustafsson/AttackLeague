@@ -1,14 +1,10 @@
 ﻿using AttackLeague.AttackLeague.Grid;
 using AttackLeague.Utility;
 using AttackLeague.Utility.Betweenxt;
+using AttackLeague.Utility.Sprite;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague
 {
@@ -69,8 +65,6 @@ namespace AttackLeague.AttackLeague
                 mySprite.SetColor(GetColorFromEnum());
             }
         }
-
-
 
         public override void LoadContent()
         {

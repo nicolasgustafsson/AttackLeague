@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using AttackLeague.Utility;
+﻿using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.AttackLeague.Grid;
+using AttackLeague.Utility.Sprite;
 
 namespace AttackLeague.AttackLeague
 {

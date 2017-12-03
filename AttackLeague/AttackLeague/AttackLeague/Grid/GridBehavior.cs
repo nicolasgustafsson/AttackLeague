@@ -2,14 +2,13 @@
 using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.AttackLeague.Blocks.Generator;
 using AttackLeague.Utility;
+using AttackLeague.Utility.Sprite;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.Grid
 {

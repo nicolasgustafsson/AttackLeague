@@ -75,10 +75,13 @@
     <Compile Include="Utility\GamePadWrapper.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Randomizer.cs" />
-    <Compile Include="Utility\Sprite.cs" />
+    <Compile Include="Utility\Sprite\Sprite.cs" />
+    <Compile Include="Utility\Sprite\SpriteTileset.cs" />
+    <Compile Include="Utility\Sprite\SpriteTilesetAngry.cs" />
     <Compile Include="Utility\StateStack\State.cs" />
     <Compile Include="Utility\StateStack\StateCommand.cs" />
     <Compile Include="Utility\StateStack\StateStack.cs" />
+    <Compile Include="Utility\ColorUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

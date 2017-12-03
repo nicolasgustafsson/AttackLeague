@@ -8,6 +8,7 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.Utility.Sprite;
 
 namespace AttackLeague.AttackLeague.Blocks
 {
@@ -20,8 +21,9 @@ namespace AttackLeague.AttackLeague.Blocks
         // We probably just want to tell block generator "CreateAngryBlock(aWidth, aHeight) or CreateAngryBlock(aTetrisPattern)"
         // and then BlockGenerator send in an increased index for every time it creates a new Angry block bundle
 
-        private Sprite myTileSetSprite;
+        private SpriteTilesetAngry myTileSetSprite;
         private Sprite myFrozenSprite;
+        //private string myAngryColor;
 
         private AngryBlockBundle myBundle;
         private int myLife;
@@ -38,6 +40,9 @@ namespace AttackLeague.AttackLeague.Blocks
             myBundle = aBundle;
             myBundle.AddBlock(this);
             myColor = EBlockColor.Blue;
+            myTileSetSprite = new SpriteTilesetAngry();
+            //myAngryColor = "carrot"; // to be acquired from player choice or characteristics etc
+            myTileSetSprite.SetColor(GetColorFromEnum());
         }
 
         public override void LoadContent()
@@ -45,6 +50,7 @@ namespace AttackLeague.AttackLeague.Blocks
             // load my tilesprite
             base.LoadContent();
 
+            //myTileSetSprite = new Sprite();
             myFrozenSprite = new Sprite("tiley");
         }
 
@@ -99,10 +105,18 @@ namespace AttackLeague.AttackLeague.Blocks
             myYOffset += 1.0f;
         }
 
+        private void SetAngryTile()
+        {
+            // we could do this by marshing tiles I think
+            myTileSetSprite.SetToAlone(); // hard coded for now, for test
+        }
+
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
+            SetAngryTile();
+
             Vector2 position = GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset);
-            position.Y -= myYOffset * mySprite.GetSize().Y;
+            position.Y -= myYOffset * myTileSetSprite.GetSize().Y;
 
             if (myIsFrozen)
             {
@@ -111,8 +125,8 @@ namespace AttackLeague.AttackLeague.Blocks
             }
             else
             {
-                mySprite.SetPosition(position);
-                mySprite.Draw(aSpriteBatch);
+                myTileSetSprite.SetPosition(position);
+                myTileSetSprite.Draw(aSpriteBatch);
             }
 
             myIcon.SetPosition(position);

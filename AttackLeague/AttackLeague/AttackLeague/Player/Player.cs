@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AttackLeague.Utility;
-using AttackLeague.AttackLeague.Grid;
+﻿using AttackLeague.AttackLeague.Grid;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
+using AttackLeague.Utility.Sprite;
 
 namespace AttackLeague.AttackLeague.Player
 {

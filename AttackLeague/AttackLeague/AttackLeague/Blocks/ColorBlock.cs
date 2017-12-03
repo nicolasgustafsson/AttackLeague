@@ -55,31 +55,23 @@ namespace AttackLeague.AttackLeague
             if (IsSwitching())
                 return;
 
+            if (CanFall())
+            {
+                Point position = GetPosition();
+                myGridBundle.Container.InitializeBlock(position, new FallingBlock(myGridBundle, this));
+            }
+        }
+
+        private bool CanFall()
+        {
             Rectangle rectangleCopy = GetRectangle();
 
             if (rectangleCopy.Y != 0)
             {
                 rectangleCopy.Y--;
-                if (RectangleIntersectsForFallingPurposes(rectangleCopy) == false)
-                {
-                    Point position = GetPosition();
-                    myGridBundle.Container.InitializeBlock(position, new FallingBlock(myGridBundle, this));
-                }
+                return myGridBundle.Behavior.RectangleIntersectsForFallingPurposes(rectangleCopy) == false;
             }
-        }
 
-        private bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
-        {
-            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
-            {
-                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
-                {
-                    if (myGridBundle.Container.myGrid[y][x].CanFallThrough() == false)
-                    {
-                        return true;
-                    }
-                }
-            }
             return false;
         }
 

@@ -120,6 +120,11 @@ namespace AttackLeague.AttackLeague
             return false;
         }
 
+        public virtual bool AllowsFalling()
+        {
+            return false;
+        }
+
         protected float GetMagicalSpeed(float aGameSpeed)
         {
             //0.15 is the magic number

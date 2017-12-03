@@ -51,7 +51,8 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             {
                 for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
                 {
-                    ColorBlock block = new ColorBlock(myGridBundle);
+                    EmptyBlock block = new EmptyBlock(myGridBundle);
+                    //ColorBlock block = new ColorBlock(myGridBundle);
                     block.SetPosition(columns, rows);
                     myGridBundle.Container.myBlocks.Add(block);
 
@@ -109,7 +110,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         public AngryBlockBundle CreateAngryBlockBundleAtPosition(Point aPosition, int aWidth, int aHeight) //TETRIS!!
         {
-            AngryBlockBundle angryBundle = new AngryBlockBundle();
+            AngryBlockBundle angryBundle = new AngryBlockBundle(myGridBundle);
 
             if (aPosition.Y + aHeight > myGridBundle.Container.GetInitialHeight())
             {

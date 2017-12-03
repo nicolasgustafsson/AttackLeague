@@ -11,11 +11,16 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
     public class AngryBlockBundle
     {
         private List<AngryBlock> myAngryBlocks;
+        private GridBundle myGridBundle;
+
+        bool myIsDisintegrating = false;
+
         public int Index { get; private set; }
         // gridbundle?
 
-        public AngryBlockBundle()
+        public AngryBlockBundle(GridBundle aGridBundle)
         {
+            myGridBundle = aGridBundle;
             myAngryBlocks = new List<AngryBlock>();
         }
 
@@ -26,24 +31,7 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
         public void Update(float aGameSpeed)
         {
-            bool canFall = true;
-            foreach (var item in myAngryBlocks)
-            {
-                if (item.CanFall == false)
-                {
-                    canFall = false;
-                    break;
-                }
-            }
 
-            if (canFall)
-            {
-                foreach (var block in myAngryBlocks)
-                {
-                    block.Fall(aGameSpeed);
-                }
-                // they fall. All fall. in myBlocks. Convert them or do a state or something.
-            }
         }
 
         public void SetIndex(int aIndex)
@@ -51,14 +39,38 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             Index = aIndex;
         }
 
+        public void OnHitByMatch()
+        {
+            myIsDisintegrating = true;
 
-        // we need something to handle falling, 
-        // since we loop through all blocks in order from bottom to up and stuff we probably want to check each block first in some way, 
-        //to whether or not it will be allowed to fall, in order to later check/set the whole angry block bundle to fall
-        // this is the main thingy which will be hard to figure out, but we will do something nice!  :D =)
+            foreach (var block in myAngryBlocks)
+            {
+                block.Freeze();
+            }
+        }
 
-        // if angryblock below me with same angry index I can fall
-        // if emptyblock below me, I may fall, otherwise I can't fall
-        // if one can't fall, nobody can!
+        public bool CanWeFall()
+        {
+            foreach (var block in myAngryBlocks)
+            {
+                if (block.AllowsFalling() == false)
+                    return false;
+            }
+            return true;
+        }
+
+        public void UpdateFallingStatus()
+        {
+            foreach (var block in myAngryBlocks)
+            {
+                block.SetFriendlyAwareness(false);
+            }
+            bool canFall = CanWeFall();
+            foreach (var block in myAngryBlocks)
+            {
+                block.SetCanFall(canFall);
+                block.SetFriendlyAwareness(true);
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace AttackLeague.AttackLeague.Grid
     {
         /*
          TODO!
-         Angryblock disintigrate and contaminate and convert from frozen and such => ConvertFrozenBlockToColorBlock in Generator!!!@@@@@@
+         Angryblock disintegrate and contaminate and convert from frozen and such => ConvertFrozenBlockToColorBlock in Generator!!!@@@@@@
          Perhaps fiddle around with SpriteTileset 
         */
 
@@ -42,7 +42,7 @@ namespace AttackLeague.AttackLeague.Grid
         private bool myHasRaisedThisFrame = false;
         private bool myWantsToRaiseBlocks = false;
         private float myRaisingOffset = 0f;
-        private const float MyConstantRaisingSpeed = 3;
+        private const float MyConstantRaisingSpeed = 3;//0
 
         private int myChainCounter = 1;
 
@@ -146,16 +146,16 @@ namespace AttackLeague.AttackLeague.Grid
             //if it crashes here there are big chances that they have same position
             myGridContainer.myBlocks.Sort();
 
+            foreach (var angryBundle in myAngryBundles)
+            {
+                angryBundle.UpdateFallingStatus();
+            }
+
             // just update all blocks, give them an update function to override
             for (int i = 0; i < myGridContainer.myBlocks.Count; i++)
             {
                 AbstractBlock block = myGridContainer.myBlocks[i];
                 block.Update(myGameSpeed);
-            }
-
-            foreach (var angryBundle in myAngryBundles)
-            {
-                angryBundle.Update(myGameSpeed);
             }
 
             CheckForMatches();
@@ -220,6 +220,11 @@ namespace AttackLeague.AttackLeague.Grid
                     //while converting each angryblock to colorblock grid should be frozen/paused/watchemacallit
                     //
                     i++;
+                }
+
+                foreach(AngryBlockBundle bundle in myAngryBundles)
+                {
+                    bundle.OnHitByMatch();
                 }
             }
 
@@ -361,6 +366,7 @@ namespace AttackLeague.AttackLeague.Grid
 
         public void Raise(float RaiseAmount)
         {
+            RaiseAmount *= 0.1f;
             if (myWantsToRaiseBlocks && MyConstantRaisingSpeed > RaiseAmount)
             {
                 RaiseAmount = MyConstantRaisingSpeed;
@@ -389,6 +395,21 @@ namespace AttackLeague.AttackLeague.Grid
         public bool HasRaisedGridThisFrame()
         {
             return myHasRaisedThisFrame;
+        }
+
+        public bool RectangleIntersectsForFallingPurposes(Rectangle aRectangle)
+        {
+            for (int x = aRectangle.X; x < aRectangle.X + aRectangle.Width; x++)
+            {
+                for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
+                {
+                    if (myGridContainer.myGrid[y][x].CanFallThrough() == false)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

@@ -21,12 +21,15 @@ namespace AttackLeague.AttackLeague.Blocks
         // and then BlockGenerator send in an increased index for every time it creates a new Angry block bundle
 
         private Sprite myTileSetSprite;
-        private Sprite myTempToDeleteSprite;
+        private Sprite myFrozenSprite;
 
         private AngryBlockBundle myBundle;
         private int myLife;
-        public bool CanFall { get; private set; }
         protected float myYOffset = 0.0f;
+
+        bool myIsFriendAware = false;
+        bool myCanFall = false;
+        bool myIsFrozen = false;
 
         public AngryBlock(GridBundle aGridBundle, int aLife, AngryBlockBundle aBundle) : base(aGridBundle)
         {
@@ -36,21 +39,31 @@ namespace AttackLeague.AttackLeague.Blocks
             myColor = EBlockColor.Blue;
         }
 
-        //public override void LoadContent()
-        //{
-        //    // load my tilesprite
-        //    base.LoadContent();
-        //}
+        public override void LoadContent()
+        {
+            // load my tilesprite
+            base.LoadContent();
+
+            myFrozenSprite = new Sprite("tiley");
+        }
 
         public override void Update(float aGameSpeed)
         {
             base.Update(aGameSpeed);
 
-            CanFall = CheckCanFall();
-
             myYOffset -= GetMagicalSpeed(aGameSpeed);
 
             myYOffset = Math.Max(myYOffset, 0.0f);
+
+            if (myCanFall)
+            {
+                Fall(aGameSpeed);
+            }
+        }
+
+        public void Freeze()
+        {
+          //  myIsFrozen = true;
         }
 
         public void Fall(float aGameSpeed)
@@ -59,7 +72,7 @@ namespace AttackLeague.AttackLeague.Blocks
                 myYOffset = 0f;
             Point position = GetPosition();
 
-            if (WillPassTile(aGameSpeed))
+            if (WillPassTile(aGameSpeed)) 
             {
                 PassTile();
                 position = GetPosition();
@@ -84,22 +97,57 @@ namespace AttackLeague.AttackLeague.Blocks
         {
             Vector2 position = GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset);
             position.Y -= myYOffset * mySprite.GetSize().Y;
-            mySprite.SetPosition(position);
-            mySprite.Draw(aSpriteBatch);
+
+            if (myIsFrozen)
+            {
+                myFrozenSprite.SetPosition(position);
+                myFrozenSprite.Draw(aSpriteBatch);
+            }
+            else
+            {
+                mySprite.SetPosition(position);
+                mySprite.Draw(aSpriteBatch);
+            }
 
             myIcon.SetPosition(position);
             SetIconAnimation();
             myIcon.Draw(aSpriteBatch);
         }
 
-        private bool CheckCanFall()
+        public void SetFriendlyAwareness(bool aValue)
         {
-            if (GetPosition().Y <= 1)
-                return false;
+            myIsFriendAware = aValue;
+        }
 
-            var blockBeneathMe = myGridBundle.Container.GetBlockAtPosition(new Point(GetPosition().X, GetPosition().Y - 1));
-            if ((blockBeneathMe is AngryBlock angryBlock && angryBlock.myBundle.Index == myBundle.Index) || blockBeneathMe is EmptyBlock)
+        public void SetCanFall(bool aValue)
+        {
+            myCanFall = aValue;
+        }
+
+        public override bool AllowsFalling()
+        {
+            if (myIsFriendAware)
+                return myCanFall;
+            else
+                return CheckCanFall();
+        }
+
+        public int GetIndex()
+        {
+            return myBundle.Index;
+        }
+
+        public bool CheckCanFall()
+        {
+            Rectangle rectangleCopy = GetRectangle();
+            if (rectangleCopy.Y != 0)
+            {
+                rectangleCopy.Y--;
+                if (myGridBundle.Behavior.RectangleIntersectsForFallingPurposes(rectangleCopy) == true)
+                    return false;
+
                 return true;
+            }
             return false;
         }
 

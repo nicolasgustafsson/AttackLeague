@@ -32,7 +32,7 @@ namespace AttackLeague.AttackLeague.Player
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("SpawnAngryBundle"))
             {
-                Point angrySize = new Point(6, 3);
+                Point angrySize = new Point(6, 1);
                 Point position = new Point(0, myGridBundle.Container.GetInitialHeight() + angrySize.Y);
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angrySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);

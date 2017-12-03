@@ -56,5 +56,10 @@ namespace AttackLeague.AttackLeague
             return mySwitchTimer > 0.0f;
         }
 
+        public override bool AllowsFalling()
+        {
+            return true;
+        }
+
     }
 }

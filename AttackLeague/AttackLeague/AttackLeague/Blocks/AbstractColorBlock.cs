@@ -70,6 +70,8 @@ namespace AttackLeague.AttackLeague
             }
         }
 
+
+
         public override void LoadContent()
         {
             mySprite = new Sprite("tiley");
@@ -135,6 +137,7 @@ namespace AttackLeague.AttackLeague
             myPassiveAnimation = ResolvedIconAnimation;
             //etc etc
         }
+
 
         protected void SetIconAnimation()
         {

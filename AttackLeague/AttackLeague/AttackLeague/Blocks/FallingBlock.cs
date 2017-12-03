@@ -90,5 +90,10 @@ namespace AttackLeague.AttackLeague
             get { return myCanChain; }
             set { myCanChain = value; }
         }
+
+        public override bool AllowsFalling()
+        {
+            return true;
+        }
     }
 }

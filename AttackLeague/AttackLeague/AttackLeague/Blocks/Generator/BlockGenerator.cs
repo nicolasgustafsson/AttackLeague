@@ -238,14 +238,17 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             }
         }
 
-        public void ConvertFrozenBlockToColorBlock(Point aPosition)
+        public void ConvertFrozenBlockToFallingOrColorBlock(FrozenBlock aBlock)
         {
-            AbstractBlock blocky = myGridBundle.Container.myGrid[aPosition.Y][aPosition.X].GetBlock();
-            Debug.Assert(blocky is FrozenBlock);
-            ColorBlock colorBlocky = new ColorBlock(myGridBundle, ((FrozenBlock)blocky).GetColor());
+            AbstractBlock blockBeneath = myGridBundle.Container.GetBlockAtPosition(aBlock.GetPosition() + new Point(0, -1));
+            AbstractBlock newBlock;
+            if (blockBeneath.AllowsFalling())
+                newBlock = new FallingBlock(myGridBundle, aBlock.GetColor());
+            else
+                newBlock = new ColorBlock(myGridBundle, aBlock.GetColor());
 
-            myGridBundle.Container.SetBlock(aPosition, colorBlocky);
-            colorBlocky.LoadContent();
+            myGridBundle.Container.SetBlock(aBlock.GetPosition(), newBlock);
+            newBlock.LoadContent();
         }
 
         private void CheckMatchesDirectionFrozenPurposes(AbstractColorBlock aBlock, Point aOffset, HashSet<AbstractBlock> aMatchingBlocks)

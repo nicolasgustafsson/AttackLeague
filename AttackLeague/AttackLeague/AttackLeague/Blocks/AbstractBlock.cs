@@ -59,6 +59,12 @@ namespace AttackLeague.AttackLeague
             SetPosition(aPosition.X, aPosition.Y);
         }
 
+        public int GetPositionWorth()
+        {
+            Point position = GetPosition();
+            return position.Y * myGridBundle.Container.GetInitialWidth() + position.X;
+        }
+
         public void SetPosition(int aX, int aY)
         {
             myGridArea.X = aX;
@@ -97,7 +103,6 @@ namespace AttackLeague.AttackLeague
         {
             //Intentionally left empty
         }
-
         public int CompareTo(object obj)
         {
             if (obj is AbstractBlock)

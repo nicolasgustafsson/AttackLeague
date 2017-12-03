@@ -1,4 +1,5 @@
-﻿using AttackLeague.AttackLeague.Blocks.Angry;
+﻿using AttackLeague.AttackLeague.Blocks;
+using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.AttackLeague.Blocks.Generator;
 using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
@@ -16,7 +17,14 @@ namespace AttackLeague.AttackLeague.Grid
     {
         /*
          TODO!
-         Angryblock disintegrate and contaminate and convert from frozen and such => ConvertFrozenBlockToColorBlock in Generator!!!@@@@@@
+            BUGS:
+             Disintegrates several blockbundles at once(create blockiterator which can execute function at block with a delay
+             Rightmost block gets converted first on last row
+             Goes left to right(right to left)
+             Crashes sometimes(AllowFalling?) in loopy thingy, index out of bounds I think
+
+
+         
          Perhaps fiddle around with SpriteTileset 
         */
 
@@ -158,8 +166,23 @@ namespace AttackLeague.AttackLeague.Grid
                 block.Update(myGameSpeed);
             }
 
+            foreach (var angryBundle in myAngryBundles)
+            {
+                angryBundle.Update(myGameSpeed);
+            }
+
             CheckForMatches();
             ResetCanChain();
+
+            for (int iBundle = 0; iBundle < myAngryBundles.Count(); iBundle++)
+            {
+                if (myAngryBundles[iBundle].IsDed())
+                {
+                    myAngryBundles.RemoveAt(iBundle);
+                    iBundle--;
+                }
+            }
+
         }
 
         private void OnChainIncrement(int ChainLength)
@@ -222,9 +245,18 @@ namespace AttackLeague.AttackLeague.Grid
                     i++;
                 }
 
-                foreach(AngryBlockBundle bundle in myAngryBundles)
+
+                //find adjacent blocks to matchedblocks
+
+                HashSet<AbstractBlock> adjacentBlocks = myGridContainer.GetAdjacentBlocks(matchedBlocks);
+                
+                foreach(AbstractBlock block in adjacentBlocks)
                 {
-                    bundle.OnHitByMatch();
+                    //mb block is null?
+                    if (block is AngryBlock angryBlock)
+                    {
+                        angryBlock.Contaminate();
+                    }
                 }
             }
 

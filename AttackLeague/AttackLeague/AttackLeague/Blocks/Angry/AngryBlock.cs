@@ -30,6 +30,7 @@ namespace AttackLeague.AttackLeague.Blocks
         bool myIsFriendAware = false;
         bool myCanFall = false;
         bool myIsFrozen = false;
+        bool myIsContaminated = false;
 
         public AngryBlock(GridBundle aGridBundle, int aLife, AngryBlockBundle aBundle) : base(aGridBundle)
         {
@@ -63,7 +64,12 @@ namespace AttackLeague.AttackLeague.Blocks
 
         public void Freeze()
         {
-          //  myIsFrozen = true;
+            myIsFrozen = true;
+        }
+
+        public void UnFreeze()
+        {
+            myIsFrozen = false;
         }
 
         public void Fall(float aGameSpeed)
@@ -139,6 +145,8 @@ namespace AttackLeague.AttackLeague.Blocks
 
         public bool CheckCanFall()
         {
+            if (myIsFrozen)
+                return false;
             Rectangle rectangleCopy = GetRectangle();
             if (rectangleCopy.Y != 0)
             {
@@ -149,6 +157,38 @@ namespace AttackLeague.AttackLeague.Blocks
                 return true;
             }
             return false;
+        }
+
+        public virtual void Contaminate()
+        {
+            if (myIsContaminated)
+                return;
+
+            Freeze();
+
+            myBundle.OnHitByMatch();
+
+            myIsContaminated = true;
+            var blocks = myGridBundle.Container.GetAdjacentBlocks(GetPosition());   
+            foreach (AbstractBlock block in blocks)
+            {
+                if (block is AngryBlock angryBlock) // iron block needs them to be of its index as well!
+                {
+                    angryBlock.Contaminate();
+                }
+            }
+        }
+
+        public bool DiedFromContamination()
+        {
+            if (myIsContaminated)
+            {
+                //change sprite to single AngryTile
+                myLife--;
+            }
+            myIsContaminated = false;
+
+            return myLife <= 0;
         }
 
         // on destruction!

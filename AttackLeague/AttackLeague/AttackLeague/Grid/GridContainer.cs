@@ -50,11 +50,6 @@ namespace AttackLeague.AttackLeague.Grid
             return myWidth;
         }
 
-        //public void DebugRerandomizeGrid()
-        //{
-        //    myBlockGenerator.GenerateGrid();
-        //}
-
         public void GenerateTiles()
         {
             myGrid = new List<List<Tile>>();
@@ -147,7 +142,6 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 for (int y = aRectangle.Y; y < aRectangle.Y + aRectangle.Height; y++)
                 {
-
                     if (myGrid[y][x].IsEmpty() == false)
                     {
                         return true;
@@ -155,6 +149,43 @@ namespace AttackLeague.AttackLeague.Grid
                 }
             }
             return false;
+        }
+
+        public HashSet<AbstractBlock> GetAdjacentBlocks(HashSet<AbstractBlock> aBlockList)
+        {
+            HashSet<AbstractBlock> returnBlockList = new HashSet<AbstractBlock>();
+
+            foreach (AbstractBlock block in aBlockList)
+                returnBlockList.UnionWith(GetAdjacentBlocks(block.GetPosition()));
+
+            returnBlockList.OrderBy(block => block.GetPositionWorth());
+
+            return returnBlockList;
+        }
+
+        public HashSet<AbstractBlock> GetAdjacentBlocks(Point aPosition)
+        {
+            HashSet<AbstractBlock> returnBlockList = new HashSet<AbstractBlock>();
+            AbstractBlock block;
+
+            block = GetBlockAtPosition(aPosition + new Point(-1, 0));
+            if (block != null)
+                returnBlockList.Add(block);
+
+            block = GetBlockAtPosition(aPosition + new Point(1, 0));
+            if (block != null)
+                returnBlockList.Add(block);
+
+            block = GetBlockAtPosition(aPosition + new Point(0, 1));
+            if (block != null)
+                returnBlockList.Add(block);
+
+            block = GetBlockAtPosition(aPosition + new Point(0, -1));
+            if (block != null)
+                returnBlockList.Add(block);
+
+            return returnBlockList;
+
         }
 
         public void SetBlock(Point aPosition, AbstractBlock aBlock)

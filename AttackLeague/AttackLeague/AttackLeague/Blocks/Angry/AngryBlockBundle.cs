@@ -11,9 +11,15 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
     public class AngryBlockBundle
     {
         private List<AngryBlock> myAngryBlocks;
+        private List<FrozenBlock> myFrozenBlocks;
+
         private GridBundle myGridBundle;
 
-        bool myIsDisintegrating = false;
+        private float myBaseDisintegratingTimer = 30.0f;
+        private float myCurrentDisintegratingTimer = 0.0f;
+        private int myDisintegratingIndex = 0;
+
+        private bool myIsDisintegrating = false;
 
         public int Index { get; private set; }
         // gridbundle?
@@ -22,16 +28,67 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         {
             myGridBundle = aGridBundle;
             myAngryBlocks = new List<AngryBlock>();
+            myFrozenBlocks = new List<FrozenBlock>();
         }
 
         public void AddBlock(AngryBlock aBlock)
         {
             myAngryBlocks.Add(aBlock);
+            myAngryBlocks.Sort();
         }
 
         public void Update(float aGameSpeed)
         {
+            if (myIsDisintegrating)
+            {
+                UpdateDisintegrate(aGameSpeed);
+            }
+        }
 
+        private void UpdateDisintegrate(float aGameSpeed)
+        {
+            myCurrentDisintegratingTimer -= aGameSpeed;
+
+            if (myCurrentDisintegratingTimer <= 0.0f)
+            {
+                if (myDisintegratingIndex >= myAngryBlocks.Count)
+                {
+                    FinishDisintegrating();
+                    return;
+                }
+
+                AngryBlock angryBlock = myAngryBlocks[myDisintegratingIndex];
+                if (angryBlock.DiedFromContamination())
+                {
+                    myFrozenBlocks.Add(myGridBundle.Generator.GenerateFrozenBlockAtPosition(angryBlock.GetPosition()));
+
+                    myAngryBlocks.RemoveAt(myDisintegratingIndex);
+                }
+                else
+                {
+                    myDisintegratingIndex++;
+                }
+
+                myCurrentDisintegratingTimer = myBaseDisintegratingTimer;
+            }
+        }
+
+        private void FinishDisintegrating()
+        {
+            foreach(FrozenBlock frozenBlock in myFrozenBlocks)
+            {
+                myGridBundle.Generator.ConvertFrozenBlockToFallingOrColorBlock(frozenBlock);
+            }
+            foreach(AngryBlock angryBlock in myAngryBlocks)
+            {
+                angryBlock.UnFreeze();
+            }
+            myFrozenBlocks.Clear();
+
+            myIsDisintegrating = false;
+            myDisintegratingIndex = 0;
+
+            //if we are dead, remove from gridbehavior
         }
 
         public void SetIndex(int aIndex)
@@ -42,11 +99,7 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public void OnHitByMatch()
         {
             myIsDisintegrating = true;
-
-            foreach (var block in myAngryBlocks)
-            {
-                block.Freeze();
-            }
+            myCurrentDisintegratingTimer = 120.0f;
         }
 
         public bool CanWeFall()
@@ -71,6 +124,11 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
                 block.SetCanFall(canFall);
                 block.SetFriendlyAwareness(true);
             }
+        }
+
+        public bool IsDed()
+        {
+            return myAngryBlocks.Count <= 0 && myFrozenBlocks.Count <= 0;
         }
     }
 }

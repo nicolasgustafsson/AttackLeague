@@ -196,7 +196,26 @@ namespace AttackLeague.AttackLeague.Grid
 
             myBlocks[myBlocks.LastIndexOf(previousBlock)] = aBlock;
 
-            myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock);
+            myGrid[aPosition.Y][aPosition.X].SetBlock(aBlock); //here
+        }
+
+        public void EnsureUnique()
+        {
+            for (int y = 0; y < myGrid.Count; ++y)
+            {
+                for (int x = 0; x < myGrid[y].Count; ++x)
+                {
+                    for (int row = y; row < myGrid.Count; ++row)
+                    {
+                        for (int col = 0; col < myGrid[row].Count; ++col)
+                        {
+                            if (x != col && y != row && myGrid[y][x].GetBlock() != null && myGrid[row][col].GetBlock() != null)
+                                Debug.Assert(myGrid[y][x].GetBlock().GetPosition().X != myGrid[row][col].GetBlock().GetPosition().X &&
+                                             myGrid[y][x].GetBlock().GetPosition().Y != myGrid[row][col].GetBlock().GetPosition().Y, "FAACKD UP");
+                        }
+                    }
+                }
+            } 
         }
 
         public bool RowIsEmpty(int aRowNumber)

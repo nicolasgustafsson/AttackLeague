@@ -67,6 +67,8 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             }
 
             myGridBundle.Container.PrintGrid();
+            myGridBundle.Container.EnsureUnique();
+
         }
 
         public FrozenBlock GenerateFrozenBlockAtPosition(Point aPosition)
@@ -166,26 +168,40 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
                 myGridBundle.Container.myGrid[aRowNumber + 1][columns] = myGridBundle.Container.myGrid[aRowNumber][columns];
-                myGridBundle.Container.myGrid[aRowNumber + 1][columns].GetBlock().SetPosition(columns, aRowNumber + 1);
+                myGridBundle.Container.myGrid[aRowNumber + 1][columns].GetBlock().SetPosition(columns, aRowNumber + 1); //here
             }
         }
 
+
         public void RearrangeRaisedTiles()
         {
-            for (int rows = myGridBundle.Container.myGrid.Count() - 1; rows >= 1; rows--)
-            {
-                if (myGridBundle.Container.RowIsEmpty(rows) == false)
-                {
-                    if (myGridBundle.Container.HasRow(rows + 1) == false)
-                    {
-                        AddEmptyRow();
-                    }
+            int topRow = myGridBundle.Container.GetCurrentHeight() -1;
 
-                    MoveRowUp(rows);
+            bool topRowIsEmpty = true;
+            for (int x = 0; x < myGridBundle.Container.GetInitialWidth(); x++)
+            {
+                if (myGridBundle.Container.myGrid[topRow][x].GetBlock() is EmptyBlock == false)
+                {
+                    topRowIsEmpty = false;
                 }
+            }
+            if (topRowIsEmpty == false)
+            {
+                AddEmptyRow();
+            }
+
+            int rowBeneathTopRow = myGridBundle.Container.GetCurrentHeight() - 2;
+            for (int rows = rowBeneathTopRow; rows >= 1; rows--)
+            {
+                MoveRowUp(rows);
+
+                //if (myGridBundle.Container.RowIsEmpty(rows) == false)
+                //{
+                //}
             }
             ConvertFrozenRowToColorBlocks();
             CreateFrozenRow();
+            myGridBundle.Container.EnsureUnique();
         }
 
         public void AddEmptyRow()
@@ -194,14 +210,19 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             int row = myGridBundle.Container.myGrid.Count() - 1;
             for (int columns = 0; columns < myGridBundle.Container.GetInitialWidth(); ++columns)
             {
-                EmptyBlock block = new EmptyBlock(myGridBundle);
-                block.SetPosition(columns, row);
-                myGridBundle.Container.myBlocks.Add(block);
-
                 Tile tiley = new Tile();
-                tiley.SetBlock(block);
                 myGridBundle.Container.myGrid[row].Add(tiley);
+
+                EmptyBlock block = new EmptyBlock(myGridBundle);
+                block.SetPosition(columns, row); //here
+                myGridBundle.Container.myBlocks.Add(block);
+                tiley.SetBlock(block);
+
+                //myGridBundle.Container.SetBlock(new Point(columns, row), block);
+
             }
+            //myGridBundle.Container.EnsureUnique();
+
         }
 
         private void CreateFrozenRow()

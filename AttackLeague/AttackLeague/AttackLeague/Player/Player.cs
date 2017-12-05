@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.Utility.Sprite;
+using System;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -62,8 +63,12 @@ namespace AttackLeague.AttackLeague.Player
 
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
         {
-            if (myGridBundle.Behavior.HasRaisedGridThisFrame())
+               //(myPosition.Y >= myGridBundle.Container.GetInitialHeight() && myGridBundle.Behavior.GetRaisingOffset() != 0f) == false)
+            if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight())// &&
+            {
                 myPosition.Y++;
+                Console.WriteLine("player pos y: " + myPosition.Y);
+            }
 
             myGridBundle.Behavior.Draw(aSpriteBatch);
 

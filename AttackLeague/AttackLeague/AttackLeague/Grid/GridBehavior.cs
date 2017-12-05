@@ -22,6 +22,15 @@ namespace AttackLeague.AttackLeague.Grid
              Goes left to right(right to left)
              Crashes sometimes(AllowFalling?) in loopy thingy, index out of bounds I think
 
+             DO THE HARD CODED THING IN behavior with player,
+             so player jumps down only when grid is EXCEEDING roof, but access top row otherwise.
+             We have a (search for) 'hardcoded' thingamajjig down in here
+             and then make sure that grid is not minimally offsetted above exceedementing when exceeding roof. Should SNAP to it's snappy aligned position thingy,
+             Yes.
+             Then look at the thingy where rightmost block gets turned before others.
+             Then maek sure everything works?
+             then have some hot cocoa.
+             Yes.
 
          
          Perhaps fiddle around with SpriteTileset 
@@ -122,6 +131,7 @@ namespace AttackLeague.AttackLeague.Grid
 
         public void Update() //HEREISUPDATE ----------------------------------------------------------------------------------------------------------
         {
+            myGridContainer.EnsureUnique();
             myHasRaisedThisFrame = false;
 
             const float DeltaTime = 1.0f / 60.0f;
@@ -130,8 +140,10 @@ namespace AttackLeague.AttackLeague.Grid
                 myGameTime += DeltaTime;
                 myGameSpeed = Math.Min(1.0f + (myGameTime / 60f) + myAdditionalGameSpeed, 10f);
             }
+            myGridContainer.EnsureUnique();
 
             HandleChains(DeltaTime);
+            myGridContainer.EnsureUnique();
 
             if (IsFrozen() == false && myChainTimer <= 0f)
             {
@@ -144,19 +156,23 @@ namespace AttackLeague.AttackLeague.Grid
                 else
                 {
                     float tilesPerSecond = 0.3f * myGameSpeed;
+                    myGridContainer.EnsureUnique();
                     Raise(tilesPerSecond);
+                    myGridContainer.EnsureUnique();
                     //reset mercy timer
                     myMercyTimer = MyMaxMercyTimer / myGameSpeed;
                 }
             }
+            myGridContainer.EnsureUnique();
 
             //if it crashes here there are big chances that they have same position
             myGridContainer.myBlocks.Sort();
-
+            myGridContainer.EnsureUnique();
             foreach (var angryBundle in myAngryBundles)
             {
                 angryBundle.UpdateFallingStatus();
             }
+            myGridContainer.EnsureUnique();
 
             // just update all blocks, give them an update function to override
             for (int i = 0; i < myGridContainer.myBlocks.Count; i++)
@@ -164,14 +180,17 @@ namespace AttackLeague.AttackLeague.Grid
                 AbstractBlock block = myGridContainer.myBlocks[i];
                 block.Update(myGameSpeed);
             }
+            myGridContainer.EnsureUnique();
 
             foreach (var angryBundle in myAngryBundles)
             {
                 angryBundle.Update(myGameSpeed);
             }
+            myGridContainer.EnsureUnique();
 
             CheckForMatches();
             ResetCanChain();
+            myGridContainer.EnsureUnique();
 
             for (int iBundle = 0; iBundle < myAngryBundles.Count(); iBundle++)
             {
@@ -182,6 +201,7 @@ namespace AttackLeague.AttackLeague.Grid
                 }
             }
 
+            myGridContainer.EnsureUnique();
         }
 
         private void OnChainIncrement(int ChainLength)
@@ -410,8 +430,19 @@ namespace AttackLeague.AttackLeague.Grid
                 RearrangeRaisedTiles();
                 myRaisingOffset += 1f;
                 myHasRaisedThisFrame = true;
+                //if (eXceedingROof)
+                //    myRaisingOffset = 0f; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ <-------------------------------- HERE HERE
             }
         }
+
+        //public bool hardcodedthingagain()
+        //{
+        //    // if grid is aligned without offset && raises above roof
+        //    // then it should no go higher
+
+
+        //    return 
+        //}
 
         public float GetRaisingOffset()
         {

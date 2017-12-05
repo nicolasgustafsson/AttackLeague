@@ -87,10 +87,11 @@ namespace AttackLeague.AttackLeague.Blocks
             if (WillPassTile(aGameSpeed)) 
             {
                 PassTile();
-                position = GetPosition();
+                position = GetPosition(); // 14 -> 13
                 myGridBundle.Container.InitializeBlock(position + new Point(0, 1), new EmptyBlock(myGridBundle));
 
                 myGridBundle.Container.SetBlock(position, this);
+                myGridBundle.Container.EnsureUnique();
             }
         }
 

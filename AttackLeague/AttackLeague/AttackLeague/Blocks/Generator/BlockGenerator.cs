@@ -128,7 +128,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
                     myGridBundle.Container.SetBlock(new Point(aPosition.X + x, aPosition.Y + y), tempy);
                 }
             }
-            angryBundle.SetIndex(myNextAngryIndex++);
+            angryBundle.Initialize(myNextAngryIndex++);
             return angryBundle;
         }
 

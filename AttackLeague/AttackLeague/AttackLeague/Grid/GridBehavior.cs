@@ -22,16 +22,16 @@ namespace AttackLeague.AttackLeague.Grid
              Goes left to right(right to left)
              Crashes sometimes(AllowFalling?) in loopy thingy, index out of bounds I think
 
-             DO THE HARD CODED THING IN behavior with player,
-             so player jumps down only when grid is EXCEEDING roof, but access top row otherwise.
-             We have a (search for) 'hardcoded' thingamajjig down in here
-             and then make sure that grid is not minimally offsetted above exceedementing when exceeding roof. Should SNAP to it's snappy aligned position thingy,
+            Notes for Tuesday!
+                Do the BlockDelegate function and use it in the non-compiling code below
+                Steal functionality from AngryBlockBundle (solve the things with updating into frozen things)
+                see what needs to be done!
+
              Yes.
-             Then look at the thingy where rightmost block gets turned before others.
-             Then maek sure everything works?
              then have some hot cocoa.
              Yes.
 
+            YLF TAKE THE WEEEL
          
          Perhaps fiddle around with SpriteTileset 
         */
@@ -40,6 +40,7 @@ namespace AttackLeague.AttackLeague.Grid
         private GridContainer myGridContainer;
 
         private List<AngryBlockBundle> myAngryBundles;
+        private List<BlockTimedIterator> myBlockIterators;
 
         private Vector2 myOffset = new Vector2(100, 100);
         private Sprite myBorderSprite;
@@ -182,7 +183,7 @@ namespace AttackLeague.AttackLeague.Grid
             }
             myGridContainer.EnsureUnique();
 
-            foreach (var angryBundle in myAngryBundles)
+            foreach (var angryBundle in myAngryBundles) // foreach bundle if bundle isDisitergraintigb UpdateDIsintegrate break;
             {
                 angryBundle.Update(myGameSpeed);
             }
@@ -266,17 +267,7 @@ namespace AttackLeague.AttackLeague.Grid
 
 
                 //find adjacent blocks to matchedblocks
-
-                HashSet<AbstractBlock> adjacentBlocks = myGridContainer.GetAdjacentBlocks(matchedBlocks);
-                
-                foreach(AbstractBlock block in adjacentBlocks)
-                {
-                    //mb block is null?
-                    if (block is AngryBlock angryBlock)
-                    {
-                        angryBlock.Contaminate();
-                    }
-                }
+                ContaminateBlocks(matchedBlocks);
             }
 
             if (matchedBlocks.Count > 3)
@@ -289,6 +280,36 @@ namespace AttackLeague.AttackLeague.Grid
                 myChainCounter++;
                 OnChainIncrement(myChainCounter);
             }
+        }
+
+        private void ContaminateBlocks(HashSet<AbstractBlock> aMatchedBlocks)
+        {
+            HashSet<AbstractBlock> adjacentBlocks = myGridContainer.GetAdjacentBlocks(aMatchedBlocks);
+            List<AngryBlock> angryBlocks = new List<AngryBlock>();
+            foreach (AbstractBlock block in adjacentBlocks)
+            {
+                //mb block is null?
+                if (block is AngryBlock angryBlock && angryBlock.IsBusy() == false)
+                {
+                    angryBlock.Contaminate();
+                    angryBlocks.Add(angryBlock);
+                }
+            }
+            foreach (var angryBundle in myAngryBundles)
+            {
+                if (angryBundle.IsContaminated())
+                {
+                    angryBlocks.Concat(angryBundle.GetBlocksForIteratingPurposes());
+                }
+            }
+            angryBlocks = angryBlocks.OrderByDescending(block =>
+            {
+                return block.GetPosition().Y * -100 + block.GetPosition().X;
+            }).ToList();
+
+            const float MagicFrameAmount = 30f; //change to int, because of frames?
+            myBlockIterators.Add(new BlockTimedIterator(/*do dis function, copy stuff from angryBundle!*/, angryBlocks, MagicFrameAmount));
+            //create iterator
         }
 
         private void OnCombo(HashSet<AbstractBlock> matchedBlocks)
@@ -428,7 +449,7 @@ namespace AttackLeague.AttackLeague.Grid
             if (RaisingOffsetExceededTile() == true)
             {
                 RearrangeRaisedTiles();
-                myRaisingOffset += 1f;
+                myRaisingOffset = 0.0f;
                 myHasRaisedThisFrame = true;
                 //if (eXceedingROof)
                 //    myRaisingOffset = 0f; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ <-------------------------------- HERE HERE

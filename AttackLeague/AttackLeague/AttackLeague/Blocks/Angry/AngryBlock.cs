@@ -206,6 +206,11 @@ namespace AttackLeague.AttackLeague.Blocks
             return myLife <= 0;
         }
 
+        public bool IsBusy()
+        {
+            return myIsFrozen || myIsContaminated;
+        }
+
         // on destruction!
         // check all block to my sides
         // I have been checked

@@ -1,4 +1,5 @@
 ﻿using AttackLeague.AttackLeague.Grid;
+using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         private float myCurrentDisintegratingTimer = 0.0f;
         private int myDisintegratingIndex = 0;
 
-        private bool myIsDisintegrating = false;
+        private bool myIsContaminated = false;
 
         public int Index { get; private set; }
         // gridbundle?
@@ -34,18 +35,27 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public void AddBlock(AngryBlock aBlock)
         {
             myAngryBlocks.Add(aBlock);
-            myAngryBlocks.Sort();
+        }
+
+        public void Initialize(int aIndex)
+        {
+            myAngryBlocks = myAngryBlocks.OrderByDescending(block =>
+            {
+                return block.GetPosition().Y * -100 + block.GetPosition().X; 
+            }).ToList();
+
+            Index = aIndex;
         }
 
         public void Update(float aGameSpeed)
         {
-            if (myIsDisintegrating)
+            if (myIsContaminated)
             {
                 UpdateDisintegrate(aGameSpeed);
             }
         }
 
-        private void UpdateDisintegrate(float aGameSpeed)
+        private bool UpdateDisintegrate(float aGameSpeed)
         {
             myCurrentDisintegratingTimer -= aGameSpeed;
 
@@ -53,8 +63,8 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             {
                 if (myDisintegratingIndex >= myAngryBlocks.Count)
                 {
-                    FinishDisintegrating();
-                    return;
+                    //FinishDisintegrating();
+                    return true;
                 }
 
                 AngryBlock angryBlock = myAngryBlocks[myDisintegratingIndex];
@@ -71,9 +81,10 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
                 myCurrentDisintegratingTimer = myBaseDisintegratingTimer;
             }
+            return false;
         }
 
-        private void FinishDisintegrating()
+        public void FinishDisintegrating()
         {
             foreach(FrozenBlock frozenBlock in myFrozenBlocks)
             {
@@ -85,20 +96,15 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             }
             myFrozenBlocks.Clear();
 
-            myIsDisintegrating = false;
+            myIsContaminated = false;
             myDisintegratingIndex = 0;
 
             //if we are dead, remove from gridbehavior
         }
 
-        public void SetIndex(int aIndex)
-        {
-            Index = aIndex;
-        }
-
         public void OnHitByMatch()
         {
-            myIsDisintegrating = true;
+            myIsContaminated = true;
             myCurrentDisintegratingTimer = 120.0f;
         }
 
@@ -129,6 +135,16 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public bool IsDed()
         {
             return myAngryBlocks.Count <= 0 && myFrozenBlocks.Count <= 0;
+        }
+
+        public bool IsContaminated()
+        {
+            return myIsContaminated;
+        }
+
+        public List<AngryBlock> GetBlocksForIteratingPurposes()
+        {
+            return myAngryBlocks;
         }
     }
 }

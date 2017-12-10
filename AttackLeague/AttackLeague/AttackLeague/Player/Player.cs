@@ -37,6 +37,11 @@ namespace AttackLeague.AttackLeague.Player
                 myGridBundle.Behavior.SetIsRaisingBlocks();
         }
 
+        private bool CanBeAtTop()
+        {
+            return myGridBundle.Container.IsExceedingRoof();
+        }
+
         private void HandleMovement()
         {
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveRight"))
@@ -51,7 +56,7 @@ namespace AttackLeague.AttackLeague.Player
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveUp"))
             {
-                if (myPosition.Y < myGridBundle.Container.GetInitialHeight())
+                if (myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0.0f : 1.0f))
                     myPosition.Y += 1;
             }
             if (myPlayerInfo.myMappedActions.ActionIsActive("MoveDown"))
@@ -64,7 +69,7 @@ namespace AttackLeague.AttackLeague.Player
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
         {
                //(myPosition.Y >= myGridBundle.Container.GetInitialHeight() && myGridBundle.Behavior.GetRaisingOffset() != 0f) == false)
-            if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight())// &&
+            if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0 : 1))// &&
             {
                 myPosition.Y++;
                 Console.WriteLine("player pos y: " + myPosition.Y);

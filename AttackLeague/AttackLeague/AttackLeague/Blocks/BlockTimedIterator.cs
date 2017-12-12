@@ -6,32 +6,41 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.Blocks
 {
-    delegate void BlockDelegate(AbstractBlock aBlock);
+    public delegate void BlockDelegate(AbstractBlock aBlock);
+    public delegate void FinishedDelegate(List<AbstractBlock> aPreviousBlocks);
 
     class BlockTimedIterator
     {
-        BlockTimedIterator(BlockDelegate aFunctionToRunOnBlocks, List<AbstractBlock> aBlocks, float aTimeBetweenIterations)
+        public BlockTimedIterator(BlockDelegate aFunctionToRunOnBlocks, List<AbstractBlock> aBlocks, float aTimeBetweenIterations, FinishedDelegate aFinnishFunction = null)
         {
             myFunctionToRun = aFunctionToRunOnBlocks;
             myBlocks = aBlocks;
-            myTimeBetweenIterations = aTimeBetweenIterations;
-            myCurrentCooldown = myTimeBetweenIterations;
+            myFramesBetweenIterations = aTimeBetweenIterations;
+            myCurrentCooldown = myFramesBetweenIterations;
+            myFunctionToFinnish = aFinnishFunction;
 
             myCurrentIndex = 0;
         }
 
-        void Update(float aDeltaTime)
+        public void Update()
         {
             if (IsFinished())
                 return;
 
-            myCurrentCooldown -= aDeltaTime;
+            --myCurrentCooldown;
 
-            if (myCurrentCooldown < 0)
+            while (myCurrentCooldown < 0)
             {
-                myCurrentCooldown += myTimeBetweenIterations;
+                myCurrentCooldown += myFramesBetweenIterations;
 
                 Iterate();
+                if (IsFinished() && myFunctionToFinnish != null)
+                {
+                    myFunctionToFinnish(myBlocks);
+                    myBlocks.Clear();
+                    myBlocks = null;
+                    break;
+                }
             }
         }
 
@@ -41,14 +50,15 @@ namespace AttackLeague.AttackLeague.Blocks
             myCurrentIndex++;
         }
 
-        bool IsFinished()
+        public bool IsFinished()
         {
-            return myCurrentIndex <= myBlocks.Count;
+            return myBlocks == null || myBlocks.Count <= myCurrentIndex;
         }
 
         List<AbstractBlock> myBlocks;
         BlockDelegate myFunctionToRun;
-        float myTimeBetweenIterations;
+        FinishedDelegate myFunctionToFinnish;
+        float myFramesBetweenIterations;
         float myCurrentCooldown;
         int myCurrentIndex;
     }

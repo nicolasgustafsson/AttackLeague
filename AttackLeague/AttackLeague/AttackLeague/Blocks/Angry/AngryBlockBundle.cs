@@ -49,43 +49,27 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
         public void Update(float aGameSpeed)
         {
-            if (myIsContaminated)
-            {
-                UpdateDisintegrate(aGameSpeed);
-            }
         }
 
-        private bool UpdateDisintegrate(float aGameSpeed)
+        public void HandleBop(AbstractBlock aBlock)
         {
-            myCurrentDisintegratingTimer -= aGameSpeed;
-
-            if (myCurrentDisintegratingTimer <= 0.0f)
+            AngryBlock angryBlock = aBlock as AngryBlock;
+            if (angryBlock.IsContaminated())
             {
-                if (myDisintegratingIndex >= myAngryBlocks.Count)
-                {
-                    //FinishDisintegrating();
-                    return true;
-                }
-
-                AngryBlock angryBlock = myAngryBlocks[myDisintegratingIndex];
-                if (angryBlock.DiedFromContamination())
-                {
-                    myFrozenBlocks.Add(myGridBundle.Generator.GenerateFrozenBlockAtPosition(angryBlock.GetPosition()));
-
-                    myAngryBlocks.RemoveAt(myDisintegratingIndex);
-                }
-                else
-                {
-                    myDisintegratingIndex++;
-                }
-
-                myCurrentDisintegratingTimer = myBaseDisintegratingTimer;
+                angryBlock.ResolveContamination();
             }
-            return false;
+            if (angryBlock.IsDead())
+            {
+                myFrozenBlocks.Add(myGridBundle.Generator.GenerateFrozenBlockAtPosition(angryBlock.GetPosition()));
+                myAngryBlocks.Remove(angryBlock);
+            }
         }
 
         public void FinishDisintegrating()
         {
+            if (myIsContaminated == false)
+                return;
+
             foreach(FrozenBlock frozenBlock in myFrozenBlocks)
             {
                 myGridBundle.Generator.ConvertFrozenBlockToFallingOrColorBlock(frozenBlock);
@@ -97,7 +81,6 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             myFrozenBlocks.Clear();
 
             myIsContaminated = false;
-            myDisintegratingIndex = 0;
 
             //if we are dead, remove from gridbehavior
         }

@@ -78,6 +78,7 @@ namespace AttackLeague.AttackLeague.Grid
             Debug.Assert(GameInfo.GameInfo.myPlayerCount > 0);
             myOffset.X = (GameInfo.GameInfo.myScreenSize.X / (GameInfo.GameInfo.myPlayerCount + 1)) * (aPlayerIndex + 1);
             myOffset.X -= myBorderSprite.GetSize().X / 2f;
+            myBlockIterators = new List<BlockTimedIterator>();
         }
 
         public void OnGridReset()
@@ -132,7 +133,6 @@ namespace AttackLeague.AttackLeague.Grid
 
         public void Update() //HEREISUPDATE ----------------------------------------------------------------------------------------------------------
         {
-            myGridContainer.EnsureUnique();
             myHasRaisedThisFrame = false;
 
             const float DeltaTime = 1.0f / 60.0f;
@@ -141,10 +141,8 @@ namespace AttackLeague.AttackLeague.Grid
                 myGameTime += DeltaTime;
                 myGameSpeed = Math.Min(1.0f + (myGameTime / 60f) + myAdditionalGameSpeed, 10f);
             }
-            myGridContainer.EnsureUnique();
 
             HandleChains(DeltaTime);
-            myGridContainer.EnsureUnique();
 
             if (IsFrozen() == false && myChainTimer <= 0f)
             {
@@ -157,23 +155,18 @@ namespace AttackLeague.AttackLeague.Grid
                 else
                 {
                     float tilesPerSecond = 0.3f * myGameSpeed;
-                    myGridContainer.EnsureUnique();
                     Raise(tilesPerSecond);
-                    myGridContainer.EnsureUnique();
                     //reset mercy timer
                     myMercyTimer = MyMaxMercyTimer / myGameSpeed;
                 }
             }
-            myGridContainer.EnsureUnique();
 
             //if it crashes here there are big chances that they have same position
             myGridContainer.myBlocks.Sort();
-            myGridContainer.EnsureUnique();
             foreach (var angryBundle in myAngryBundles)
             {
                 angryBundle.UpdateFallingStatus();
             }
-            myGridContainer.EnsureUnique();
 
             // just update all blocks, give them an update function to override
             for (int i = 0; i < myGridContainer.myBlocks.Count; i++)
@@ -181,17 +174,22 @@ namespace AttackLeague.AttackLeague.Grid
                 AbstractBlock block = myGridContainer.myBlocks[i];
                 block.Update(myGameSpeed);
             }
-            myGridContainer.EnsureUnique();
-
             foreach (var angryBundle in myAngryBundles) // foreach bundle if bundle isDisitergraintigb UpdateDIsintegrate break;
             {
                 angryBundle.Update(myGameSpeed);
             }
-            myGridContainer.EnsureUnique();
+            for (int i = 0; i < myBlockIterators.Count; ++i)
+            {
+                myBlockIterators[i].Update();
+                if (myBlockIterators[i].IsFinished())
+                {
+                    myBlockIterators.RemoveAt(i);
+                    i--;
+                }
+            }
 
             CheckForMatches();
             ResetCanChain();
-            myGridContainer.EnsureUnique();
 
             for (int iBundle = 0; iBundle < myAngryBundles.Count(); iBundle++)
             {
@@ -201,8 +199,6 @@ namespace AttackLeague.AttackLeague.Grid
                     iBundle--;
                 }
             }
-
-            myGridContainer.EnsureUnique();
         }
 
         private void OnChainIncrement(int ChainLength)
@@ -285,14 +281,13 @@ namespace AttackLeague.AttackLeague.Grid
         private void ContaminateBlocks(HashSet<AbstractBlock> aMatchedBlocks)
         {
             HashSet<AbstractBlock> adjacentBlocks = myGridContainer.GetAdjacentBlocks(aMatchedBlocks);
-            List<AngryBlock> angryBlocks = new List<AngryBlock>();
+            List<AbstractBlock> angryBlocks = new List<AbstractBlock>();
             foreach (AbstractBlock block in adjacentBlocks)
             {
                 //mb block is null?
                 if (block is AngryBlock angryBlock && angryBlock.IsBusy() == false)
                 {
-                    angryBlock.Contaminate();
-                    angryBlocks.Add(angryBlock);
+                    angryBlock.Contaminate(ref angryBlocks);
                 }
             }
             foreach (var angryBundle in myAngryBundles)
@@ -308,8 +303,17 @@ namespace AttackLeague.AttackLeague.Grid
             }).ToList();
 
             const float MagicFrameAmount = 30f; //change to int, because of frames?
-            myBlockIterators.Add(new BlockTimedIterator(/*do dis function, copy stuff from angryBundle!*/, angryBlocks, MagicFrameAmount));
+            myBlockIterators.Add(new BlockTimedIterator(AngryBlock.HandleBopStatic, angryBlocks, MagicFrameAmount, FinnishAngryBops));
             //create iterator
+        }
+
+        private void FinnishAngryBops(List<AbstractBlock> aPreviousBlocks)
+        {
+            foreach (var block in aPreviousBlocks)
+            {
+                AngryBlock angryBlock = block as AngryBlock;
+                angryBlock.HandleDisintegrating();
+            }
         }
 
         private void OnCombo(HashSet<AbstractBlock> matchedBlocks)

@@ -68,6 +68,17 @@ namespace AttackLeague.AttackLeague.Blocks
             }
         }
 
+        public void HandleDisintegrating()
+        {
+            myBundle.FinishDisintegrating();
+        }
+
+        public static void HandleBopStatic(AbstractBlock aBlock)
+        {
+            AngryBlock angryBlock = aBlock as AngryBlock;
+            angryBlock.myBundle.HandleBop(aBlock);
+        }
+
         public void Freeze()
         {
             myIsFrozen = true;
@@ -108,18 +119,36 @@ namespace AttackLeague.AttackLeague.Blocks
 
         private void SetAngryTile()
         {
-            // we could do this by marshing tiles I think
-            myTileSetSprite.SetToAlone(); // hard coded for now, for test
+            if (myIsContaminated)
+                myTileSetSprite.SetToAlone();
+            else
+            {
+                Point position = GetPosition();
+                AngryBlock aboveBlock = myGridBundle.Container.GetBlockAtPosition(position.X, position.Y +1) as AngryBlock;
+                AngryBlock rightBlock = myGridBundle.Container.GetBlockAtPosition(position.X +1, position.Y) as AngryBlock;
+                AngryBlock downBlock = myGridBundle.Container.GetBlockAtPosition(position.X, position.Y -1) as AngryBlock;
+                AngryBlock leftBlock = myGridBundle.Container.GetBlockAtPosition(position.X -1, position.Y) as AngryBlock;
+                myTileSetSprite.SetManually(IsMahBuddy(aboveBlock), IsMahBuddy(rightBlock), IsMahBuddy(downBlock), IsMahBuddy(leftBlock));
+            }
+        }
+
+        private bool IsMahBuddy(AngryBlock aOther)
+        {
+            if (aOther == null)
+                return false;
+            return aOther.myIsContaminated == false && aOther.myBundle == myBundle;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
             SetAngryTile();
+            // if adjacent is angry & not dead & has my index, it's my friend
+            // if contaminated then use lonley sprite
 
             Vector2 position = GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset);
             position.Y -= myYOffset * myTileSetSprite.GetSize().Y;
 
-            if (myIsFrozen)
+            if (myIsContaminated)
             {
                 myFrozenSprite.SetPosition(position);
                 myFrozenSprite.Draw(aSpriteBatch);
@@ -130,9 +159,9 @@ namespace AttackLeague.AttackLeague.Blocks
                 myTileSetSprite.Draw(aSpriteBatch);
             }
 
-            myIcon.SetPosition(position);
-            SetIconAnimation();
-            myIcon.Draw(aSpriteBatch);
+            //myIcon.SetPosition(position);
+            //SetIconAnimation();
+            //myIcon.Draw(aSpriteBatch);
         }
 
         public void SetFriendlyAwareness(bool aValue)
@@ -174,7 +203,7 @@ namespace AttackLeague.AttackLeague.Blocks
             return false;
         }
 
-        public virtual void Contaminate()
+        public virtual void Contaminate(ref List<AbstractBlock> aContaminatedBlocks)
         {
             if (myIsContaminated)
                 return;
@@ -183,26 +212,33 @@ namespace AttackLeague.AttackLeague.Blocks
 
             myBundle.OnHitByMatch();
 
+            aContaminatedBlocks.Add(this);
             myIsContaminated = true;
             var blocks = myGridBundle.Container.GetAdjacentBlocks(GetPosition());   
             foreach (AbstractBlock block in blocks)
             {
                 if (block is AngryBlock angryBlock) // iron block needs them to be of its index as well!
                 {
-                    angryBlock.Contaminate();
+                    angryBlock.Contaminate(ref aContaminatedBlocks);
                 }
             }
         }
 
-        public bool DiedFromContamination()
+        public void ResolveContamination()
         {
-            if (myIsContaminated)
-            {
-                //change sprite to single AngryTile
-                myLife--;
-            }
+            myLife--;
             myIsContaminated = false;
+            //if no ded
+            // be aware of buddies
+        }
 
+        public bool IsContaminated()
+        {
+            return myIsContaminated;
+        }
+
+        public bool IsDead()
+        {
             return myLife <= 0;
         }
 

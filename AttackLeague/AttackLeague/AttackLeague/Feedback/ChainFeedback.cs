@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.Feedback
 {
-    public class ChainFeedback : IFeedback
+    public class ChainComboFeedback : IFeedback
     {
         private Sprite myBackdropSprite;
-        private SpriteFont myChainFont;
-        private string myChainText;
+        private SpriteFont myFont;
+        private string myText;
         private Vector2 myPosition;
         private Color myBackdropColor;
         private Betweenxt myAlphaTween;
         private Betweenxt myPositionTween;
 
-        public ChainFeedback(int aChainNumber, Vector2 aPosition)
+        public ChainComboFeedback(string aPrefix, int aChainNumber, Vector2 aPosition)
         {
             myPosition = aPosition;
-            myChainText = "x" + aChainNumber.ToString(); 
+            myText = aPrefix + aChainNumber.ToString(); 
             myBackdropSprite = new Sprite("chainBackdrop");
-            myChainFont = ContentManagerInstance.Content.Load<SpriteFont>("raditascartoon");
+            myFont = ContentManagerInstance.Content.Load<SpriteFont>("raditascartoon");
             myBackdropColor = GetColorFromChain(aChainNumber - 2);
 
             myAlphaTween = new Betweenxt(Betweenxt.Lerp, 255, 0, 0, 60);
@@ -54,7 +54,7 @@ namespace AttackLeague.AttackLeague.Feedback
             myBackdropSprite.SetPosition(myPosition);
 
             myBackdropSprite.Draw(aSpriteBatch);
-            aSpriteBatch.DrawString(myChainFont, myChainText, myPosition, Color.White);
+            aSpriteBatch.DrawString(myFont, myText, myPosition, Color.White);
 
             //aSpriteBatch.DrawString(myFont, 
             //    "Bonus time: " + myChainTimer.ToString() + 

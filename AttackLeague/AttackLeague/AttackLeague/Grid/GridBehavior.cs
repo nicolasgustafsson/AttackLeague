@@ -113,7 +113,7 @@ namespace AttackLeague.AttackLeague.Grid
                 if (myChainCounter > 1)
                 {
                     OnChainEnd(myChainCounter);
-                    myChainCounter = 0;
+                    myChainCounter = 1;
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace AttackLeague.AttackLeague.Grid
             Vector2 blockScreenPosition = rightMostTopMostBlock.GetScreenPosition(myOffset, myGridContainer.GetInitialHeight() - 1, myRaisingOffset);
             Vector2 feedbackOffset = new Vector2(AbstractBlock.GetTileSize(), AbstractBlock.GetTileSize()) / 2f;
             Vector2 feedbackPosition = blockScreenPosition + feedbackOffset;
-            FeedbackManager.AddFeedback(new ChainFeedback(aChainLength, feedbackPosition));
+            FeedbackManager.AddFeedback(new ChainComboFeedback("x", aChainLength, feedbackPosition));
         }
 
         private void OnChainEnd(int ChainLength)
@@ -342,14 +342,36 @@ namespace AttackLeague.AttackLeague.Grid
             }
         }
 
-        private void OnCombo(HashSet<AbstractBlock> matchedBlocks)
+        private void OnCombo(HashSet<AbstractBlock> aMatchedBlocks)
         {
-            Console.WriteLine($"Combo! {matchedBlocks.Count}");
+            Console.WriteLine($"Combo! {aMatchedBlocks.Count}");
             const float MagicNumber = 0.3f;
             if (myChainTimer < 0.0f)
                 myChainTimer = 0.0f;
-            myChainTimer += (matchedBlocks.Count * MagicNumber) / myGameSpeed;
-            CreateAngryComboBlock(matchedBlocks.Count -1);
+            myChainTimer += (aMatchedBlocks.Count * MagicNumber) / myGameSpeed;
+            CreateAngryComboBlock(aMatchedBlocks.Count -1);
+
+            AbstractBlock rightMostTopMostBlock = aMatchedBlocks.First();
+
+            foreach (AbstractBlock block in aMatchedBlocks)
+            {
+                if (block.GetPosition().X > rightMostTopMostBlock.GetPosition().X)
+                {
+                    rightMostTopMostBlock = block;
+                }
+                else if (block.GetPosition().X == rightMostTopMostBlock.GetPosition().X)
+                {
+                    if (block.GetPosition().Y > rightMostTopMostBlock.GetPosition().Y)
+                    {
+                        rightMostTopMostBlock = block;
+                    }
+                }
+            }
+
+            Vector2 blockScreenPosition = rightMostTopMostBlock.GetScreenPosition(myOffset, myGridContainer.GetInitialHeight() - 1, myRaisingOffset);
+            Vector2 feedbackOffset = new Vector2(AbstractBlock.GetTileSize(), AbstractBlock.GetTileSize()) / 2f;
+            Vector2 feedbackPosition = blockScreenPosition + feedbackOffset;
+            FeedbackManager.AddFeedback(new ChainComboFeedback("", aMatchedBlocks.Count, feedbackPosition));
         }
 
         private void CreateAngryComboBlock(int aComboSize)

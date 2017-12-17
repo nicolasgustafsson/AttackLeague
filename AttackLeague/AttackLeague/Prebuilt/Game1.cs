@@ -66,10 +66,7 @@ namespace AttackLeague
             GameInfo.myPlayers.Add(new Player(playerInfo));
         }
 
-        protected override void UnloadContent()
-        {
-
-        }
+        protected override void UnloadContent() {}
 
         protected override void Update(GameTime gameTime)
         {

@@ -264,9 +264,12 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
             AbstractBlock blockBeneath = myGridBundle.Container.GetBlockAtPosition(aBlock.GetPosition() + new Point(0, -1));
             AbstractBlock newBlock;
             if (blockBeneath.AllowsFalling())
+            {
                 newBlock = new FallingBlock(myGridBundle, aBlock.GetColor());
+                ((FallingBlock)newBlock).CanChain = true;
+            }
             else
-                newBlock = new ColorBlock(myGridBundle, aBlock.GetColor());
+                newBlock = new ColorBlock(myGridBundle, aBlock.GetColor(), true);
 
             myGridBundle.Container.SetBlock(aBlock.GetPosition(), newBlock);
             newBlock.LoadContent();

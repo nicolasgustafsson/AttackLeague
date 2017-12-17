@@ -15,7 +15,7 @@ namespace AttackLeague.AttackLeague
 {
     class ColorBlock : AbstractColorBlock
     {
-        private bool myCanChain = true;
+        private bool myCanChain = false;
         private Betweenxt myGroovyDanceMoves = null;
         private float myDanceOffset = 0.0f;
         private ESwitchDirection myDancingDirection = ESwitchDirection.Nope;
@@ -25,7 +25,7 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public ColorBlock(GridBundle aGridBundle, EBlockColor aColor)
+        public ColorBlock(GridBundle aGridBundle, EBlockColor aColor, bool aCanChain = false)
             :base(aGridBundle)
         {
             myColor = aColor;
@@ -35,6 +35,7 @@ namespace AttackLeague.AttackLeague
             :base(aGridBundle)
         {
             myColor = aBlock.GetColor();
+            myCanChain = aBlock.CanChain;
         }
 
         public override void Update(float aGameSpeed)

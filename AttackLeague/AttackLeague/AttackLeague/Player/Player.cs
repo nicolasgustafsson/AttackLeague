@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.Utility.Sprite;
 using System;
+using System.Collections.Generic;
+using AttackLeague.AttackLeague.Blocks.Angry;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -13,11 +15,17 @@ namespace AttackLeague.AttackLeague.Player
         protected GridBundle myGridBundle;
         protected bool myIsPaused = false;
         public PlayerInfo myPlayerInfo;
+        public List<int> myAttackOrder { get; private set; }
+        protected List<AngryInfo> myQueuedAngryBlocks = new List<AngryInfo>();
 
         public Player(PlayerInfo aInfo)
         {
             myPlayerInfo = aInfo;
+        }
 
+        public void Initialize()
+        {
+            myAttackOrder = new List<int>();
             myGridBundle = new GridBundle(myPlayerInfo.myPlayerIndex);
             //myGridBehavior = new GridBehavior(myPlayerInfo.myPlayerIndex); //gridcontainer?
             mySprite = new Sprite("curse");
@@ -28,13 +36,40 @@ namespace AttackLeague.AttackLeague.Player
             HandleMovement();
 
             if (myIsPaused == false)
+            {
                 myGridBundle.Behavior.Update();
+                if (myGridBundle.Behavior.IsFrozen() == false)
+                {
+                    ResolveAngryQueue();
+                }
+            }
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("SwapBlocks"))
                 myGridBundle.Behavior.SwapBlocksRight(myPosition);
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("RaiseBlocks"))
                 myGridBundle.Behavior.SetIsRaisingBlocks();
+        }
+
+        public bool CanBeAttacked()
+        {
+            return myGridBundle.Behavior.myIsDead == false; // todo : do crazy stuff
+        }
+
+        public void ReceiveAttack(AngryInfo aAngryInfo)
+        {
+            myQueuedAngryBlocks.Add(aAngryInfo);
+        }
+
+        private void ResolveAngryQueue() // todo, call
+        {
+            foreach (var angryInfo in myQueuedAngryBlocks)
+            {
+                Point position = new Point(0, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
+                AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
+                myGridBundle.Behavior.AddAngryBundle(angryBundle);
+            }
+            myQueuedAngryBlocks.Clear();
         }
 
         private bool CanBeAtTop()

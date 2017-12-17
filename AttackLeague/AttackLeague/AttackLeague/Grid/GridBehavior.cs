@@ -36,6 +36,8 @@ namespace AttackLeague.AttackLeague.Grid
          Perhaps fiddle around with SpriteTileset 
         */
 
+        private int myPlayerIndex;
+
         private BlockGenerator myBlockGenerator;
         private GridContainer myGridContainer;
 
@@ -60,11 +62,14 @@ namespace AttackLeague.AttackLeague.Grid
         private bool myWantsToRaiseBlocks = false;
         private float myRaisingOffset = 0f;
         private const float MyConstantRaisingSpeed = 3;//0
+        public bool myIsDead { get;  private set; }
 
         private int myChainCounter = 1;
 
         public GridBehavior(GridContainer aGridContainer, int aPlayerIndex)
         {
+            myPlayerIndex = aPlayerIndex;
+            myIsDead = false;
             myAngryBundles = new List<AngryBlockBundle>();
 
             myGridContainer = aGridContainer;
@@ -76,7 +81,7 @@ namespace AttackLeague.AttackLeague.Grid
 
             // set grid position based on how many players there are
             Debug.Assert(GameInfo.GameInfo.myPlayerCount > 0);
-            myOffset.X = (GameInfo.GameInfo.myScreenSize.X / (GameInfo.GameInfo.myPlayerCount + 1)) * (aPlayerIndex + 1);
+            myOffset.X = (GameInfo.GameInfo.myScreenSize.X / (GameInfo.GameInfo.myPlayerCount + 1)) * (myPlayerIndex + 1);
             myOffset.X -= myBorderSprite.GetSize().X / 2f;
             myBlockIterators = new List<BlockTimedIterator>();
         }
@@ -107,7 +112,7 @@ namespace AttackLeague.AttackLeague.Grid
                 if (myChainCounter > 1)
                 {
                     OnChainEnd(myChainCounter);
-                    myChainCounter = 1;
+                    myChainCounter = 0;
                 }
             }
         }
@@ -150,7 +155,7 @@ namespace AttackLeague.AttackLeague.Grid
                 {
                     myMercyTimer -= DeltaTime * myGameSpeed;
                     if (myMercyTimer < 0)
-                        Lose();
+                        myIsDead = true;
                 }
                 else
                 {
@@ -209,6 +214,7 @@ namespace AttackLeague.AttackLeague.Grid
 
         private void OnChainEnd(int ChainLength)
         {
+            GameInfo.GameInfo.SendMyRegards(new AngryInfo(new Point(myGridContainer.GetInitialWidth(), ChainLength -1), myPlayerIndex, EAngryType.Normal));
             Console.WriteLine($"Chain ended at {ChainLength}!");
         }
 
@@ -221,11 +227,6 @@ namespace AttackLeague.AttackLeague.Grid
                     colorBlock.CanChain = false;
                 }
             }
-        }
-
-        private void Lose()
-        {
-            Console.WriteLine("Thou art Losar");
         }
 
         private void CheckForMatches()
@@ -426,8 +427,12 @@ namespace AttackLeague.AttackLeague.Grid
             foreach (AbstractBlock blocky in myGridContainer.myBlocks)
             {
                 if (blocky is FallingBlock || blocky is DisappearingBlock)
-                {
                     return true;
+
+                if (blocky is AngryBlock angry)
+                {
+                    if (angry.IsContaminated())
+                        return true;
                 }
             }
             return false;

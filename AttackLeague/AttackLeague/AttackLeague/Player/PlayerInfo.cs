@@ -14,7 +14,8 @@ namespace AttackLeague.AttackLeague.Player
         GamePad2,
         GamePad3,
         GamePad4,
-        Keyboard
+        Keyboard,
+        Length
     }
 
     //information regarding the player playing the player ingame

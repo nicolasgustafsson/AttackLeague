@@ -15,7 +15,7 @@ namespace AttackLeague.AttackLeague
 {
     class ColorBlock : AbstractColorBlock
     {
-        private bool myCanChain = false;
+        private bool myCanChain = true;
         private Betweenxt myGroovyDanceMoves = null;
         private float myDanceOffset = 0.0f;
         private ESwitchDirection myDancingDirection = ESwitchDirection.Nope;
@@ -35,7 +35,6 @@ namespace AttackLeague.AttackLeague
             :base(aGridBundle)
         {
             myColor = aBlock.GetColor();
-            CanChain = aBlock.CanChain;
         }
 
         public override void Update(float aGameSpeed)
@@ -87,12 +86,10 @@ namespace AttackLeague.AttackLeague
             float danceDirection = 0.0f;
             if (myDancingDirection == ESwitchDirection.ToTheLeft)
             {
-                Console.WriteLine("Switchy To Left {0}, {1}", myColor.ToString(), myDanceOffset.ToString());
                 danceDirection = 48.0f;
             }
             else if (myDancingDirection == ESwitchDirection.ToTheRight)
             {
-                Console.WriteLine("Switchy To Right {0}, {1}", myColor.ToString(), myDanceOffset.ToString());
                 danceDirection = -48.0f;
             }
 

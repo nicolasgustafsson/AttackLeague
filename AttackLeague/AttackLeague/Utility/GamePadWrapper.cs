@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using AttackLeague.AttackLeague.Player;
 
 namespace AttackLeague.Utility
 {
@@ -20,6 +21,16 @@ namespace AttackLeague.Utility
             myControllerStates[aControllerIndex].myFramesSinceLastPressed++;
             myControllerStates[aControllerIndex].myPreviousState = myControllerStates[aControllerIndex].myCurrentState;
             myControllerStates[aControllerIndex].myCurrentState = GamePad.GetState(aControllerIndex);
+        }
+
+        public static bool IsGamePadConnected(EInputType aType)
+        {
+            if (aType >= EInputType.Length)
+                return false;
+            if (aType == EInputType.Keyboard)
+                return true;
+
+            return myControllerStates[(int)aType].myCurrentState.IsConnected;
         }
 
         public static bool ButtonPressed(Buttons aButton, int aControllerIndex)
@@ -69,6 +80,16 @@ namespace AttackLeague.Utility
 
             public int myFramesSinceLastPressed;
             public Buttons myLastCooldownButtonPressed;
+
+            bool JustDisconnected() 
+            {
+                return myCurrentState.IsConnected == false && myPreviousState.IsConnected == true;
+            }
+
+            bool JustConnected()
+            {
+                return myCurrentState.IsConnected == true && myPreviousState.IsConnected == false;
+            }
         }
 
     }

@@ -14,12 +14,9 @@ namespace AttackLeague
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private List<Player> myPlayers;
 
         public Game1()
         {
-            GameInfo.myPlayerCount = 0;
-
             graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
@@ -32,8 +29,6 @@ namespace AttackLeague
             Content.RootDirectory = "Content";
 
             ContentManagerInstance.Content = Content;
-
-            myPlayers = new List<Player>();
         }
 
         protected override void Initialize()
@@ -44,9 +39,28 @@ namespace AttackLeague
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameInfo.myPlayerCount++;
-            //myPlayers.Add(new DebugPlayer());
-            myPlayers.Add(new DebugPlayer());
+            GamePadWrapper.UpdateAllGamePads();
+            for (int i = 0; i < (int)EInputType.Length; i++)
+            {
+                EInputType input = (EInputType)i;
+                if (GamePadWrapper.IsGamePadConnected(input))
+                {
+                    AddPlayer(input);
+                }
+            }
+
+            foreach (var playerdesu in GameInfo.myPlayers)
+            {
+                playerdesu.Initialize();
+            }
+            GameInfo.SetAutomaticAttackOrder();
+        }
+
+        private void AddPlayer(EInputType aInputType)
+        {
+            PlayerInfo playerInfo = new PlayerInfo(GameInfo.myPlayerCount, aInputType);
+
+            GameInfo.myPlayers.Add(new Player(playerInfo));
         }
 
         protected override void UnloadContent()
@@ -66,7 +80,7 @@ namespace AttackLeague
                 DoSomeSplashyUIToTellThePlayersAnotherOneHasJoinedAndStuff
             */
 
-            foreach (var player in myPlayers)
+            foreach (var player in GameInfo.myPlayers)
                 player.Update();
 
             base.Update(gameTime);
@@ -78,7 +92,7 @@ namespace AttackLeague
             spriteBatch.Begin();
 
             const int MagicTileSize = 48;
-            foreach (var player in myPlayers)
+            foreach (var player in GameInfo.myPlayers)
                 player.Draw(spriteBatch, MagicTileSize);
 
             spriteBatch.End();

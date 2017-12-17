@@ -111,3 +111,4 @@ C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\At
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\curse.xnb
 C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\angrytemplate.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\angrytemplate.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\chainBackdrop.xnb

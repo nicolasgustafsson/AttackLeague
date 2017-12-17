@@ -45,17 +45,17 @@ namespace AttackLeague.Utility.Betweenxt
 
         public float GetValue()
         {
-            return GetProgress() * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+            return GetProgress() * (myEndValue - myStartValue) + myStartValue;
         }
 
         public float GetValueAtKey(float aKey)
         {
-            return GetProgressAtKey(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+            return GetProgressAtKey(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue)) + Math.Min(myEndValue, myStartValue);
         }
 
         public float GetValueAtKeyReverse(float aKey)
         {
-            return GetProgressAtKeyReverse(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue));
+            return GetProgressAtKeyReverse(aKey) * (Math.Max(myEndValue, myStartValue) - Math.Min(myEndValue, myStartValue)) + Math.Min(myEndValue, myStartValue);
         }
 
         public void Reset()

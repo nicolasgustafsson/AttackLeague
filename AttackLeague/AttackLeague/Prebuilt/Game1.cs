@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using AttackLeague.AttackLeague.GameInfo;
+using AttackLeague.AttackLeague.Feedback;
 
 namespace AttackLeague
 {
@@ -83,6 +84,8 @@ namespace AttackLeague
             foreach (var player in GameInfo.myPlayers)
                 player.Update();
 
+            FeedbackManager.Update();
+
             base.Update(gameTime);
         }
 
@@ -94,6 +97,8 @@ namespace AttackLeague
             const int MagicTileSize = 48;
             foreach (var player in GameInfo.myPlayers)
                 player.Draw(spriteBatch, MagicTileSize);
+
+            FeedbackManager.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

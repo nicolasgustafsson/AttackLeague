@@ -76,30 +76,20 @@ namespace AttackLeague.AttackLeague
 
         public override void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
         {
-            myGroovyDanceMoves = new Betweenxt(Betweenxt.Lerp, 1.0f, 0.0f, 0.0f, aSwitchTime);
+            myGroovyDanceMoves = new Betweenxt(Betweenxt.Lerp, GetTileSize() * (aSwitchDirection == ESwitchDirection.ToTheLeft ? -1 : 1), 0.0f, 0.0f, aSwitchTime);
             myDancingDirection = aSwitchDirection;
             myDanceOffset = 0.0f;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch, Vector2 aGridOffset, int aGridHeight, float aRaisingOffset)
         {
-            float danceDirection = 0.0f;
-            if (myDancingDirection == ESwitchDirection.ToTheLeft)
-            {
-                danceDirection = 48.0f;
-            }
-            else if (myDancingDirection == ESwitchDirection.ToTheRight)
-            {
-                danceDirection = -48.0f;
-            }
-
-            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset) + new Vector2((1.0f - myDanceOffset) *  danceDirection, 0.0f)); //  + 
+            mySprite.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset) + new Vector2((1.0f - myDanceOffset), 0.0f)); //  + 
             mySprite.Draw(aSpriteBatch);
 
             if (myIcon == null)
                 return;
 
-            myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset) + new Vector2((1.0f - myDanceOffset) * danceDirection, 0.0f));
+            myIcon.SetPosition(GetScreenPosition(aGridOffset, aGridHeight, aRaisingOffset) + new Vector2((1.0f - myDanceOffset), 0.0f));
             SetIconAnimation();
             myIcon.Draw(aSpriteBatch);
         }

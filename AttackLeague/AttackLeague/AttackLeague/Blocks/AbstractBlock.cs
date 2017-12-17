@@ -98,6 +98,7 @@ namespace AttackLeague.AttackLeague
         {
             //Intentionally left empty
         }
+
         public int CompareTo(object obj)
         {
             if (obj is AbstractBlock)

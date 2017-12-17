@@ -1,6 +1,7 @@
 ﻿using AttackLeague.AttackLeague.Blocks;
 using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.AttackLeague.Blocks.Generator;
+using AttackLeague.AttackLeague.Feedback;
 using AttackLeague.Utility;
 using AttackLeague.Utility.Sprite;
 using Microsoft.Xna.Framework;
@@ -208,10 +209,32 @@ namespace AttackLeague.AttackLeague.Grid
             myGridContainer.RemoveTopRows();
         }
 
-        private void OnChainIncrement(int ChainLength)
+        private void OnChainIncrement(int aChainLength, HashSet<AbstractBlock> aMatchedBlocks)
         {
-            Console.WriteLine($"Chain {ChainLength}!");
+            Console.WriteLine($"Chain {aChainLength}!");
             myChainTimer = Math.Max(1.0f, myChainTimer + 1.0f);
+
+            AbstractBlock rightMostTopMostBlock = aMatchedBlocks.First();
+
+            foreach(AbstractBlock block in aMatchedBlocks)
+            {
+                if (block.GetPosition().X > rightMostTopMostBlock.GetPosition().X)
+                {
+                    rightMostTopMostBlock = block;
+                }
+                else if (block.GetPosition().X == rightMostTopMostBlock.GetPosition().X)
+                {
+                    if (block.GetPosition().Y > rightMostTopMostBlock.GetPosition().Y)
+                    {
+                        rightMostTopMostBlock = block;
+                    }
+                }
+            }
+
+            Vector2 blockScreenPosition = rightMostTopMostBlock.GetScreenPosition(myOffset, myGridContainer.GetInitialHeight() - 1, myRaisingOffset);
+            Vector2 feedbackOffset = new Vector2(AbstractBlock.GetTileSize(), AbstractBlock.GetTileSize()) / 2f;
+            Vector2 feedbackPosition = blockScreenPosition + feedbackOffset;
+            FeedbackManager.AddFeedback(new ChainFeedback(aChainLength, feedbackPosition));
         }
 
         private void OnChainEnd(int ChainLength)
@@ -277,7 +300,7 @@ namespace AttackLeague.AttackLeague.Grid
             if (hasChained)
             {
                 myChainCounter++;
-                OnChainIncrement(myChainCounter);
+                OnChainIncrement(myChainCounter, matchedBlocks);
             }
         }
 

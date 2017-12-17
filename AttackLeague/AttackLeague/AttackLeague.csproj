@@ -56,6 +56,9 @@
     <Compile Include="AttackLeague\Blocks\FrozenBlock.cs" />
     <Compile Include="AttackLeague\Blocks\EmptyBlock.cs" />
     <Compile Include="AttackLeague\Blocks\ColorBlock.cs" />
+    <Compile Include="AttackLeague\Feedback\ChainFeedback.cs" />
+    <Compile Include="AttackLeague\Feedback\FeedbackManager.cs" />
+    <Compile Include="AttackLeague\Feedback\IFeedback.cs" />
     <Compile Include="AttackLeague\GameInfo\GameInfo.cs" />
     <Compile Include="AttackLeague\Grid\GridBehavior.cs" />
     <Compile Include="AttackLeague\Grid\GridBundle.cs" />

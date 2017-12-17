@@ -107,7 +107,7 @@ namespace AttackLeague.AttackLeague.Grid
             if (myWantsToRaiseBlocks == true)
                 myChainTimer = 0f;
 
-            if (IsFrozen() == false)
+            if (BlocksAreBusy() == false)
             {
                 if (myChainCounter > 1)
                 {
@@ -204,6 +204,8 @@ namespace AttackLeague.AttackLeague.Grid
                     iBundle--;
                 }
             }
+
+            myGridContainer.RemoveTopRows();
         }
 
         private void OnChainIncrement(int ChainLength)
@@ -324,6 +326,49 @@ namespace AttackLeague.AttackLeague.Grid
             if (myChainTimer < 0.0f)
                 myChainTimer = 0.0f;
             myChainTimer += (matchedBlocks.Count * MagicNumber) / myGameSpeed;
+            CreateAngryComboBlock(matchedBlocks.Count -1);
+        }
+
+        private void CreateAngryComboBlock(int aComboSize)
+        {
+            while(aComboSize > 2)
+            {
+                switch (aComboSize)
+                {
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                        CreateAngryCombo(aComboSize);
+                        aComboSize -= aComboSize;
+                        break;
+                    case 7:
+                        CreateAngryCombo(4);
+                        CreateAngryCombo(3);
+                        aComboSize -= 7;
+                        break;
+                    case 8:
+                        CreateAngryCombo(4);
+                        CreateAngryCombo(4);
+                        aComboSize -= 8;
+                        break;
+                    case 9:
+                        CreateAngryCombo(5);
+                        CreateAngryCombo(4);
+                        aComboSize -= 9;
+                        break;
+
+                    default:
+                        CreateAngryCombo(6);
+                        aComboSize -= 6;
+                        break;
+                }
+            }
+        }
+
+        private void CreateAngryCombo(int aWidth)
+        {
+            GameInfo.GameInfo.SendMyRegards(new AngryInfo(new Point(aWidth, 1), myPlayerIndex, EAngryType.Normal));
         }
 
         private HashSet<AbstractBlock> CheckMatches(AbstractBlock aBlock)

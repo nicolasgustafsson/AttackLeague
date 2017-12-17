@@ -228,6 +228,18 @@ namespace AttackLeague.AttackLeague.Grid
             return true;
         }
 
+        public void RemoveTopRows()
+        {
+            while(RowIsEmpty(GetCurrentHeight() - 1) && GetCurrentHeight() > GetInitialHeight())
+            {
+                foreach(Tile tile in myGrid[GetCurrentHeight() - 1])
+                {
+                    myBlocks.Remove(tile.GetBlock());
+                }
+                myGrid.RemoveAt(GetCurrentHeight() - 1);
+            }
+        }
+
         public bool HasRow(int aRowNumber)
         {
             return myGrid.Count() - 1 > aRowNumber;

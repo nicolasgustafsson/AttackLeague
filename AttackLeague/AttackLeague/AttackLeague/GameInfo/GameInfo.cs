@@ -21,13 +21,20 @@ namespace AttackLeague.AttackLeague.GameInfo
         {
             for (int iMe = 0; iMe < myPlayers.Count; iMe++)
             {
-                for (int iEnemy = 0; iEnemy < myPlayers.Count; iEnemy++)
+                int iEnemy = iMe + 1;
+
+                while(iEnemy != iMe)
                 {
-                    if (iMe == iEnemy)
-                        continue;
-                    int nextNumber = (iEnemy + 1);// % myPlayers.Count;
+                    if (iEnemy >= myPlayerCount)
+                        iEnemy = 0;
+
+                    int nextNumber = (iEnemy);// % myPlayers.Count;
                     int wrappedNumber = nextNumber >= myPlayers.Count ? 0 : nextNumber;
                     myPlayers[iMe].myAttackOrder.Add(nextNumber);
+                    if (myPlayers[iMe].myAttackOrder.Count >= myPlayers.Count - 1)
+                        break;
+
+                    iEnemy++;
                 }
             }
         }

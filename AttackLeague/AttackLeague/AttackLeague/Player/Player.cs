@@ -5,6 +5,7 @@ using AttackLeague.Utility.Sprite;
 using System;
 using System.Collections.Generic;
 using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.Utility;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -65,7 +66,12 @@ namespace AttackLeague.AttackLeague.Player
         {
             foreach (var angryInfo in myQueuedAngryBlocks)
             {
-                Point position = new Point(0, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
+                int xPos = 0;
+                if (angryInfo.mySize.X != myGridBundle.Container.GetInitialWidth())
+                {
+                    xPos = Randomizer.GlobalRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySize.X);
+                }
+                Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
             }

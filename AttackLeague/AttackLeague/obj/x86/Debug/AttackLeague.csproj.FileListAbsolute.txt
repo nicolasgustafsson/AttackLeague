@@ -112,3 +112,4 @@ E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windo
 C:\Users\Ylva\Documents\Visual Studio 2015\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\angrytemplate.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\angrytemplate.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\chainBackdrop.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\losar.xnb

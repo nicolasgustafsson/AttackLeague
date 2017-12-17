@@ -92,6 +92,13 @@ namespace AttackLeague.AttackLeague.Grid
             myChainTimer = 0;
             myChainCounter = 0;
             myMercyTimer = MyMaxMercyTimer;
+            myIsDead = false;
+            myBlockIterators.Clear();
+            foreach (var angryyy in myAngryBundles)
+            {
+                angryyy.OnDestroy();
+            }
+            myAngryBundles.Clear();
         }
 
         public void SetIsRaisingBlocks()
@@ -156,7 +163,10 @@ namespace AttackLeague.AttackLeague.Grid
                 {
                     myMercyTimer -= DeltaTime * myGameSpeed;
                     if (myMercyTimer < 0)
+                    {
                         myIsDead = true;
+                        DeadFeedback();
+                    }
                 }
                 else
                 {
@@ -201,12 +211,25 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 if (myAngryBundles[iBundle].IsDed())
                 {
+                    myAngryBundles[iBundle].OnDestroy();
                     myAngryBundles.RemoveAt(iBundle);
                     iBundle--;
                 }
             }
 
             myGridContainer.RemoveTopRows();
+        }
+
+        private void DeadFeedback()
+        {
+            Vector2 middleOfGrid = new Vector2();
+            middleOfGrid.X = myGridContainer.GetInitialWidth() / 2 * AbstractBlock.GetTileSize(); 
+            middleOfGrid.Y = myGridContainer.GetInitialHeight() / 2 * AbstractBlock.GetTileSize();
+            SpriteFeedback losar = new SpriteFeedback("losar", myOffset + middleOfGrid, () =>
+            {
+                return myIsDead == false;
+            });
+            FeedbackManager.AddFeedback(losar);
         }
 
         private void OnChainIncrement(int aChainLength, HashSet<AbstractBlock> aMatchedBlocks)

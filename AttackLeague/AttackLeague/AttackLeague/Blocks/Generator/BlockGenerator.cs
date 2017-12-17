@@ -32,7 +32,11 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         public void GenerateGrid()
         {
-            myGridBundle.Container.OnGridReset();
+            if (myGridBundle.Behavior != null)
+            {
+                myGridBundle.Behavior.OnGridReset();
+            }
+            myGridBundle.Container.RemoveAll();
             myGridBundle.Container.GenerateTiles();
 
             myGridBundle.Container.myBlocks = new List<AbstractBlock>();

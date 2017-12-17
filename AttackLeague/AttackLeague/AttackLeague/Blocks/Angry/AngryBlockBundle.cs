@@ -16,10 +16,6 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
 
         private GridBundle myGridBundle;
 
-        private float myBaseDisintegratingTimer = 30.0f;
-        private float myCurrentDisintegratingTimer = 0.0f;
-        private int myDisintegratingIndex = 0;
-
         private bool myIsContaminated = false;
 
         public int Index { get; private set; }
@@ -30,6 +26,13 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
             myGridBundle = aGridBundle;
             myAngryBlocks = new List<AngryBlock>();
             myFrozenBlocks = new List<FrozenBlock>();
+        }
+
+        public void OnDestroy()
+        {
+            myGridBundle = null;
+            myAngryBlocks.Clear();
+            myFrozenBlocks.Clear();
         }
 
         public void AddBlock(AngryBlock aBlock)
@@ -88,7 +91,6 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public void OnHitByMatch()
         {
             myIsContaminated = true;
-            myCurrentDisintegratingTimer = 120.0f;
         }
 
         public bool CanWeFall()

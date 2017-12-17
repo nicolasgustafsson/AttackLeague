@@ -18,8 +18,6 @@ namespace AttackLeague.AttackLeague.Grid
         private const int myWidth = 6;
         private BlockGenerator myBlockGenerator;
 
-        public virtual void OnGridReset() { }
-
         public GridContainer()
         {
         }
@@ -216,6 +214,18 @@ namespace AttackLeague.AttackLeague.Grid
                     }
                 }
             } 
+        }
+
+        public void RemoveAll()
+        {
+            while(myGrid != null && myGrid.Count > 0)
+            {
+                foreach (Tile tile in myGrid[GetCurrentHeight() - 1])
+                {
+                    myBlocks.Remove(tile.GetBlock());
+                }
+                myGrid.RemoveAt(GetCurrentHeight() - 1);
+            }
         }
 
         public bool RowIsEmpty(int aRowNumber)

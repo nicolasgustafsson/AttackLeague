@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using AttackLeague.AttackLeague.GameInfo;
 using AttackLeague.AttackLeague.Feedback;
+using System.Net.Sockets;
 
 namespace AttackLeague
 {
@@ -26,6 +27,9 @@ namespace AttackLeague
 
             GameInfo.myScreenSize.X = graphics.PreferredBackBufferWidth;
             GameInfo.myScreenSize.Y = graphics.PreferredBackBufferHeight;
+
+            //graphics.SynchronizeWithVerticalRetrace = false;
+            //IsFixedTimeStep = false;
 
             Content.RootDirectory = "Content";
 

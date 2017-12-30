@@ -80,6 +80,7 @@
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\GamePadWrapper.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
+    <Compile Include="Utility\Networkton.cs" />
     <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="Utility\Sprite\Sprite.cs" />
     <Compile Include="Utility\Sprite\SpriteTileset.cs" />

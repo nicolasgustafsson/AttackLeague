@@ -1,0 +1,7 @@
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.exe.config
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.exe
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.pdb
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.csprojResolveAssemblyReference.cache
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.csproj.CoreCompileInputs.cache
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.exe
+C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.pdb

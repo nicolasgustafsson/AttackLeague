@@ -73,7 +73,12 @@ namespace AttackLeague.Utility.Betweenxt
 
         public float GetProgress()
         {
-            return Math.Max(Math.Min(myBetweenxtingFunction(myStartKey, myEndKey, myCurrentKey), 1.0f), 0.0f);
+            return Math.Max(Math.Min(AddEpsilon(myBetweenxtingFunction(myStartKey, myEndKey, myCurrentKey)), 1.0f), 0.0f);
+        }
+
+        private float AddEpsilon(float aValue)
+        {
+            return aValue + 0.001f;
         }
 
         public float GetProgressAtKey(float aKey)
@@ -100,6 +105,16 @@ namespace AttackLeague.Utility.Betweenxt
         public static BetweenxtingFunction Quadratic = delegate (float aStartKey, float aEndKey, float aCurrentKey)
         {
             return (float)Math.Pow(Lerp(aStartKey, aEndKey, aCurrentKey), 2.0f);
+        };
+
+        public static BetweenxtingFunction EaseOutQuadratic = delegate (float aStartKey, float aEndKey, float aCurrentKey)
+        {
+            return (float)(-1 * (Math.Pow(Lerp(aStartKey, aEndKey, aCurrentKey) - 1, 2) - 1)) + 0.001f;
+        };
+
+        public static BetweenxtingFunction Quintic = delegate (float aStartKey, float aEndKey, float aCurrentKey)
+        {
+            return (float)Math.Pow(Lerp(aStartKey, aEndKey, aCurrentKey), 5.0f);
         };
     }
 }

@@ -77,7 +77,7 @@ namespace AttackLeague.AttackLeague
 
         public override void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
         {
-            myGroovyDanceMoves = new Betweenxt(Betweenxt.Lerp, GetTileSize() * (aSwitchDirection == ESwitchDirection.ToTheLeft ? -1 : 1), 0.0f, 0.0f, aSwitchTime);
+            myGroovyDanceMoves = new Betweenxt(Betweenxt.EaseOutQuadratic, GetTileSize() * (aSwitchDirection == ESwitchDirection.ToTheLeft ? -1 : 1), 0.0f, 0.0f, aSwitchTime);
             myDancingDirection = aSwitchDirection;
             myDanceOffset = myGroovyDanceMoves.GetValue();
         }

@@ -55,6 +55,8 @@ namespace AttackLeague.AttackLeague.Grid
         private float myGameTime = 0f;
         private float myAdditionalGameSpeed = 0.0f;
         private float myGameSpeed = 1.0f;
+        private float myModifiedGameSpeed = 0.0f;
+        private float myRaisingSpeed { get { return myGameSpeed * 4f; } } // magic tweaking!
 
         private const float MyMaxMercyTimer = 3.0f;
         private float myMercyTimer = MyMaxMercyTimer;
@@ -62,7 +64,7 @@ namespace AttackLeague.AttackLeague.Grid
         private bool myHasRaisedThisFrame = false;
         private bool myWantsToRaiseBlocks = false;
         private float myRaisingOffset = 0f;
-        private const float MyConstantRaisingSpeed = 3;//0
+        private const float MyManualRaisingSpeed = 3;//0
         public bool myIsDead { get;  private set; }
 
         private int myChainCounter = 1;
@@ -113,7 +115,7 @@ namespace AttackLeague.AttackLeague.Grid
                 myChainTimer -= aDeltaTime * myGameSpeed;
 
             if (myWantsToRaiseBlocks == true)
-                myChainTimer = 0f;
+                myChainTimer = 0f; 
 
             if (BlocksAreBusy() == false)
             {
@@ -153,6 +155,7 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 myGameTime += DeltaTime;
                 myGameSpeed = Math.Min(1.0f + (myGameTime / 60f) + myAdditionalGameSpeed, 10f);
+                myModifiedGameSpeed = (float)Math.Log10(myGameSpeed +1);
             }
 
             HandleChains(DeltaTime);
@@ -161,7 +164,7 @@ namespace AttackLeague.AttackLeague.Grid
             {
                 if (myGridContainer.IsExceedingRoof() == true)
                 {
-                    myMercyTimer -= DeltaTime * myGameSpeed;
+                    myMercyTimer -= DeltaTime * myModifiedGameSpeed;
                     if (myMercyTimer < 0)
                     {
                         myIsDead = true;
@@ -170,10 +173,10 @@ namespace AttackLeague.AttackLeague.Grid
                 }
                 else
                 {
-                    float tilesPerSecond = 0.3f * myGameSpeed;
+                    float tilesPerSecond = myModifiedGameSpeed;
                     Raise(tilesPerSecond);
                     //reset mercy timer
-                    myMercyTimer = MyMaxMercyTimer / myGameSpeed;
+                    myMercyTimer = MyMaxMercyTimer / myModifiedGameSpeed;
                 }
             }
 
@@ -188,11 +191,11 @@ namespace AttackLeague.AttackLeague.Grid
             for (int i = 0; i < myGridContainer.myBlocks.Count; i++)
             {
                 AbstractBlock block = myGridContainer.myBlocks[i];
-                block.Update(myGameSpeed);
+                block.Update(myModifiedGameSpeed);
             }
             foreach (var angryBundle in myAngryBundles) // foreach bundle if bundle isDisitergraintigb UpdateDIsintegrate break;
             {
-                angryBundle.Update(myGameSpeed);
+                angryBundle.Update(myModifiedGameSpeed);
             }
             for (int i = 0; i < myBlockIterators.Count; ++i)
             {
@@ -371,7 +374,7 @@ namespace AttackLeague.AttackLeague.Grid
             const float MagicNumber = 0.3f;
             if (myChainTimer < 0.0f)
                 myChainTimer = 0.0f;
-            myChainTimer += (aMatchedBlocks.Count * MagicNumber) / myGameSpeed;
+            myChainTimer += (aMatchedBlocks.Count * MagicNumber) / myModifiedGameSpeed;
             CreateAngryComboBlock(aMatchedBlocks.Count -1);
 
             AbstractBlock rightMostTopMostBlock = aMatchedBlocks.First();
@@ -487,7 +490,7 @@ namespace AttackLeague.AttackLeague.Grid
                     myGridContainer.myGrid[aPosition.Y][aPosition.X].SetBlock(rightBlock);
                     myGridContainer.myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
 
-                    float switchTime = 1.0f / myGameSpeed;
+                    float switchTime = 1.0f / myModifiedGameSpeed;
                     leftBlock.DoTheSwitchingCalculating(switchTime, ESwitchDirection.ToTheRight);
                     rightBlock.DoTheSwitchingCalculating(switchTime, ESwitchDirection.ToTheLeft);
                 }
@@ -510,11 +513,12 @@ namespace AttackLeague.AttackLeague.Grid
             myBorderSprite.SetPosition(new Vector2(myOffset.X - 2, 6 - AbstractBlock.GetTileSize()));
             myBorderSprite.Draw(aSpriteBatch);
 
-            //aSpriteBatch.DrawString(myFont, 
-            //    "Bonus time: " + myChainTimer.ToString() + 
-            //    "\nGame Time: " + myGameTime.ToString() + 
-            //    "\nGame Speed: " + myGameSpeed.ToString()
-            //    , new Vector2(500, 100), Color.MidnightBlue);
+            aSpriteBatch.DrawString(myFont, 
+                "Bonus time: " + myChainTimer.ToString() + 
+                "\nGame Time: " + ((int)(myGameTime / 60)).ToString() + ":" + ((int)(myGameTime % 60)).ToString() +
+                "\nGame Speed: " + myGameSpeed.ToString() +
+                "\nLog Speed: " + myModifiedGameSpeed.ToString()
+                , new Vector2(900, 100), Color.MidnightBlue);
         }
 
         public void AddGameSpeed(float aAmount)
@@ -561,9 +565,9 @@ namespace AttackLeague.AttackLeague.Grid
         public void Raise(float RaiseAmount)
         {
             RaiseAmount *= 0.1f;
-            if (myWantsToRaiseBlocks && MyConstantRaisingSpeed > RaiseAmount)
+            if (myWantsToRaiseBlocks && MyManualRaisingSpeed > RaiseAmount)
             {
-                RaiseAmount = MyConstantRaisingSpeed;
+                RaiseAmount = MyManualRaisingSpeed;
             }
 
             myRaisingOffset -= (RaiseAmount / AbstractBlock.GetTileSize());
@@ -573,19 +577,8 @@ namespace AttackLeague.AttackLeague.Grid
                 RearrangeRaisedTiles();
                 myRaisingOffset = 0.0f;
                 myHasRaisedThisFrame = true;
-                //if (eXceedingROof)
-                //    myRaisingOffset = 0f; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ <-------------------------------- HERE HERE
             }
         }
-
-        //public bool hardcodedthingagain()
-        //{
-        //    // if grid is aligned without offset && raises above roof
-        //    // then it should no go higher
-
-
-        //    return 
-        //}
 
         public float GetRaisingOffset()
         {

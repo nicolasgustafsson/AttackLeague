@@ -46,7 +46,7 @@ namespace AttackLeague.AttackLeague
         {
         }
 
-        public override void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
+        public override void StartTheSwitchingCalculation(float aSwitchTime, ESwitchDirection aSwitchDirection)
         {
             mySwitchTimer = aSwitchTime;
         }

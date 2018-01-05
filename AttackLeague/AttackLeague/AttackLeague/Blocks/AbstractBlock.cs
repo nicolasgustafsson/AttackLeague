@@ -71,7 +71,7 @@ namespace AttackLeague.AttackLeague
             return new Point(myGridArea.X, myGridArea.Y);
         }
 
-        public virtual void DoTheSwitchingCalculating(float aSwitchTime, ESwitchDirection aSwitchDirection)
+        public virtual void StartTheSwitchingCalculation(float aSwitchTime, ESwitchDirection aSwitchDirection)
         {
             Debug.Assert(false, "Implement this function in subclass!");
         }

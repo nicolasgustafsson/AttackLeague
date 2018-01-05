@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace AttackLeague.Utility.Betweenxt
 
             myStartKey = aStartKey;
             myEndKey = aEndKey;
+            Debug.Assert(myStartKey < myEndKey, "Start key must be less than end key!\nStart value on the other hand may be greater than end value.");
 
             myCurrentKey = myStartKey;
 
@@ -96,7 +98,11 @@ namespace AttackLeague.Utility.Betweenxt
             if (aStartKey == aEndKey)
                 return 1.0f;
 
+
             float total = (Math.Max(aEndKey, aStartKey) - Math.Min(aEndKey, aStartKey));
+
+            if (aCurrentKey >= aEndKey)
+                return (aEndKey - aStartKey) / total;
 
             return (aCurrentKey - aStartKey) / total;
         };
@@ -109,8 +115,15 @@ namespace AttackLeague.Utility.Betweenxt
 
         public static BetweenxtingFunction EaseOutQuadratic = delegate (float aStartKey, float aEndKey, float aCurrentKey)
         {
-            return (float)(-1 * (Math.Pow(Lerp(aStartKey, aEndKey, aCurrentKey) - 1, 2) - 1)) + 0.001f;
+            return (float)(-1 * (Math.Pow(Lerp(aStartKey, aEndKey, aCurrentKey) - 1, 2) - 1));
         };
+
+        /*
+        {
+            var sign = power % 2 == 0 ? -1 : 1;
+            return (float)(sign * (Math.Pow(s - 1, power) + sign)); (-1 * (Math.Pow(step -1, power) -1))
+        }
+        */
 
         public static BetweenxtingFunction Quintic = delegate (float aStartKey, float aEndKey, float aCurrentKey)
         {

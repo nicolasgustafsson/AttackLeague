@@ -479,10 +479,9 @@ namespace AttackLeague.AttackLeague.Grid
             AbstractBlock leftBlock = myGridContainer.GetBlockAtPosition(aPosition);
             AbstractBlock rightBlock = myGridContainer.GetBlockAtPosition(aPosition + new Point(1, 0));
 
-            if (leftBlock is ColorBlock || leftBlock is EmptyBlock)
+            if ((leftBlock is ColorBlock || leftBlock is EmptyBlock) && leftBlock.IsSwitching() == false)
             {
-                if (rightBlock is ColorBlock ||
-                    rightBlock is EmptyBlock)
+                if ((rightBlock is ColorBlock || rightBlock is EmptyBlock) && rightBlock.IsSwitching() == false)
                 {
                     leftBlock.SetPosition(aPosition + new Point(1, 0));
                     rightBlock.SetPosition(aPosition);
@@ -491,8 +490,8 @@ namespace AttackLeague.AttackLeague.Grid
                     myGridContainer.myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
 
                     float switchTime = 1.0f / myModifiedGameSpeed;
-                    leftBlock.DoTheSwitchingCalculating(switchTime, ESwitchDirection.ToTheRight);
-                    rightBlock.DoTheSwitchingCalculating(switchTime, ESwitchDirection.ToTheLeft);
+                    leftBlock.StartTheSwitchingCalculation(switchTime, ESwitchDirection.ToTheRight);
+                    rightBlock.StartTheSwitchingCalculation(switchTime, ESwitchDirection.ToTheLeft);
                 }
             }
         }

@@ -489,9 +489,9 @@ namespace AttackLeague.AttackLeague.Grid
                     myGridContainer.myGrid[aPosition.Y][aPosition.X].SetBlock(rightBlock);
                     myGridContainer.myGrid[aPosition.Y][aPosition.X + 1].SetBlock(leftBlock);
 
-                    float switchTime = 1.0f / myModifiedGameSpeed;
-                    leftBlock.StartTheSwitchingCalculation(switchTime, ESwitchDirection.ToTheRight);
-                    rightBlock.StartTheSwitchingCalculation(switchTime, ESwitchDirection.ToTheLeft);
+                    float magicSwitchTime = 0.66f / myModifiedGameSpeed;
+                    leftBlock.StartTheSwitchingCalculation(magicSwitchTime, ESwitchDirection.ToTheRight);
+                    rightBlock.StartTheSwitchingCalculation(magicSwitchTime, ESwitchDirection.ToTheLeft);
                 }
             }
         }

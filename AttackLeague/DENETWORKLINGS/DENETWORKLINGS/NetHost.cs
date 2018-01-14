@@ -35,7 +35,7 @@ namespace DENETWORKLINGS
             }
         }
 
-        public void PrintToAllClients(BaseMessage aStuff)
+        public void PrintToAllClients<T>(T aStuff)
         {
             foreach (NetPeer client in myClients)
             {

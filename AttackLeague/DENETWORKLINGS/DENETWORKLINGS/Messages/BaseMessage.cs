@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DENETWORKLINGS.Messages
 {
+    [Serializable]
     class BaseMessage
     {
 

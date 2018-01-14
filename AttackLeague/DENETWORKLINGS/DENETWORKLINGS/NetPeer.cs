@@ -83,7 +83,7 @@ namespace DENETWORKLINGS
             binaryWriter.Write(aMessage);
         }
 
-        public void WriteMessage(BaseMessage aMessage)
+        public void WriteMessage<T>(T aMessage)
         {
             NetworkStream netStream = myClient.GetStream();
 

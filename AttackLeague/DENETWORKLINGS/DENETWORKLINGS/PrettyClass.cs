@@ -7,7 +7,7 @@ using DENETWORKLINGS.Messages;
 
 namespace DENETWORKLINGS
 {
-    class PrettyClass : ISubscriber<PrettyMessage>
+    class PrettyClass : Subscriber<PrettyMessage>
     {
         public void SendMessage(NetPostMaster postMastery)
         {

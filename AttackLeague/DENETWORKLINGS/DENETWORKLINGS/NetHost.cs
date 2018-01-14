@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DENETWORKLINGS
 {
-    class NetHost
+    class NetHost : IConnection
     {
         TcpListener myListener = new TcpListener(IPAddress.Any, 32323);
         List<NetPeer> myClients = new List<NetPeer>();
@@ -27,15 +27,7 @@ namespace DENETWORKLINGS
             ClientAcceptionings.Start();
         }
 
-        public void PrintToAllClients(string aStuff)
-        {
-            foreach (NetPeer client in myClients)
-            {
-                client.Write(aStuff);
-            }
-        }
-
-        public void PrintToAllClients<T>(T aStuff)
+        public void WriteMessage<T>(T aStuff)
         {
             foreach (NetPeer client in myClients)
             {
@@ -66,7 +58,6 @@ namespace DENETWORKLINGS
                     myClients.Add(peer);
                 }
 
-                peer.Write("Hey you ylllfs");
                 Console.WriteLine("Accepted Client");
             }
             catch (Exception e)

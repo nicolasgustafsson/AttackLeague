@@ -1,6 +1,7 @@
 ﻿using DENETWORKLINGS.Messages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DENETWORKLINGS
 {
-    class NetPeer
+    class NetPeer : IConnection
     {
         TcpClient myClient = new TcpClient();
         const int Port = 32323;
@@ -64,7 +65,13 @@ namespace DENETWORKLINGS
         {
             try
             {
-                Console.WriteLine(myReader.ReadString());
+                IFormatter formatter = new BinaryFormatter();
+
+                object obj = formatter.Deserialize(myClient.GetStream());
+                Debug.Assert(obj is BaseMessage);
+
+
+                //Console.WriteLine($"{obj.apa}, {obj.derp}, {obj.thingy}!");
             }
             catch (Exception e)
             {
@@ -73,14 +80,6 @@ namespace DENETWORKLINGS
 
                 Console.WriteLine("Host closed the connection");
             }
-        }
-
-        public void Write(string aMessage)
-        {
-            NetworkStream netStream = myClient.GetStream();
-            BinaryWriter binaryWriter = new BinaryWriter(netStream);
-
-            binaryWriter.Write(aMessage);
         }
 
         public void WriteMessage<T>(T aMessage)

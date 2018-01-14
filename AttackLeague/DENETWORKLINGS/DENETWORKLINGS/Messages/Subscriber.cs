@@ -11,8 +11,23 @@ namespace DENETWORKLINGS.Messages
         void ReceiveMessageInternal(BaseMessage message);
     }
 
-    abstract class ISubscriber<T> : ISubscriber where T : BaseMessage
+    abstract class Subscriber<T> : ISubscriber where T : BaseMessage
     {
+        protected Subscriber()
+        {
+            Subscribe();
+        }
+
+        protected void Subscribe()
+        {
+            NetPostMaster.Master.Subscribe<T>(this);
+        }
+
+        protected void Unsubscribe()
+        {
+            NetPostMaster.Master.Unsubscribe<T>(this);
+        }
+
         public void ReceiveMessageInternal(BaseMessage message)
         {
             ReceiveMessage(message as T);

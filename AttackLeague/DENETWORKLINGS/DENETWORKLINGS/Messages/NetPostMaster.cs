@@ -27,6 +27,16 @@ namespace DENETWORKLINGS
             mySubscribers[typeof(T)].Add(aSubscriber);
         }
 
+        public void Unsubscribe<T>(ISubscriber aSubscriber)
+        {
+            if (!mySubscribers.ContainsKey(typeof(T)))
+            {
+                return;
+            }
+
+            mySubscribers[typeof(T)].Remove(aSubscriber);
+        }
+
         public void AddMessageToQueue(BaseMessage aMessage) 
         {
             if (!myQueuedMessages.ContainsKey(aMessage.GetType()))
@@ -55,5 +65,7 @@ namespace DENETWORKLINGS
 
         Dictionary<Type, List<ISubscriber>> mySubscribers = new Dictionary<Type, List<ISubscriber>>();
         Dictionary<Type, List<BaseMessage>> myQueuedMessages = new Dictionary<Type, List<BaseMessage>>();
+
+        public static NetPostMaster Master = new NetPostMaster();
     }
 }

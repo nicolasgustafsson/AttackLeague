@@ -52,7 +52,14 @@ namespace DENETWORKLINGS
                         break;
 
                     case "write":
-                        listener.PrintToAllClients(string.Join(" ", consoleCommand.Skip(1)));
+                        if (netConnections.Count > 0)
+                        {
+                            netConnections[0].Write(string.Join(" ", consoleCommand.Skip(1)));
+                        }
+                        else
+                        {
+                            listener.PrintToAllClients(string.Join(" ", consoleCommand.Skip(1)));
+                        }
                         break;
                 }
 

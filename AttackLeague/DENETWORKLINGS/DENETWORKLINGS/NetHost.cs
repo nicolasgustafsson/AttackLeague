@@ -12,11 +12,13 @@ namespace DENETWORKLINGS
 {
     class NetHost
     {
-        TcpListener myListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 32323);
-        List<TcpClient> myClients = new List<TcpClient>();
+        TcpListener myListener = new TcpListener(IPAddress.Any, 32323);
+        List<NetPeer> myClients = new List<NetPeer>();
 
         public void StartListen()
         {
+            myListener.AllowNatTraversal(true);
+
             myListener.Start();
 
             Thread ClientAcceptionings = new Thread(AcceptClientLoop);
@@ -26,12 +28,9 @@ namespace DENETWORKLINGS
 
         public void PrintToAllClients(string aStuff)
         {
-            foreach (TcpClient client in myClients)
+            foreach (NetPeer client in myClients)
             {
-                NetworkStream netStream = client.GetStream();
-                BinaryWriter binaryWriter = new BinaryWriter(netStream);
-
-                binaryWriter.Write(aStuff);
+                client.Write(aStuff);
             }
         }
 
@@ -49,19 +48,15 @@ namespace DENETWORKLINGS
             {
                 TcpClient client = myListener.AcceptTcpClient();
 
-                NetworkStream netStream = client.GetStream();
-                BinaryWriter binaryWriter = new BinaryWriter(netStream);
+                NetPeer peer = new NetPeer();
+                peer.SetClient(client);
 
-                binaryWriter.Write("Hey you guuuuys");
-            
-
-
-                lock(myClients)
+                lock (myClients)
                 {
-                    myClients.Add(client);
+                    myClients.Add(peer);
                 }
 
-
+                peer.Write("Hey you ylllfs");
                 Console.WriteLine("Accepted Client");
             }
             catch (Exception e)

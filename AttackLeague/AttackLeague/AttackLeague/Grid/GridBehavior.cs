@@ -354,8 +354,8 @@ namespace AttackLeague.AttackLeague.Grid
                 return block.GetPosition().Y * -100 + block.GetPosition().X;
             }).ToList();
 
-            const float MagicFrameAmount = 30f; //change to int, because of frames?
-            myBlockIterators.Add(new BlockTimedIterator(AngryBlock.HandleBopStatic, angryBlocks, MagicFrameAmount, FinnishAngryBops));
+            float magicFrameAmount = 30f / (myModifiedGameSpeed + 1f); //change to int, because of frames?
+            myBlockIterators.Add(new BlockTimedIterator(AngryBlock.HandleBopStatic, angryBlocks, magicFrameAmount, FinnishAngryBops));
             //create iterator
         }
 

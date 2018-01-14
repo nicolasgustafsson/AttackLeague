@@ -5,3 +5,10 @@ C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS
 C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.csproj.CoreCompileInputs.cache
 C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.exe
 C:\Users\nicolas.gustafsson\Documents\Visual Studio 2017\Projects\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.pdb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.exe.config
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.exe
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\bin\Debug\DENETWORKLINGS.pdb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.csprojResolveAssemblyReference.cache
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.csproj.CoreCompileInputs.cache
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.exe
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\DENETWORKLINGS\DENETWORKLINGS\obj\Debug\DENETWORKLINGS.pdb

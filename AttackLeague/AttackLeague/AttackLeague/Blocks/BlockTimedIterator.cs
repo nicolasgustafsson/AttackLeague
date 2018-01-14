@@ -24,23 +24,23 @@ namespace AttackLeague.AttackLeague.Blocks
 
         public void Update()
         {
-            if (IsFinished())
+            if (myBlocks == null) // we are really done
                 return;
 
             --myCurrentCooldown;
 
+            if (IsFinished() && myBlocks != null) // delay finish with one timed iteration, instead of calling directly after Iterate()
+            {
+                myFunctionToFinnish(myBlocks);
+                myBlocks.Clear();
+                myBlocks = null;
+                return;
+            }
+
             while (myCurrentCooldown < 0)
             {
                 myCurrentCooldown += myFramesBetweenIterations;
-
                 Iterate();
-                if (IsFinished() && myFunctionToFinnish != null)
-                {
-                    myFunctionToFinnish(myBlocks);
-                    myBlocks.Clear();
-                    myBlocks = null;
-                    break;
-                }
             }
         }
 
@@ -52,7 +52,7 @@ namespace AttackLeague.AttackLeague.Blocks
 
         public bool IsFinished()
         {
-            return myBlocks == null || myBlocks.Count <= myCurrentIndex;
+            return (myBlocks == null || myBlocks.Count <= myCurrentIndex) && myCurrentCooldown < 0;
         }
 
         List<AbstractBlock> myBlocks;

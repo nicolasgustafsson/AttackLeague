@@ -47,6 +47,8 @@
     <Compile Include="NetPeer.cs" />
     <Compile Include="NetHost.cs" />
     <Compile Include="Messages\NetPostMaster.cs" />
+    <Compile Include="PrettyClass.cs" />
+    <Compile Include="PrettyMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="STOLENCODE.cs" />

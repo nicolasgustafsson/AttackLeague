@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DENETWORKLINGS.Messages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,14 @@ namespace DENETWORKLINGS
             }
         }
 
+        public void PrintToAllClients(BaseMessage aStuff)
+        {
+            foreach (NetPeer client in myClients)
+            {
+                client.WriteMessage(aStuff);
+            }
+        }
+
         private void AcceptClientLoop()
         {
             while(true)
@@ -50,6 +59,7 @@ namespace DENETWORKLINGS
 
                 NetPeer peer = new NetPeer();
                 peer.SetClient(client);
+                peer.InitializeConnection();
 
                 lock (myClients)
                 {

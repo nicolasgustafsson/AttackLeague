@@ -1,9 +1,12 @@
-﻿using System;
+﻿using DENETWORKLINGS.Messages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +41,7 @@ namespace DENETWORKLINGS
             myClient = aClient;
         }
 
-        private void InitializeConnection()
+        public void InitializeConnection()
         {
             NetworkStream NetStream = myClient.GetStream();
             myWriter = new BinaryWriter(NetStream);
@@ -51,7 +54,7 @@ namespace DENETWORKLINGS
 
         private void ReadLoop()
         {
-            while(true)
+            while(myClient.Connected)
             {
                 Read();
             }
@@ -78,6 +81,14 @@ namespace DENETWORKLINGS
             BinaryWriter binaryWriter = new BinaryWriter(netStream);
 
             binaryWriter.Write(aMessage);
+        }
+
+        public void WriteMessage(BaseMessage aMessage)
+        {
+            NetworkStream netStream = myClient.GetStream();
+
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(netStream, aMessage);
         }
     }
 }

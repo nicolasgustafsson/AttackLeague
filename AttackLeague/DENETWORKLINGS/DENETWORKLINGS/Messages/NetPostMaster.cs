@@ -6,6 +6,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+reflections(many mirrors)
+serialize
+deserialize
+skicka messages över network
+*/
+
 namespace DENETWORKLINGS
 {
     class NetPostMaster
@@ -36,24 +43,13 @@ namespace DENETWORKLINGS
             {
                 List<BaseMessage> tenpy = keyAndValue.Value;
 
-                MethodInfo methodInfo = typeof(NetPostMaster).GetMethod("PublishMessage");
-
-                MethodInfo genericMethodInfo = methodInfo.MakeGenericMethod(keyAndValue.Key);
-
                 foreach (BaseMessage message in tenpy)
                 {
-                    genericMethodInfo.Invoke(this, new object[] { message });
+                    foreach (ISubscriber baseSubscriber in mySubscribers[keyAndValue.Key])
+                    {
+                        baseSubscriber.ReceiveMessageInternal(message);
+                    }
                 }
-            }
-        }
-
-        void PublishMessage<T>(BaseMessage aMessage) where T : BaseMessage
-        {
-            foreach(ISubscriber baseSubscriber in mySubscribers[typeof(T)] )
-            {
-                ISubscriber<T> subscriber = baseSubscriber as ISubscriber<T>;
-
-                subscriber.ReceiveMessage(aMessage as T);
             }
         }
 

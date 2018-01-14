@@ -15,6 +15,9 @@ namespace DENETWORKLINGS
             List<NetPeer> netConnections = new List<NetPeer>();
             NetHost listener = new NetHost();
 
+            NetPostMaster posty = new NetPostMaster();
+            PrettyClass classy = new PrettyClass();
+            posty.Subscribe<PrettyMessage>(classy);
 
             List<string> consoleCommand = new List<string>();
             consoleCommand.Add("Hello");
@@ -49,6 +52,21 @@ namespace DENETWORKLINGS
 
                     case "l":
                         listener.StartListen();
+                        break;
+
+                    case "pretty":
+                        PrettyMessage message = new PrettyMessage();
+                        if (netConnections.Count > 0)
+                        {
+                            netConnections[0].WriteMessage(message);
+                        }
+                        else
+                        {
+                            listener.PrintToAllClients(message);
+                        }
+
+                        //classy.SendMessage(posty);
+                        //posty.ResolveMessages();
                         break;
 
                     case "write":

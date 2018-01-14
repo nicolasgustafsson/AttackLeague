@@ -8,11 +8,16 @@ namespace DENETWORKLINGS.Messages
 {
     interface ISubscriber
     {
-        
+        void ReceiveMessageInternal(BaseMessage message);
     }
 
-    interface ISubscriber<T> : ISubscriber where T : BaseMessage
+    abstract class ISubscriber<T> : ISubscriber where T : BaseMessage
     {
-        void ReceiveMessage(T aMessage);
+        public void ReceiveMessageInternal(BaseMessage message)
+        {
+            ReceiveMessage(message as T);
+        }
+
+        protected abstract void ReceiveMessage(T aMessage);
     }
 }

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using AttackLeague.AttackLeague.GameInfo;
 using AttackLeague.AttackLeague.Feedback;
 using System.Net.Sockets;
+using AttackLeague.Utility.Network;
+using AttackLeague.Utility.Network.Messages;
 
 namespace AttackLeague
 {
@@ -39,6 +41,38 @@ namespace AttackLeague
         protected override void Initialize()
         {
             base.Initialize();
+
+            /*
+             * either peer or host
+                    case "c":
+                        Debug.Assert(myCurrentConnection == null);
+                        NetPeer newConnection = new NetPeer();
+
+                        if (consoleCommand.Count < 2)
+                        {
+                            newConnection.StartConnection("localhost");
+                        }
+                        else
+                        {
+                            newConnection.StartConnection(consoleCommand[1]);
+                        }
+
+                        myCurrentConnection = newConnection;
+                        break;
+                    case "l":
+                        Debug.Assert(myCurrentConnection == null);
+
+                        NetHost host = new NetHost();
+                        host.StartListen();
+
+                        myCurrentConnection = host;
+                        break;
+
+                    case "pretty":
+                        myCurrentConnection.WriteMessage(new PrettyMessage());
+                        break;
+             
+             */
         }
 
         protected override void LoadContent()
@@ -90,6 +124,7 @@ namespace AttackLeague
             FeedbackManager.Update();
 
             base.Update(gameTime);
+            NetPostMaster.Master.ResolveMessages();
         }
 
         protected override void Draw(GameTime gameTime)

@@ -42,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatMessage.cs" />
+    <Compile Include="Chatter.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
+    <Compile Include="Messages\NetPoster.cs" />
     <Compile Include="Messages\Subscriber.cs" />
     <Compile Include="NetPeer.cs" />
     <Compile Include="NetHost.cs" />

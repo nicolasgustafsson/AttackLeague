@@ -32,7 +32,7 @@ namespace DENETWORKLINGS
             NetPostMaster posty = new NetPostMaster();
             IConnection myCurrentConnection = null;
             NetPoster.Instance = new NetPoster(myCurrentConnection);
-
+            
             List<string> consoleCommand = new List<string>();
             consoleCommand.Add("Hello");
 
@@ -74,7 +74,7 @@ namespace DENETWORKLINGS
                         break;
 
                     case "pretty":
-                        myCurrentConnection.WriteMessage(new PrettyMessage());
+                        NetPoster.Instance.PostMessage(new PrettyMessage());
                         break;
                 }
 

@@ -13,10 +13,5 @@ namespace DENETWORKLINGS
         {
             Console.WriteLine(aMessage.myMessage);
         }
-
-        public void SendMessage(string aMessage)
-        {
-            ChatMessage;
-        }
     }
 }

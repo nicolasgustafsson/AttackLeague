@@ -1,4 +1,6 @@
 ﻿using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.Utility.Network;
+using AttackLeague.Utility.Network.Messages;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,13 +12,26 @@ namespace AttackLeague.AttackLeague.Player
 {
     class DebugPlayer : Player
     {
+        private Subscriber<HardcodedMessage> myHardCodedSubscriber;
+
         public DebugPlayer()
             :base(new DebugPlayerInfo())
-        {}
+        {
+            myHardCodedSubscriber = new Subscriber<HardcodedMessage>(ReceiveHardCodedMassage, true);
+        }
 
         public override void Update()
         {
             base.Update();
+
+            if (myPlayerInfo.myMappedActions.ActionIsActive("ConnectToNicos"))
+                NetworkConnectAsPeer(NetPeer.NicosIP);
+
+            if (myPlayerInfo.myMappedActions.ActionIsActive("ConnectToYlf"))
+                NetworkConnectAsHost(NetPeer.YlfsIP);
+
+            if (myPlayerInfo.myMappedActions.ActionIsActive("SendHardCodedMessage")) //M
+                SendHardCodedMessage();
 
             if (myPlayerInfo.myMappedActions.ActionIsActive("RandomizeGrid"))
                 myGridBundle.Generator.GenerateGrid();
@@ -37,6 +52,30 @@ namespace AttackLeague.AttackLeague.Player
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angrySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
             }
+        }
+
+        private void NetworkConnectAsPeer(string aIP)
+        {
+            NetPeer newConnection = new NetPeer();
+            newConnection.StartConnection(aIP);
+            NetPoster.Instance.Connection = newConnection;
+        }
+
+        private void NetworkConnectAsHost(string aIP)
+        {
+            NetHost host = new NetHost();
+            host.StartListen();
+            NetPoster.Instance.Connection = host;
+        }
+
+        private void SendHardCodedMessage()
+        {
+            NetPoster.Instance.PostMessage(new HardcodedMessage { myHardcoding = "Hellos" });
+        }
+
+        private void ReceiveHardCodedMassage(HardcodedMessage aMessagings)
+        {
+            Console.WriteLine(aMessagings.myHardcoding);
         }
     }
 }

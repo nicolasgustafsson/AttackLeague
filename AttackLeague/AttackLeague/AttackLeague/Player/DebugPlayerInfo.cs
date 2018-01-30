@@ -25,6 +25,9 @@ namespace AttackLeague.AttackLeague.Player
             myMappedActions.BindAction("StepOnce", Keys.OemPeriod, InputStatus.KeyPressed);
             myMappedActions.BindAction("IncreaseGameSpeed", Keys.T, InputStatus.KeyPressed);
             myMappedActions.BindAction("SpawnAngryBundle", Keys.K, InputStatus.KeyReleased);
+            myMappedActions.BindAction("ConnectToNicos", Keys.N, InputStatus.KeyReleased);
+            myMappedActions.BindAction("ConnectToYlf", Keys.Y, InputStatus.KeyReleased); 
+            myMappedActions.BindAction("SendHardCodedMessage", Keys.M, InputStatus.KeyReleased);
         }
     }
 }

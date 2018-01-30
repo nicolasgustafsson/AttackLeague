@@ -81,6 +81,14 @@
     <Compile Include="Utility\GamePadWrapper.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Networkton.cs" />
+    <Compile Include="Utility\Network\IConnection.cs" />
+    <Compile Include="Utility\Network\Messages\BaseMessage.cs" />
+    <Compile Include="Utility\Network\Messages\HardcodedMessage.cs" />
+    <Compile Include="Utility\Network\Messages\NetPoster.cs" />
+    <Compile Include="Utility\Network\Messages\NetPostMaster.cs" />
+    <Compile Include="Utility\Network\Messages\Subscriber.cs" />
+    <Compile Include="Utility\Network\NetHost.cs" />
+    <Compile Include="Utility\Network\NetPeer.cs" />
     <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="Utility\Sprite\Sprite.cs" />
     <Compile Include="Utility\Sprite\SpriteTileset.cs" />

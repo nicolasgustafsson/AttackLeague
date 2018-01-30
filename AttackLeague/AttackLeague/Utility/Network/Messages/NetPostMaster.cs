@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 /*
-reflections(many mirrors)
-serialize
-deserialize
-skicka messages över network
+LOOK IN DEBUGPLAYER
+SEND HARDCODED MESSAGES ON M
+APPLY THIS LOGIC ON GAEM (Maek networked player?)
+EZ NETWORKS
+GG
+Setp 3 prophet
 */
 
 namespace AttackLeague.Utility.Network
@@ -39,12 +41,15 @@ namespace AttackLeague.Utility.Network
 
         public void AddMessageToQueue(BaseMessage aMessage) 
         {
-            if (!myQueuedMessages.ContainsKey(aMessage.GetType()))
+            lock (myQueuedMessages)
             {
-                myQueuedMessages.Add(aMessage.GetType(), new List<BaseMessage>());
-            }
+                if (!myQueuedMessages.ContainsKey(aMessage.GetType()))
+                {
+                    myQueuedMessages.Add(aMessage.GetType(), new List<BaseMessage>());
+                }
 
-            myQueuedMessages[aMessage.GetType()].Add(aMessage);
+                myQueuedMessages[aMessage.GetType()].Add(aMessage);
+            }
         }
 
         public void ResolveMessages()
@@ -60,6 +65,11 @@ namespace AttackLeague.Utility.Network
                         baseSubscriber.ReceiveMessageInternal(message);
                     }
                 }
+            }
+
+            lock(myQueuedMessages)
+            {
+                myQueuedMessages.Clear();
             }
         }
 

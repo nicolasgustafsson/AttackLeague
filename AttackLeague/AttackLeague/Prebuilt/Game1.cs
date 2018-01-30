@@ -84,11 +84,11 @@ namespace AttackLeague
                 EInputType input = (EInputType)i;
                 if (GamePadWrapper.IsGamePadConnected(input))
                 {
-                   AddPlayer(input);
+                   //AddPlayer(input);
                 }
             }
 
-           // GameInfo.myPlayers.Add(new DebugPlayer());
+            GameInfo.myPlayers.Add(new DebugPlayer());
 
             foreach (var playerdesu in GameInfo.myPlayers)
             {

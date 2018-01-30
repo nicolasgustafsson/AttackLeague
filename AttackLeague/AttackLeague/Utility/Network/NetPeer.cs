@@ -71,9 +71,8 @@ namespace AttackLeague.Utility.Network
                 IFormatter formatter = new BinaryFormatter();
 
                 object obj = formatter.Deserialize(myClient.GetStream());
-                Debug.Assert(obj is BaseMessage);
 
-
+                NetPostMaster.Master.AddMessageToQueue(obj as BaseMessage);
                 //Console.WriteLine($"{obj.apa}, {obj.derp}, {obj.thingy}!");
             }
             catch (Exception e)

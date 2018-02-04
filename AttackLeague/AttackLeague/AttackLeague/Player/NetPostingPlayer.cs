@@ -19,6 +19,7 @@ namespace AttackLeague.AttackLeague.Player
             frameMessage.Actions = myPlayerInfo.myMappedActions.GetActiveActions().ToList();
             //bleh.FrameNumber = x
             frameMessage.PlayerIndex = myPlayerInfo.myPlayerIndex;
+            frameMessage.FrameIndex = myElapsedFrames - 1;
             Utility.Network.Messages.NetPoster.Instance.PostMessage<AdvanceFrameMessage>(frameMessage);
         }
     }

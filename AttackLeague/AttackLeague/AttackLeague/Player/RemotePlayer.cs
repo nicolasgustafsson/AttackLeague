@@ -25,23 +25,12 @@ namespace AttackLeague.AttackLeague.Player
         {
             // TODO if aMessage.playerIndex == myIndex
             myLastAdvancedFrame = aMessage;
-            ReceivedUpdate();
+            Update();
         }
 
-        private void ReceivedUpdate()
+        protected override void HandleActions()
         {
-            HandleMovement();
-
-            if (myIsPaused == false)
-            {
-                myGridBundle.Behavior.Update();
-                if (myGridBundle.Behavior.IsFrozen() == false)
-                {
-                    ResolveAngryQueue();
-                }
-            }
-
-            foreach(var Action in myLastAdvancedFrame.Actions)
+            foreach (var Action in myLastAdvancedFrame.Actions)
             {
                 if (myLastAdvancedFrame.Actions.Contains(ActionList.SwapBlocks))
                     myGridBundle.Behavior.SwapBlocksRight(myPosition);

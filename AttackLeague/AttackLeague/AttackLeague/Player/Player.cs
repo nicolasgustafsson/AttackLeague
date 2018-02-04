@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.Utility;
+using System.Diagnostics;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -19,9 +20,15 @@ namespace AttackLeague.AttackLeague.Player
         public List<int> myAttackOrder { get; private set; }
         protected List<AngryInfo> myQueuedAngryBlocks = new List<AngryInfo>();
 
+        protected int myElapsedFrames = 0;
+
         public Player(PlayerInfo aInfo)
         {
             myPlayerInfo = aInfo;
+            /*
+             * Frame counter
+             * Send angry block will resolve 100 frames 
+             */
         }
 
         public void Initialize()
@@ -45,6 +52,19 @@ namespace AttackLeague.AttackLeague.Player
                 }
             }
 
+            HandleActions();
+
+            if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0 : 1))// &&
+            {
+                myPosition.Y++;
+                Console.WriteLine("player pos y: " + myPosition.Y);
+            }
+
+            myElapsedFrames++;
+        }
+
+        protected virtual void HandleActions()
+        {
             if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.SwapBlocks))
                 myGridBundle.Behavior.SwapBlocksRight(myPosition);
 
@@ -64,8 +84,14 @@ namespace AttackLeague.AttackLeague.Player
 
         protected void ResolveAngryQueue() // todo, call (old?)
         {
+            int resolvedCount = 0;
             foreach (var angryInfo in myQueuedAngryBlocks)
             {
+                //Debug.Assert(myElapsedFrames <= angryInfo.myFrameIndexToResolve);
+                if (myElapsedFrames < angryInfo.myFrameIndexToResolve)
+                    continue;
+
+                resolvedCount++;
                 int xPos = 0;
                 if (angryInfo.mySize.X != myGridBundle.Container.GetInitialWidth())
                 {
@@ -75,7 +101,9 @@ namespace AttackLeague.AttackLeague.Player
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
             }
-            myQueuedAngryBlocks.Clear();
+
+            for (int i = 0; i < resolvedCount; i++)
+                myQueuedAngryBlocks.RemoveAt(0);
         }
 
         protected bool CanBeAtTop()
@@ -110,11 +138,7 @@ namespace AttackLeague.AttackLeague.Player
         public void Draw(SpriteBatch aSpriteBatch, float aTileSize)
         {
                //(myPosition.Y >= myGridBundle.Container.GetInitialHeight() && myGridBundle.Behavior.GetRaisingOffset() != 0f) == false)
-            if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0 : 1))// &&
-            {
-                myPosition.Y++;
-                Console.WriteLine("player pos y: " + myPosition.Y);
-            }
+
 
             myGridBundle.Behavior.Draw(aSpriteBatch);
 

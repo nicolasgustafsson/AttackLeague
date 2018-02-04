@@ -26,5 +26,6 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public Point mySize;
         public int mySendingPlayer;         // used to acquire angry block cosmetics from other player
         public EAngryType myAngryType;
+        public int myFrameIndexToResolve;
     }
 }

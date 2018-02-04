@@ -54,21 +54,21 @@ namespace AttackLeague.Utility.Network
 
         public void ResolveMessages()
         {
-            foreach (var keyAndValue in myQueuedMessages)
+            lock (myQueuedMessages)
             {
-                List<BaseMessage> tenpy = keyAndValue.Value;
-
-                foreach (BaseMessage message in tenpy)
+                foreach (var keyAndValue in myQueuedMessages)
                 {
-                    foreach (ISubscriber baseSubscriber in mySubscribers[keyAndValue.Key])
+                    List<BaseMessage> tenpy = keyAndValue.Value;
+
+                    foreach (BaseMessage message in tenpy)
                     {
-                        baseSubscriber.ReceiveMessageInternal(message);
+                        foreach (ISubscriber baseSubscriber in mySubscribers[keyAndValue.Key])
+                        {
+                            baseSubscriber.ReceiveMessageInternal(message);
+                        }
                     }
                 }
-            }
 
-            lock(myQueuedMessages)
-            {
                 myQueuedMessages.Clear();
             }
         }

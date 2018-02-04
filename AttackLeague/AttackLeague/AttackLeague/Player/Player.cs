@@ -45,10 +45,10 @@ namespace AttackLeague.AttackLeague.Player
                 }
             }
 
-            if (myPlayerInfo.myMappedActions.ActionIsActive("SwapBlocks"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.SwapBlocks))
                 myGridBundle.Behavior.SwapBlocksRight(myPosition);
 
-            if (myPlayerInfo.myMappedActions.ActionIsActive("RaiseBlocks"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.RaiseBlocks))
                 myGridBundle.Behavior.SetIsRaisingBlocks();
         }
 
@@ -62,14 +62,14 @@ namespace AttackLeague.AttackLeague.Player
             myQueuedAngryBlocks.Add(aAngryInfo);
         }
 
-        private void ResolveAngryQueue() // todo, call
+        protected void ResolveAngryQueue() // todo, call (old?)
         {
             foreach (var angryInfo in myQueuedAngryBlocks)
             {
                 int xPos = 0;
                 if (angryInfo.mySize.X != myGridBundle.Container.GetInitialWidth())
                 {
-                    xPos = Randomizer.GlobalRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySize.X);
+                    xPos = myGridBundle.GridRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySize.X);
                 }
                 Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
@@ -78,29 +78,29 @@ namespace AttackLeague.AttackLeague.Player
             myQueuedAngryBlocks.Clear();
         }
 
-        private bool CanBeAtTop()
+        protected bool CanBeAtTop()
         {
             return myGridBundle.Container.IsExceedingRoof();
         }
 
-        private void HandleMovement()
+        protected virtual void HandleMovement()
         {
-            if (myPlayerInfo.myMappedActions.ActionIsActive("MoveRight"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.MoveRight))
             { 
                 if (myPosition.X < myGridBundle.Container.GetInitialWidth() - 2)
                     myPosition.X += 1;
             }
-            if (myPlayerInfo.myMappedActions.ActionIsActive("MoveLeft"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.MoveLeft))
             {
                 if (myPosition.X > 0)
                     myPosition.X -= 1;
             }
-            if (myPlayerInfo.myMappedActions.ActionIsActive("MoveUp"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.MoveUp))
             {
                 if (myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0.0f : 1.0f))
                     myPosition.Y += 1;
             }
-            if (myPlayerInfo.myMappedActions.ActionIsActive("MoveDown"))
+            if (myPlayerInfo.myMappedActions.ActionIsActive(ActionList.MoveDown))
             {
                 if (myPosition.Y > 1)
                     myPosition.Y -= 1;

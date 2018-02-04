@@ -64,8 +64,12 @@
     <Compile Include="AttackLeague\Grid\GridBehavior.cs" />
     <Compile Include="AttackLeague\Grid\GridBundle.cs" />
     <Compile Include="AttackLeague\Grid\GridContainer.cs" />
+    <Compile Include="AttackLeague\Player\ActionList.cs" />
+    <Compile Include="AttackLeague\Player\AdvanceFrameMessage.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayer.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayerInfo.cs" />
+    <Compile Include="AttackLeague\Player\NetPostingPlayer.cs" />
+    <Compile Include="AttackLeague\Player\RemotePlayer.cs" />
     <Compile Include="AttackLeague\Player\Player.cs" />
     <Compile Include="AttackLeague\Player\PlayerInfo.cs" />
     <Compile Include="AttackLeague\Replays\ReplayPlayer.cs" />

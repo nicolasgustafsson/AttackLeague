@@ -105,6 +105,14 @@ namespace AttackLeague.Utility
         }
     }
 
+    class NetworkedAction
+    {
+        public bool IsActive()
+        {
+            return true;
+        }
+    }
+
     #region RecordingActions
 
 
@@ -167,6 +175,11 @@ namespace AttackLeague.Utility
             }
 
             return false;
+        }
+
+        public IEnumerable<string> GetActiveActions()
+        {
+            return myMappedActions.Where(x => ActionIsActive(x.Key)).Select(x => x.Key);
         }
 
         private Dictionary<string, List<IAction>> myMappedActions;

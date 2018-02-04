@@ -138,7 +138,7 @@ namespace AttackLeague.AttackLeague.Blocks.Generator
 
         public EBlockColor GetRandomizedColor()
         {
-            return (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5); // DO SUPER COOL RANDOMIZE
+            return (EBlockColor)myGridBundle.GridRandomizer.Next(0, 5); // DO SUPER COOL RANDOMIZE
         }
 
         public void RemoveBlock(AbstractBlock aBlock, int aAmountOfDisappearingBlocks, int aCurrentBlock)

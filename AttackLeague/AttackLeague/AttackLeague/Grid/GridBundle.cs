@@ -12,9 +12,12 @@ namespace AttackLeague.AttackLeague.Grid
         public GridBehavior Behavior;
         public GridContainer Container;
         public BlockGenerator Generator;
+        public Random GridRandomizer;
 
         public GridBundle(int aPlayerIndex)
         {
+            GridRandomizer = new Random(123 + "HejNicos".GetHashCode());
+
             Container = new GridContainer();
             Generator = new BlockGenerator();
 

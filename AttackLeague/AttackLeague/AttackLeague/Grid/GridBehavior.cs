@@ -15,27 +15,6 @@ namespace AttackLeague.AttackLeague.Grid
 {
     public class GridBehavior
     {
-        /*
-         TODO!
-            BUGS:
-             Disintegrates several blockbundles at once(create blockiterator which can execute function at block with a delay
-             Rightmost block gets converted first on last row
-             Goes left to right(right to left)
-             Crashes sometimes(AllowFalling?) in loopy thingy, index out of bounds I think
-
-            Notes for Tuesday!
-                Do the BlockDelegate function and use it in the non-compiling code below
-                Steal functionality from AngryBlockBundle (solve the things with updating into frozen things)
-                see what needs to be done!
-
-             Yes.
-             then have some hot cocoa.
-             Yes.
-
-            YLF TAKE THE WEEEL
-         
-         Perhaps fiddle around with SpriteTileset 
-        */
 
         private int myPlayerIndex;
 
@@ -608,5 +587,6 @@ namespace AttackLeague.AttackLeague.Grid
             }
             return false;
         }
+
     }
 }

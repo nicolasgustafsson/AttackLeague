@@ -21,7 +21,7 @@ namespace AttackLeague.AttackLeague
 
         public override void RandomizeColor()
         {
-            myColor = (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
+            myColor = (EBlockColor)myGridBundle.GridRandomizer.Next(0, 5);
             if (mySprite != null)
             {
                 UpdateColor();

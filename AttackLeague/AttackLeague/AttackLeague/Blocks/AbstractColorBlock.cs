@@ -59,7 +59,7 @@ namespace AttackLeague.AttackLeague
 
         public virtual void RandomizeColor()
         {
-            myColor = (EBlockColor)Randomizer.GlobalRandomizer.Next(0, 5);
+            myColor = (EBlockColor)myGridBundle.GridRandomizer.Next(0, 5);
             if (mySprite != null)
             {
                 mySprite.SetColor(GetColorFromEnum());

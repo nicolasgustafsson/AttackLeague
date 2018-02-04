@@ -12,6 +12,11 @@ namespace AttackLeague.AttackLeague.Player
 {
     class Player
     {
+        /*
+         * TWO BUGS: If lag is above 100 frames, we crashy crashy
+         * We desync after long session
+         * Have fun, 
+         */
         protected Sprite mySprite;
         protected Point myPosition = new Point(2,5);
         protected GridBundle myGridBundle;

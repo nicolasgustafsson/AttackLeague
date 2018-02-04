@@ -9,5 +9,6 @@ namespace AttackLeague.Utility.Network
     interface IConnection
     {
         void WriteMessage<T>(T aMessage);
+        bool IsConnected();
     }
 }

@@ -11,6 +11,7 @@ using AttackLeague.AttackLeague.Feedback;
 using System.Net.Sockets;
 using AttackLeague.Utility.Network;
 using AttackLeague.Utility.Network.Messages;
+using System.Threading;
 
 namespace AttackLeague
 {
@@ -79,16 +80,27 @@ namespace AttackLeague
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GamePadWrapper.UpdateAllGamePads();
-            for (int i = 0; i < (int)EInputType.Length; i++)
-            {
-                EInputType input = (EInputType)i;
-                if (GamePadWrapper.IsGamePadConnected(input))
-                {
-                   //AddPlayer(input);
-                }
-            }
+            //for (int i = 0; i < (int)EInputType.Length; i++)
+            //{
+            //    EInputType input = (EInputType)i;
+            //    if (GamePadWrapper.IsGamePadConnected(input))
+            //    {
+            //       //AddPlayer(input);
+            //    }
+            //}
 
-            GameInfo.myPlayers.Add(new DebugPlayer());
+            //wait til connect
+            NetHost host = new NetHost();
+            host.StartListen();
+            NetPoster.Instance.Connection = host;
+
+            while(host.IsConnected() == false)
+                Thread.Sleep(1);
+
+            
+
+            GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
+            GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
 
             foreach (var playerdesu in GameInfo.myPlayers)
             {

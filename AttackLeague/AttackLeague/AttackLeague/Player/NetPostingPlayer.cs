@@ -8,7 +8,7 @@ namespace AttackLeague.AttackLeague.Player
 {
     class NetPostingPlayer : Player
     {
-        NetPostingPlayer(PlayerInfo aPlayerInfo)
+        public NetPostingPlayer(PlayerInfo aPlayerInfo)
             : base(aPlayerInfo) { }
 
         public override void Update()

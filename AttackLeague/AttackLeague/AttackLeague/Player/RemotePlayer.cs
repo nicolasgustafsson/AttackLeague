@@ -11,7 +11,7 @@ namespace AttackLeague.AttackLeague.Player
     {
         private Subscriber<AdvanceFrameMessage> myAdvanceFrameSubscriber;
 
-        RemotePlayer(PlayerInfo aPlayerInfo)
+        public RemotePlayer(PlayerInfo aPlayerInfo)
             :base(aPlayerInfo)
         {
             myAdvanceFrameSubscriber = new Subscriber<AdvanceFrameMessage>(OnFrameMessageReceived, true);

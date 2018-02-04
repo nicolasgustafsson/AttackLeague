@@ -64,6 +64,11 @@ namespace AttackLeague.Utility.Network
             }
         }
 
+        public bool IsConnected()
+        {
+            return myClient.Connected;
+        }
+
         void Read()
         {
             try

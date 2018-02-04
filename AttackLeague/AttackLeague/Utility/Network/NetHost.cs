@@ -27,6 +27,11 @@ namespace AttackLeague.Utility.Network
             ClientAcceptionings.Start();
         }
 
+        public bool IsConnected()
+        {
+            return myClients.Count > 0;
+        }
+
         public void WriteMessage<T>(T aStuff)
         {
             foreach (NetPeer client in myClients)

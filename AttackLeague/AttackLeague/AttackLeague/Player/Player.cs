@@ -95,6 +95,11 @@ namespace AttackLeague.AttackLeague.Player
             myQueueQueueAngryBlocks.Add(aAngryInfo);
         }
 
+        public int GetElapsedFrames()
+        {
+            return myElapsedFrames;
+        }
+
         protected void ResolveAngryQueue() // todo, call (old?)
         {
             int resolvedCount = 0;

@@ -19,6 +19,7 @@ namespace AttackLeague.AttackLeague.Player
         public PlayerInfo myPlayerInfo;
         public List<int> myAttackOrder { get; private set; }
         protected List<AngryInfo> myQueuedAngryBlocks = new List<AngryInfo>();
+        protected List<AngryInfo> myQueueQueueAngryBlocks = new List<AngryInfo>();
 
         protected int myElapsedFrames = 0;
 
@@ -46,6 +47,19 @@ namespace AttackLeague.AttackLeague.Player
             if (myIsPaused == false)
             {
                 myGridBundle.Behavior.Update();
+
+                foreach (var queueQueueAngryInfo in myQueueQueueAngryBlocks)
+                {
+                    Debug.Assert(queueQueueAngryInfo.myFrameIndexToResolve <= myElapsedFrames);
+                    if (queueQueueAngryInfo.myFrameIndexToResolve == myElapsedFrames)
+                    {
+                        myQueuedAngryBlocks.Add(queueQueueAngryInfo);
+                    }
+                    else
+                        break;
+                }
+
+
                 if (myGridBundle.Behavior.IsFrozen() == false)
                 {
                     ResolveAngryQueue();
@@ -57,7 +71,6 @@ namespace AttackLeague.AttackLeague.Player
             if (myGridBundle.Behavior.HasRaisedGridThisFrame() && myPosition.Y < myGridBundle.Container.GetInitialHeight() - (CanBeAtTop() ? 0 : 1))// &&
             {
                 myPosition.Y++;
-                Console.WriteLine("player pos y: " + myPosition.Y);
             }
 
             myElapsedFrames++;
@@ -79,7 +92,7 @@ namespace AttackLeague.AttackLeague.Player
 
         public void ReceiveAttack(AngryInfo aAngryInfo)
         {
-            myQueuedAngryBlocks.Add(aAngryInfo);
+            myQueueQueueAngryBlocks.Add(aAngryInfo);
         }
 
         protected void ResolveAngryQueue() // todo, call (old?)
@@ -100,6 +113,10 @@ namespace AttackLeague.AttackLeague.Player
                 Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
+                if (this is RemotePlayer)
+                {
+                    Console.WriteLine($"Resolve at {myElapsedFrames}");
+                }
             }
 
             for (int i = 0; i < resolvedCount; i++)

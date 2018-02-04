@@ -25,7 +25,7 @@ namespace AttackLeague.AttackLeague.Player
         {
             // TODO if aMessage.playerIndex == myIndex
             myLastAdvancedFrame = aMessage;
-            Update();
+            base.Update();
         }
 
         protected override void HandleActions()

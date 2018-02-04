@@ -48,16 +48,21 @@ namespace AttackLeague.AttackLeague.Player
             {
                 myGridBundle.Behavior.Update();
 
+                int resolvedCount = 0;
                 foreach (var queueQueueAngryInfo in myQueueQueueAngryBlocks)
                 {
-                    Debug.Assert(queueQueueAngryInfo.myFrameIndexToResolve <= myElapsedFrames);
+                    Debug.Assert(queueQueueAngryInfo.myFrameIndexToResolve >= myElapsedFrames);
                     if (queueQueueAngryInfo.myFrameIndexToResolve == myElapsedFrames)
                     {
+                        resolvedCount++;
                         myQueuedAngryBlocks.Add(queueQueueAngryInfo);
                     }
                     else
                         break;
                 }
+
+                for (int i = 0; i < resolvedCount; i++)
+                    myQueueQueueAngryBlocks.RemoveAt(0);
 
 
                 if (myGridBundle.Behavior.IsFrozen() == false)
@@ -102,14 +107,8 @@ namespace AttackLeague.AttackLeague.Player
 
         protected void ResolveAngryQueue() // todo, call (old?)
         {
-            int resolvedCount = 0;
             foreach (var angryInfo in myQueuedAngryBlocks)
             {
-                //Debug.Assert(myElapsedFrames <= angryInfo.myFrameIndexToResolve);
-                if (myElapsedFrames < angryInfo.myFrameIndexToResolve)
-                    continue;
-
-                resolvedCount++;
                 int xPos = 0;
                 if (angryInfo.mySize.X != myGridBundle.Container.GetInitialWidth())
                 {
@@ -124,8 +123,7 @@ namespace AttackLeague.AttackLeague.Player
                 }
             }
 
-            for (int i = 0; i < resolvedCount; i++)
-                myQueuedAngryBlocks.RemoveAt(0);
+            myQueuedAngryBlocks.Clear();
         }
 
         protected bool CanBeAtTop()

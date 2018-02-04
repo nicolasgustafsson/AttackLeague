@@ -45,7 +45,7 @@ namespace AttackLeague.AttackLeague.GameInfo
             {
                 if (myPlayers[toAttackIndex].CanBeAttacked() == true)
                 {
-                    aAngryInfo.myFrameIndexToResolve = myPlayers[aAngryInfo.mySendingPlayer].GetElapsedFrames();
+                    aAngryInfo.myFrameIndexToResolve = myPlayers[aAngryInfo.mySendingPlayer].GetElapsedFrames() + 100;
                     myPlayers[toAttackIndex].ReceiveAttack(aAngryInfo); 
                     break;
                 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.Utility;
 using System.Diagnostics;
+using AttackLeague.Utility.Network.Messages;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -15,7 +16,17 @@ namespace AttackLeague.AttackLeague.Player
         /*
          * TWO BUGS: If lag is above 100 frames, we crashy crashy
          * We desync after long session
-         * Have fun, 
+         * Have fun! :D :D :D :D :D
+         * 
+        båda spelar
+        en skickar block på den andra
+        det laggar
+        blocket skulle ramlat ner frame x
+
+        x => block till y
+        angryblockmessage
+        y spawns block and sends in its update
+        x show block spawned at frame x
          */
         protected Sprite mySprite;
         protected Point myPosition = new Point(2,5);
@@ -24,7 +35,6 @@ namespace AttackLeague.AttackLeague.Player
         public PlayerInfo myPlayerInfo;
         public List<int> myAttackOrder { get; private set; }
         protected List<AngryInfo> myQueuedAngryBlocks = new List<AngryInfo>();
-        protected List<AngryInfo> myQueueQueueAngryBlocks = new List<AngryInfo>();
 
         protected int myElapsedFrames = 0;
 
@@ -53,27 +63,8 @@ namespace AttackLeague.AttackLeague.Player
             {
                 myGridBundle.Behavior.Update();
 
-                int resolvedCount = 0;
-                foreach (var queueQueueAngryInfo in myQueueQueueAngryBlocks)
-                {
-                    Debug.Assert(queueQueueAngryInfo.myFrameIndexToResolve >= myElapsedFrames);
-                    if (queueQueueAngryInfo.myFrameIndexToResolve == myElapsedFrames)
-                    {
-                        resolvedCount++;
-                        myQueuedAngryBlocks.Add(queueQueueAngryInfo);
-                    }
-                    else
-                        break;
-                }
-
-                for (int i = 0; i < resolvedCount; i++)
-                    myQueueQueueAngryBlocks.RemoveAt(0);
-
-
                 if (myGridBundle.Behavior.IsFrozen() == false)
-                {
                     ResolveAngryQueue();
-                }
             }
 
             HandleActions();
@@ -100,9 +91,9 @@ namespace AttackLeague.AttackLeague.Player
             return myGridBundle.Behavior.myIsDead == false; // todo : do crazy stuff
         }
 
-        public void ReceiveAttack(AngryInfo aAngryInfo)
+        public virtual void ReceiveAttack(AngryInfo aAngryInfo)
         {
-            myQueueQueueAngryBlocks.Add(aAngryInfo);
+            myQueuedAngryBlocks.Add(aAngryInfo);
         }
 
         public int GetElapsedFrames()
@@ -119,9 +110,11 @@ namespace AttackLeague.AttackLeague.Player
                 {
                     xPos = myGridBundle.GridRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySize.X);
                 }
+
                 Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
                 AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
+
                 if (this is RemotePlayer)
                 {
                     Console.WriteLine($"Resolve at {myElapsedFrames}");

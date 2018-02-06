@@ -1,4 +1,5 @@
-﻿using AttackLeague.Utility.Network.Messages;
+﻿using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.Utility.Network.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,13 @@ namespace AttackLeague.AttackLeague.Player
     class RemotePlayer : Player
     {
         private Subscriber<AdvanceFrameMessage> myAdvanceFrameSubscriber;
+        private Subscriber<AngryBlockMessage> myAngryBlockSubscriber;
 
         public RemotePlayer(PlayerInfo aPlayerInfo)
             :base(aPlayerInfo)
         {
             myAdvanceFrameSubscriber = new Subscriber<AdvanceFrameMessage>(OnFrameMessageReceived, true);
+            myAngryBlockSubscriber = new Subscriber<AngryBlockMessage>(OnAngryAttackReceived, true);
         }
 
         public override void Update()
@@ -23,9 +26,19 @@ namespace AttackLeague.AttackLeague.Player
 
         private void OnFrameMessageReceived(AdvanceFrameMessage aMessage)
         {
-            // TODO if aMessage.playerIndex == myIndex
             myLastAdvancedFrame = aMessage;
             base.Update();
+        }
+
+        private void OnAngryAttackReceived(AngryBlockMessage aMessage)
+        {
+            if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
+                myQueuedAngryBlocks.Add(aMessage.myAngryInfo); // happen frame after on remote? haha no it doesnt
+        }
+
+        public override void ReceiveAttack(AngryInfo aAngryInfo)
+        {
+            NetPoster.Instance.PostMessage(new AngryBlockMessage(aAngryInfo, myPlayerInfo.myPlayerIndex));
         }
 
         protected override void HandleActions()

@@ -48,6 +48,7 @@
     <Compile Include="AttackLeague\Blocks\AbstractColorBlock.cs" />
     <Compile Include="AttackLeague\Blocks\Angry\AngryBlock.cs" />
     <Compile Include="AttackLeague\Blocks\Angry\AngryBlockBundle.cs" />
+    <Compile Include="AttackLeague\Blocks\Angry\AngryBlockMessage.cs" />
     <Compile Include="AttackLeague\Blocks\Angry\AngryInfo.cs" />
     <Compile Include="AttackLeague\Blocks\BlockTimedIterator.cs" />
     <Compile Include="AttackLeague\Blocks\DisappearingBlock.cs" />

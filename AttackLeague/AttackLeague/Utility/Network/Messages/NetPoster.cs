@@ -26,7 +26,7 @@ namespace AttackLeague.Utility.Network.Messages
         {
         }
 
-        public void PostMessage<T>(T aMessage)
+        public void PostMessage<T>(T aMessage) where T : BaseMessage
         {
             Debug.Assert(Connection != null);
             Connection.WriteMessage<T>(aMessage);

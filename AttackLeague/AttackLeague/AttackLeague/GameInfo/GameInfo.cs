@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AttackLeague.AttackLeague.Player;
 using AttackLeague.AttackLeague.Blocks.Angry;
+using AttackLeague.Utility.Network.Messages;
 
 namespace AttackLeague.AttackLeague.GameInfo
 {
@@ -45,8 +46,8 @@ namespace AttackLeague.AttackLeague.GameInfo
             {
                 if (myPlayers[toAttackIndex].CanBeAttacked() == true)
                 {
-                    aAngryInfo.myFrameIndexToResolve = myPlayers[aAngryInfo.mySendingPlayer].GetElapsedFrames() + 100;
-                    myPlayers[toAttackIndex].ReceiveAttack(aAngryInfo); 
+                    //aAngryInfo.myFrameIndexToResolve = myPlayers[aAngryInfo.mySendingPlayer].GetElapsedFrames() + 100;
+                    NetPoster.Instance.PostMessage(new AngryBlockMessage(aAngryInfo, toAttackIndex));
                     break;
                 }
             }

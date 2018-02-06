@@ -97,8 +97,6 @@ namespace AttackLeague
             while(host.IsConnected() == false)
                 Thread.Sleep(1);
 
-            
-
             GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
             GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
 

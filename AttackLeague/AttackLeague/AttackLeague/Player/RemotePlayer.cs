@@ -2,6 +2,7 @@
 using AttackLeague.Utility.Network.Messages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,15 @@ namespace AttackLeague.AttackLeague.Player
     class RemotePlayer : Player
     {
         private Subscriber<AdvanceFrameMessage> myAdvanceFrameSubscriber;
-        private Subscriber<AngryBlockMessage> myAngryBlockSubscriber;
+        private Subscriber<AngryBlockConfirmMessage> myAngryBlockSubscriber;
+        private List<AngryInfo> myQueuedNetAngries;
 
         public RemotePlayer(PlayerInfo aPlayerInfo)
             :base(aPlayerInfo)
         {
+            myQueuedNetAngries = new List<AngryInfo>();
             myAdvanceFrameSubscriber = new Subscriber<AdvanceFrameMessage>(OnFrameMessageReceived, true);
-            myAngryBlockSubscriber = new Subscriber<AngryBlockMessage>(OnAngryAttackReceived, true);
+            myAngryBlockSubscriber = new Subscriber<AngryBlockConfirmMessage>(OnAngryAttackReceived, true);
         }
 
         public override void Update()
@@ -30,18 +33,21 @@ namespace AttackLeague.AttackLeague.Player
             base.Update();
         }
 
-        private void OnAngryAttackReceived(AngryBlockMessage aMessage)
+        private void OnAngryAttackReceived(AngryBlockConfirmMessage aMessage)
         {
-            if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
+            if (aMessage.myPlayerIndex == myPlayerInfo.myPlayerIndex)
             {
-                Console.WriteLine("Received attack on: " +  myElapsedFrames);
-                myQueuedAngryBlocks.Add(aMessage.myAngryInfo); // happen frame after on remote? haha no it doesnt
+                Debug.Assert(myQueuedNetAngries.Count > 0);
+                Console.WriteLine("Confirmed angry block on: " +  myElapsedFrames);
+                myQueuedAngryBlocks.Add(myQueuedNetAngries[0]);
+                myQueuedNetAngries.RemoveAt(0);
             }
         }
 
         public override void ReceiveAttack(AngryInfo aAngryInfo)
         {
-            NetPoster.Instance.PostMessage(new AngryBlockMessage(aAngryInfo, myPlayerInfo.myPlayerIndex));
+            myQueuedNetAngries.Add(aAngryInfo);
+            NetPoster.Instance.PostMessage(new AngryBlockSpawnMessage(aAngryInfo, myPlayerInfo.myPlayerIndex));
         }
 
         protected override void HandleActions()

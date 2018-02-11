@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace AttackLeague.AttackLeague.Blocks.Angry
 {
     [Serializable]
-    class AngryBlockMessage : BaseMessage
+    class AngryBlockSpawnMessage : BaseMessage
     {
-        public AngryBlockMessage(AngryInfo aAngryInfo, int aToAttack )
+        public AngryBlockSpawnMessage(AngryInfo aAngryInfo, int aToAttack )
         {
             myAngryInfo = aAngryInfo;
             myAttackedPlayer = aToAttack;
@@ -18,4 +18,15 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         public AngryInfo myAngryInfo;
         public int myAttackedPlayer;
     }
+
+    [Serializable]
+    class AngryBlockConfirmMessage : BaseMessage
+    {
+        public AngryBlockConfirmMessage(int aToAttack)
+        {
+            myPlayerIndex = aToAttack;
+        }
+        public int myPlayerIndex;
+    }
+
 }

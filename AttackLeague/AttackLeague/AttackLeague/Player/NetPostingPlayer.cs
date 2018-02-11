@@ -10,20 +10,21 @@ namespace AttackLeague.AttackLeague.Player
 {
     class NetPostingPlayer : Player
     {
-        private Subscriber<AngryBlockMessage> myAngryBlockSubscriber;
+        private Subscriber<AngryBlockSpawnMessage> myAngryBlockSubscriber;
 
         public NetPostingPlayer(PlayerInfo aPlayerInfo)
             : base(aPlayerInfo)
         {
-            myAngryBlockSubscriber = new Subscriber<AngryBlockMessage>(OnAngryAttackReceived, true);
+            myAngryBlockSubscriber = new Subscriber<AngryBlockSpawnMessage>(OnAngryAttackReceived, true);
         }
 
-        private void OnAngryAttackReceived(AngryBlockMessage aMessage)
+        private void OnAngryAttackReceived(AngryBlockSpawnMessage aMessage)
         {
             if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
             {
                 Console.WriteLine("Received attack on: " + myElapsedFrames);
                 myQueuedAngryBlocks.Add(aMessage.myAngryInfo);
+                NetPoster.Instance.PostMessage(new AngryBlockConfirmMessage(myPlayerInfo.myPlayerIndex));
             }
         }
 
@@ -35,7 +36,7 @@ namespace AttackLeague.AttackLeague.Player
             frameMessage.Actions = myPlayerInfo.myMappedActions.GetActiveActions().ToList();
             frameMessage.PlayerIndex = myPlayerInfo.myPlayerIndex;
             frameMessage.FrameIndex = myElapsedFrames - 1;
-            Utility.Network.Messages.NetPoster.Instance.PostMessage<AdvanceFrameMessage>(frameMessage);
+            NetPoster.Instance.PostMessage(frameMessage);
         }
     }
 }

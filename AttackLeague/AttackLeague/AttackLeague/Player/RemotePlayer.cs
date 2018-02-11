@@ -33,7 +33,10 @@ namespace AttackLeague.AttackLeague.Player
         private void OnAngryAttackReceived(AngryBlockMessage aMessage)
         {
             if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
+            {
+                Console.WriteLine("Received attack on: " +  myElapsedFrames);
                 myQueuedAngryBlocks.Add(aMessage.myAngryInfo); // happen frame after on remote? haha no it doesnt
+            }
         }
 
         public override void ReceiveAttack(AngryInfo aAngryInfo)

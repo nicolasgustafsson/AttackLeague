@@ -12,15 +12,13 @@ namespace AttackLeague.AttackLeague.Player
     class RemotePlayer : Player
     {
         private Subscriber<AdvanceFrameMessage> myAdvanceFrameSubscriber;
-        private Subscriber<AngryBlockConfirmMessage> myAngryBlockSubscriber;
-        private List<AngryInfo> myQueuedNetAngries;
+        private Subscriber<AngryBlockMessage> myAngryBlockSubscriber;
 
         public RemotePlayer(PlayerInfo aPlayerInfo)
             :base(aPlayerInfo)
         {
-            myQueuedNetAngries = new List<AngryInfo>();
             myAdvanceFrameSubscriber = new Subscriber<AdvanceFrameMessage>(OnFrameMessageReceived, true);
-            myAngryBlockSubscriber = new Subscriber<AngryBlockConfirmMessage>(OnAngryAttackReceived, true);
+            myAngryBlockSubscriber = new Subscriber<AngryBlockMessage>(OnAngryAttackReceived, true);
         }
 
         public override void Update()
@@ -33,21 +31,17 @@ namespace AttackLeague.AttackLeague.Player
             base.Update();
         }
 
-        private void OnAngryAttackReceived(AngryBlockConfirmMessage aMessage)
+        private void OnAngryAttackReceived(AngryBlockMessage aMessage)
         {
-            if (aMessage.myPlayerIndex == myPlayerInfo.myPlayerIndex)
+            if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
             {
-                Debug.Assert(myQueuedNetAngries.Count > 0);
                 Console.WriteLine("Confirmed angry block on: " +  myElapsedFrames);
-                myQueuedAngryBlocks.Add(myQueuedNetAngries[0]);
-                myQueuedNetAngries.RemoveAt(0);
+                myQueuedAngryBlocks.Add(aMessage.myAngryInfo);
             }
         }
 
         public override void ReceiveAttack(AngryInfo aAngryInfo)
         {
-            myQueuedNetAngries.Add(aAngryInfo);
-            NetPoster.Instance.PostMessage(new AngryBlockSpawnMessage(aAngryInfo, myPlayerInfo.myPlayerIndex));
         }
 
         protected override void HandleActions()

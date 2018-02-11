@@ -46,8 +46,7 @@ namespace AttackLeague.AttackLeague.GameInfo
             {
                 if (myPlayers[toAttackIndex].CanBeAttacked() == true)
                 {
-                    //aAngryInfo.myFrameIndexToResolve = myPlayers[aAngryInfo.mySendingPlayer].GetElapsedFrames() + 100;
-                    NetPoster.Instance.PostMessage(new AngryBlockMessage(aAngryInfo, toAttackIndex));
+                    myPlayers[toAttackIndex].ReceiveAttack(aAngryInfo);
                     break;
                 }
             }

@@ -10,22 +10,15 @@ namespace AttackLeague.AttackLeague.Player
 {
     class NetPostingPlayer : Player
     {
-        private Subscriber<AngryBlockSpawnMessage> myAngryBlockSubscriber;
-
         public NetPostingPlayer(PlayerInfo aPlayerInfo)
             : base(aPlayerInfo)
         {
-            myAngryBlockSubscriber = new Subscriber<AngryBlockSpawnMessage>(OnAngryAttackReceived, true);
         }
 
-        private void OnAngryAttackReceived(AngryBlockSpawnMessage aMessage)
+        public override void ReceiveAttack(AngryInfo aAngryInfo)
         {
-            if (aMessage.myAttackedPlayer == myPlayerInfo.myPlayerIndex)
-            {
-                Console.WriteLine("Received attack on: " + myElapsedFrames);
-                myQueuedAngryBlocks.Add(aMessage.myAngryInfo);
-                NetPoster.Instance.PostMessage(new AngryBlockConfirmMessage(myPlayerInfo.myPlayerIndex));
-            }
+            myQueuedAngryBlocks.Add(aAngryInfo);
+            NetPoster.Instance.PostMessage(new AngryBlockMessage(aAngryInfo, myPlayerInfo.myPlayerIndex));
         }
 
         public override void Update()

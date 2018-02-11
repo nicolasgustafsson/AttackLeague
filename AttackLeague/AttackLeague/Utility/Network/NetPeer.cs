@@ -91,6 +91,8 @@ namespace AttackLeague.Utility.Network
 
         public void WriteMessage<T>(T aMessage)
         {
+            Debug.Assert(typeof(T).IsDefined(typeof(SerializableAttribute), false));
+
             NetworkStream netStream = myClient.GetStream();
 
             IFormatter formatter = new BinaryFormatter();

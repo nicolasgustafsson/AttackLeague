@@ -14,16 +14,24 @@ namespace AttackLeague.AttackLeague.Blocks.Angry
         Rainbow
     }
 
+    [Serializable]
     public class AngryInfo
     {
         public AngryInfo(Point aSize, int aSendingPlayer, EAngryType aAngryType)
         {
-            mySize = aSize;
+            mySizeX = aSize.X;
+            mySizeY = aSize.Y;
             mySendingPlayer = aSendingPlayer;
             myAngryType = aAngryType;
         }
 
-        public Point mySize;
+        public Point GetSize()
+        {
+            return new Point(mySizeX, mySizeY);
+        }
+
+        public int mySizeX;
+        public int mySizeY;
         public int mySendingPlayer;         // used to acquire angry block cosmetics from other player
         public EAngryType myAngryType;
     }

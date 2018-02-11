@@ -106,13 +106,13 @@ namespace AttackLeague.AttackLeague.Player
             foreach (var angryInfo in myQueuedAngryBlocks)
             {
                 int xPos = 0;
-                if (angryInfo.mySize.X != myGridBundle.Container.GetInitialWidth())
+                if (angryInfo.mySizeX != myGridBundle.Container.GetInitialWidth())
                 {
-                    xPos = myGridBundle.GridRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySize.X);
+                    xPos = myGridBundle.GridRandomizer.Next(2) == 0 ? 0 : (myGridBundle.Container.GetInitialWidth() - angryInfo.mySizeX);
                 }
 
-                Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySize.Y);
-                AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.mySize);
+                Point position = new Point(xPos, myGridBundle.Container.GetCurrentHeight() + angryInfo.mySizeY);
+                AngryBlockBundle angryBundle = myGridBundle.Generator.CreateAngryBlockBundleAtPosition(position, angryInfo.GetSize());
                 myGridBundle.Behavior.AddAngryBundle(angryBundle);
 
                 if (this is RemotePlayer)

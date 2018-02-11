@@ -101,7 +101,7 @@ namespace AttackLeague.AttackLeague.Player
             return myElapsedFrames;
         }
 
-        protected void ResolveAngryQueue() // todo, call (old?)
+        protected virtual void ResolveAngryQueue() // todo, call (old?)
         {
             foreach (var angryInfo in myQueuedAngryBlocks)
             {

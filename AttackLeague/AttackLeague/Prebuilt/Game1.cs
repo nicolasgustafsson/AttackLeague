@@ -15,6 +15,12 @@ using System.Threading;
 
 namespace AttackLeague
 {
+    /*
+     TODO
+     start and play some. It will crash due to not serializable, discover where
+     have fun :D <3
+         
+         */
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;

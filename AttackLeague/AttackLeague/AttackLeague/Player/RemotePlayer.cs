@@ -77,6 +77,20 @@ namespace AttackLeague.AttackLeague.Player
             }
         }
 
+        protected override void ResolveAngryQueue() 
+        {
+            /*
+             nicos => angryblock på Ylf
+             syns på Nicos skärm
+             Ylf får inget på sin
+             
+             
+             */
+
+
+            base.ResolveAngryQueue();
+        }
+
         AdvanceFrameMessage myLastAdvancedFrame;
     }
 }

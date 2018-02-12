@@ -38,7 +38,6 @@ namespace AttackLeague.AttackLeague.States
             while (host.IsConnected() == false)
                 Thread.Sleep(1);
 
-
             GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
             GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
 
@@ -46,6 +45,7 @@ namespace AttackLeague.AttackLeague.States
             {
                 playerdesu.Initialize();
             }
+
             GameInfo.GameInfo.SetAutomaticAttackOrder();
         }
 
@@ -58,6 +58,8 @@ namespace AttackLeague.AttackLeague.States
 
         public override void Update()
         {
+            base.Update();
+
             foreach (var player in GameInfo.GameInfo.myPlayers)
                 player.Update();
 
@@ -66,6 +68,8 @@ namespace AttackLeague.AttackLeague.States
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
+            base.Draw(aSpriteBatch);
+
             const int MagicTileSize = 48;
             foreach (var player in GameInfo.GameInfo.myPlayers)
                 player.Draw(aSpriteBatch, MagicTileSize);

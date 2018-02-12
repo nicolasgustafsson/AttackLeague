@@ -34,6 +34,8 @@ namespace AttackLeague
             GameInfo.myScreenSize.X = myGraphicsDeviceManager.PreferredBackBufferWidth;
             GameInfo.myScreenSize.Y = myGraphicsDeviceManager.PreferredBackBufferHeight;
 
+            IsMouseVisible = true;
+
             //graphics.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = false;
 
@@ -44,7 +46,7 @@ namespace AttackLeague
 
         protected override void Initialize()
         {
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new MainMenuState() });
             base.Initialize();
         }
 

@@ -3,7 +3,7 @@ using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.AttackLeague.Blocks.Generator;
 using AttackLeague.AttackLeague.Feedback;
 using AttackLeague.Utility;
-using AttackLeague.Utility.Sprite;
+using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

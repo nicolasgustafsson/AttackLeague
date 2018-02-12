@@ -1,7 +1,7 @@
 ﻿using AttackLeague.AttackLeague.Grid;
 using AttackLeague.Utility;
 using AttackLeague.Utility.Betweenxt;
-using AttackLeague.Utility.Sprite;
+using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

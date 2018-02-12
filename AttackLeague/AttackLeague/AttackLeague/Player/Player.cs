@@ -1,7 +1,7 @@
 ﻿using AttackLeague.AttackLeague.Grid;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using AttackLeague.Utility.Sprite;
+using AttackLeague.Utility.Sprites;
 using System;
 using System.Collections.Generic;
 using AttackLeague.AttackLeague.Blocks.Angry;

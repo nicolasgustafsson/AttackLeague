@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace AttackLeague.Utility.Sprite
+namespace AttackLeague.Utility.Sprites
 {
     public class Sprite
     {

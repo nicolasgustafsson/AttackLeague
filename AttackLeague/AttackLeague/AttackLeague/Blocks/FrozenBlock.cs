@@ -1,7 +1,7 @@
 ﻿using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using AttackLeague.AttackLeague.Grid;
-using AttackLeague.Utility.Sprite;
+using AttackLeague.Utility.Sprites;
 
 namespace AttackLeague.AttackLeague
 {

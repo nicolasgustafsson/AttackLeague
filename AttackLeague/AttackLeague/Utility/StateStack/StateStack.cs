@@ -103,8 +103,9 @@ namespace AttackLeague.Utility.StateStack
                         }
                         break;
                 }
-                
             }
+
+            myQueuedCommands.Clear();
         }
 
         private void AddMajorState(State aState)

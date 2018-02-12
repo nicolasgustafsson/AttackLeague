@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AttackLeague.Utility.Sprite
+namespace AttackLeague.Utility.Sprites
 {
     class SpriteTilesetAngry : SpriteTileset
     {

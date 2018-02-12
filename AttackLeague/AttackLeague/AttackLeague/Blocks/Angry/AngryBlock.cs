@@ -8,7 +8,7 @@ using AttackLeague.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.AttackLeague.Blocks.Angry;
-using AttackLeague.Utility.Sprite;
+using AttackLeague.Utility.Sprites;
 
 namespace AttackLeague.AttackLeague.Blocks
 {

@@ -12,27 +12,30 @@ using System.Net.Sockets;
 using AttackLeague.Utility.Network;
 using AttackLeague.Utility.Network.Messages;
 using System.Threading;
-using AttackLeague.Utility.StateStack;
-using AttackLeague.AttackLeague.States;
 
 namespace AttackLeague
 {
+    /*
+     TODO
+     start and play some. It will crash due to not serializable, discover where
+     have fun :D <3
+         
+         */
     public class Game1 : Game
     {
-        private GraphicsDeviceManager myGraphicsDeviceManager;
-        private SpriteBatch mySpriteBatch;
-        private StateStack myStateStack = new StateStack();
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public Game1()
         {
-            myGraphicsDeviceManager = new GraphicsDeviceManager(this)
+            graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
                 PreferredBackBufferHeight = 720
             };
 
-            GameInfo.myScreenSize.X = myGraphicsDeviceManager.PreferredBackBufferWidth;
-            GameInfo.myScreenSize.Y = myGraphicsDeviceManager.PreferredBackBufferHeight;
+            GameInfo.myScreenSize.X = graphics.PreferredBackBufferWidth;
+            GameInfo.myScreenSize.Y = graphics.PreferredBackBufferHeight;
 
             //graphics.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = false;
@@ -44,14 +47,77 @@ namespace AttackLeague
 
         protected override void Initialize()
         {
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
             base.Initialize();
+
+            /*
+             * either peer or host
+                    case "c":
+                        Debug.Assert(myCurrentConnection == null);
+                        NetPeer newConnection = new NetPeer();
+
+                        if (consoleCommand.Count < 2)
+                        {
+                            newConnection.StartConnection("localhost");
+                        }
+                        else
+                        {
+                            newConnection.StartConnection(consoleCommand[1]);
+                        }
+
+                        myCurrentConnection = newConnection;
+                        break;
+                    case "l":
+                        Debug.Assert(myCurrentConnection == null);
+
+                        NetHost host = new NetHost();
+                        host.StartListen();
+
+                        myCurrentConnection = host;
+                        break;
+
+                    case "pretty":
+                        myCurrentConnection.WriteMessage(new PrettyMessage());
+                        break;
+             
+             */
         }
 
         protected override void LoadContent()
         {
-            mySpriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             GamePadWrapper.UpdateAllGamePads();
+            //for (int i = 0; i < (int)EInputType.Length; i++)
+            //{
+            //    EInputType input = (EInputType)i;
+            //    if (GamePadWrapper.IsGamePadConnected(input))
+            //    {
+            //       //AddPlayer(input);
+            //    }
+            //}
+
+            //wait til connect
+            NetHost host = new NetHost();
+            host.StartListen();
+            NetPoster.Instance.Connection = host;
+
+            while(host.IsConnected() == false)
+                Thread.Sleep(1);
+
+            GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
+            GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
+
+            foreach (var playerdesu in GameInfo.myPlayers)
+            {
+                playerdesu.Initialize();
+            }
+            GameInfo.SetAutomaticAttackOrder();
+        }
+
+        private void AddPlayer(EInputType aInputType)
+        {
+            PlayerInfo playerInfo = new PlayerInfo(GameInfo.myPlayerCount, aInputType);
+
+            GameInfo.myPlayers.Add(new Player(playerInfo));
         }
 
         protected override void UnloadContent() {}
@@ -62,15 +128,16 @@ namespace AttackLeague
             GamePadWrapper.UpdateAllGamePads();
             FrameCounter.IncrementFrameCount();
 
-            myStateStack.ResolveQueuedThings();
+            /*
+             if (new input type found)
+                CreatePlayer(the new input type);
+                DoSomeSplashyUIToTellThePlayersAnotherOneHasJoinedAndStuff
+            */
 
-            if (myStateStack.GetCurrentState() == null)
-            {
-                Exit();
-                return;
-            }
+            foreach (var player in GameInfo.myPlayers)
+                player.Update();
 
-            myStateStack.Update();
+            FeedbackManager.Update();
 
             base.Update(gameTime);
             NetPostMaster.Master.ResolveMessages();
@@ -79,12 +146,24 @@ namespace AttackLeague
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            mySpriteBatch.Begin();
+            spriteBatch.Begin();
 
-            myStateStack.Draw(mySpriteBatch);
+            const int MagicTileSize = 48;
+            foreach (var player in GameInfo.myPlayers)
+                player.Draw(spriteBatch, MagicTileSize);
 
-            mySpriteBatch.End();
+            FeedbackManager.Draw(spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        // ---
+
+        //private void CreatePlayer(EInputType aDefaultInputType)
+        //{
+        //    PlayerInfo playerInfo = new PlayerInfo(myPlayers.Count, aDefaultInputType); 
+        //    myPlayers.Add(new Player(playerInfo));
+        //}
     }
 }

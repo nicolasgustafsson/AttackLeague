@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,39 @@ namespace AttackLeague.Utility.StateStack
             myQueuedCommands.Add(aCommand);
         }
 
-        private void ResolveQueuedThings()
+        public void Update()
+        {
+            int startIndex = myStates.Last().Count -1;
+            for (int i = startIndex; i > 0; i--)
+            {
+                if (myStates.Last()[i].UpdateThrough == false)
+                    break;
+                startIndex--;
+            }
+
+            for (int i = startIndex; i < myStates.Last().Count; i++)
+            {
+                myStates.Last()[i].Update();
+            }
+        }
+
+        public void Draw(SpriteBatch aSpriteBatch)
+        {
+            int startIndex = myStates.Last().Count - 1;
+            for (int i = startIndex; i > 0; i--)
+            {
+                if (myStates.Last()[i].RenderThrough == false)
+                    break;
+                startIndex--;
+            }
+
+            for (int i = startIndex; i < myStates.Last().Count; i++)
+            {
+                myStates.Last()[i].Draw(aSpriteBatch);
+            }
+        }
+
+        public void ResolveQueuedThings()
         {
             foreach (var command in myQueuedCommands)
             {

@@ -75,6 +75,7 @@
     <Compile Include="AttackLeague\Player\PlayerInfo.cs" />
     <Compile Include="AttackLeague\Replays\ReplayPlayer.cs" />
     <Compile Include="AttackLeague\Replays\ReplayRecorder.cs" />
+    <Compile Include="AttackLeague\States\GameState.cs" />
     <Compile Include="AttackLeague\Tile.cs" />
     <Compile Include="Prebuilt\Game1.cs" />
     <Compile Include="Prebuilt\Program.cs" />

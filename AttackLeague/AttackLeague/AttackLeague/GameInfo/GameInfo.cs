@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 using AttackLeague.AttackLeague.Player;
 using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.Utility.Network.Messages;
+using System.Diagnostics;
 
 namespace AttackLeague.AttackLeague.GameInfo
 {
     static class GameInfo
     {
         //contains GameMode which has rules n studff
-        static public int myPlayerCount { get { return myPlayers.Count; }  }
+        static public int myPlayerCount { get { return myPlayers.Count; } }
 
         static public Vector2 myScreenSize;
         static public List<Player.Player> myPlayers = new List<Player.Player>();
+        public delegate void SetMouseFunction(bool aVisibility);
+        static public SetMouseFunction myMouseFunction { get; set; }
 
         static public void SetAutomaticAttackOrder()
         {
@@ -50,6 +53,12 @@ namespace AttackLeague.AttackLeague.GameInfo
                     break;
                 }
             }
+        }
+
+        static public void SetMouseVisibility(bool aVisibility)
+        {
+            Debug.Assert(myMouseFunction != null);
+            myMouseFunction(aVisibility);
         }
 
         // static List<Friend>

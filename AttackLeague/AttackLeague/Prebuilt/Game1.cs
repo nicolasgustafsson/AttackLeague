@@ -31,10 +31,9 @@ namespace AttackLeague
                 PreferredBackBufferHeight = 720
             };
 
+            GameInfo.myMouseFunction = SetMouseVisibility;
             GameInfo.myScreenSize.X = myGraphicsDeviceManager.PreferredBackBufferWidth;
             GameInfo.myScreenSize.Y = myGraphicsDeviceManager.PreferredBackBufferHeight;
-
-            IsMouseVisible = true;
 
             //graphics.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = false;
@@ -87,6 +86,13 @@ namespace AttackLeague
 
             mySpriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        //-------------------------
+
+        private void SetMouseVisibility(bool aVisibility)
+        {
+            IsMouseVisible = aVisibility;
         }
     }
 }

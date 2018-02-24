@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
+using AttackLeague.AttackLeague.GameInfo;
 
 namespace AttackLeague.AttackLeague.States
 {
@@ -26,6 +27,15 @@ namespace AttackLeague.AttackLeague.States
             myPlayButten.SetPosition(new Vector2(512, 512));
         }
 
+        public override void OnEnter()
+        {
+            GameInfo.GameInfo.SetMouseVisibility(true);
+        }
+
+        public override void OnExit()
+        {
+            GameInfo.GameInfo.SetMouseVisibility(false);
+        }
 
         public override void Update()
         {

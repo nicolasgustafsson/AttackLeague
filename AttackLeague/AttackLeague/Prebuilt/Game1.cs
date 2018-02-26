@@ -14,6 +14,7 @@ using AttackLeague.Utility.Network.Messages;
 using System.Threading;
 using AttackLeague.Utility.StateStack;
 using AttackLeague.AttackLeague.States;
+using AttackLeague.Utility.GUI;
 
 namespace AttackLeague
 {
@@ -61,6 +62,7 @@ namespace AttackLeague
         {
             KeyboardWrapper.UpdateState();
             GamePadWrapper.UpdateAllGamePads();
+            MouseUtility.Update();
             FrameCounter.IncrementFrameCount();
 
             myStateStack.ResolveQueuedThings();

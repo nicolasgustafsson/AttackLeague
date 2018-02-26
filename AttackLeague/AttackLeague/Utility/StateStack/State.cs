@@ -9,6 +9,8 @@ namespace AttackLeague.Utility.StateStack
 {
     class State
     {
+        public StateStack myStateStack { protected get; set; }
+
         /*
          Main menu
          Game - renderas (jag har ingen transprens)

@@ -1,19 +1,14 @@
 ﻿using AttackLeague.Utility.StateStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using AttackLeague.Utility.GUI;
 using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
-using AttackLeague.AttackLeague.GameInfo;
 
 namespace AttackLeague.AttackLeague.States
 {
     class MainMenuState : State
     {
-        Sprite myPlayButten;
+        Button myButtonyButton;
 
         public MainMenuState()
         {
@@ -22,9 +17,20 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            myPlayButten = new Sprite("PlayButton");
+            //myPlayButten = new Sprite("PlayButton");
+            //myPlayButten.SetPosition(new Vector2(512, 512));
 
-            myPlayButten.SetPosition(new Vector2(512, 512));
+            myButtonyButton = new Button();
+            myButtonyButton.mySprite = new Sprite("PlayButton");
+            myButtonyButton.mySprite.SetPosition(new Vector2(512, 512));
+            myButtonyButton.myHotspot = new Microsoft.Xna.Framework.Rectangle(512, 512, 200, 200);
+            myButtonyButton.OnClicked = CreateGameStaet;
+        }
+
+        public bool CreateGameStaet()
+        {
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            return true;
         }
 
         public override void OnEnter()
@@ -44,7 +50,7 @@ namespace AttackLeague.AttackLeague.States
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            myPlayButten.Draw(aSpriteBatch);
+            myButtonyButton.mySprite.Draw(aSpriteBatch);
             base.Draw(aSpriteBatch);
         }
     }

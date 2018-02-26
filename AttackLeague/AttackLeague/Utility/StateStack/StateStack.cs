@@ -110,12 +110,14 @@ namespace AttackLeague.Utility.StateStack
 
         private void AddMajorState(State aState)
         {
+            aState.myStateStack = this;
             myStates.Add(new List<State>());
             AddSubState(aState);
         }
 
         private void AddSubState(State aState)
         {
+            aState.myStateStack = this;
             ExitCurrentState();
             myStates.Last().Add(aState);
             myStates.Last().Last().OnCreated();

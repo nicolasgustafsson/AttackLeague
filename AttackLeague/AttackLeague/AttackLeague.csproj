@@ -87,6 +87,7 @@
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\GamePadWrapper.cs" />
     <Compile Include="Utility\GUI\Button.cs" />
+    <Compile Include="Utility\GUI\MouseUtility.cs" />
     <Compile Include="Utility\KeyboardWrapper.cs" />
     <Compile Include="Utility\Networkton.cs" />
     <Compile Include="Utility\Networks\IConnection.cs" />

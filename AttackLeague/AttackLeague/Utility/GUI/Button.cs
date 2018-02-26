@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AttackLeague.Utility.GUI
 {
@@ -13,9 +10,10 @@ namespace AttackLeague.Utility.GUI
 
     class Button
     {
-        public Sprite mySprite;
-        public Rectangle myHotspot;
+        private Sprite mySprite;
+        private Rectangle myHotspot;
         public ButtonAction OnClicked;    
+        public ButtonAction OnLostFocus;
 
         //this is ylfs domain
 
@@ -23,6 +21,29 @@ namespace AttackLeague.Utility.GUI
         {
             MouseUtility.LeftPressedCallback += OnClickedFunction;
             // todo remove at destruction! Otherwise no garbagecollectingy!!
+        }
+
+        public virtual void SetSprite(string aTextureName, Point aPosition) // todo default args pls
+        {
+            mySprite = new Sprite(aTextureName);
+            mySprite.SetPosition(new Vector2(aPosition.X, aPosition.Y));
+            myHotspot = new Rectangle(aPosition.X, aPosition.Y, (int)mySprite.GetSize().X, (int)mySprite.GetSize().Y);
+        }
+
+        public virtual void SetSprite(string aTextureName, Point aPosition, Point aSize, bool aSetScale) // todo default args pls
+        {
+            SetSprite(aTextureName, aPosition);
+            myHotspot.Width = aSize.X;
+            myHotspot.Height = aSize.Y;
+            if (aSetScale)
+            {
+                mySprite.SetScale(new Vector2(aSize.X, aSize.Y));
+            }
+        }
+
+        public void SetSpriteColor(Color aColor)
+        {
+            mySprite.SetColor(aColor);
         }
 
         private void OnClickedFunction(object sender, EventArgs args)
@@ -36,9 +57,13 @@ namespace AttackLeague.Utility.GUI
             {
                 OnClicked?.Invoke();
             }
+            else
+            {
+                OnLostFocus?.Invoke();
+            }
         }
 
-        void Update()
+        public virtual void Update()
         {
             //Point mousePos = Mouse.GetState().Position;
             //if (myHotspot.Bottom > mousePos.Y &&
@@ -53,6 +78,11 @@ namespace AttackLeague.Utility.GUI
 
         public virtual void OnHover()
         {
+        }
+
+        public virtual void Draw(SpriteBatch aSpriteBatch)
+        {
+            mySprite.Draw(aSpriteBatch);
         }
     }
 }

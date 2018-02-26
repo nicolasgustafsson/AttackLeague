@@ -132,3 +132,4 @@ C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLea
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Sunnie.xnb
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\tiley.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayButton.xnb
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\LobbyButton.xnb

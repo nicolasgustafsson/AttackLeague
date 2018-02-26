@@ -9,6 +9,7 @@ namespace AttackLeague.Utility.StateStack
 {
     class State
     {
+        // TODO add gui container
         public StateStack myStateStack { protected get; set; }
 
         /*

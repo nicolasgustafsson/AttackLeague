@@ -8,7 +8,8 @@ namespace AttackLeague.AttackLeague.States
 {
     class MainMenuState : State
     {
-        Button myButtonyButton;
+        Button myQuickPlayButton;
+        Button myLobbyButton;
 
         public MainMenuState()
         {
@@ -17,19 +18,24 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            //myPlayButten = new Sprite("PlayButton");
-            //myPlayButten.SetPosition(new Vector2(512, 512));
+            myQuickPlayButton = new Button();
+            myQuickPlayButton.SetSprite("PlayButton", new Point(0, 512));
+            myQuickPlayButton.OnClicked = CreateGameStaet;
 
-            myButtonyButton = new Button();
-            myButtonyButton.mySprite = new Sprite("PlayButton");
-            myButtonyButton.mySprite.SetPosition(new Vector2(512, 512));
-            myButtonyButton.myHotspot = new Microsoft.Xna.Framework.Rectangle(512, 512, 200, 200);
-            myButtonyButton.OnClicked = CreateGameStaet;
+            myLobbyButton = new Button();
+            myLobbyButton.SetSprite("LobbyButton", new Point(0, 128));
+            myLobbyButton.OnClicked = CreateLobbying;
         }
 
         public bool CreateGameStaet()
         {
             myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            return true;
+        }
+
+        public bool CreateLobbying()
+        {
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new LobbyState() });
             return true;
         }
 
@@ -50,7 +56,8 @@ namespace AttackLeague.AttackLeague.States
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            myButtonyButton.mySprite.Draw(aSpriteBatch);
+            myQuickPlayButton.Draw(aSpriteBatch);
+            myLobbyButton.Draw(aSpriteBatch);
             base.Draw(aSpriteBatch);
         }
     }

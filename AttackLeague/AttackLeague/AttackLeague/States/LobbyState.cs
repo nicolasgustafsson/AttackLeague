@@ -11,8 +11,6 @@ namespace AttackLeague.AttackLeague.States
 {
     class LobbyState : State
     {
-        TextBox myInputBox;
-
         public LobbyState()
         {
             LoadContent();
@@ -20,7 +18,14 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            myInputBox = new TextBox();
+            TextBox inputBox = new TextBox();
+            inputBox.OnEnterPressed += InputBoxEnterPressed;
+            myGUICaretaker.AddGUI(inputBox);
+        }
+
+        void InputBoxEnterPressed(TextBox aBox)
+        {
+            Console.WriteLine(aBox.myText);
         }
 
         public bool CreateGameStaet()
@@ -39,14 +44,13 @@ namespace AttackLeague.AttackLeague.States
             GameInfo.GameInfo.SetMouseVisibility(false);
         }
 
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch)
+        protected override void Draw(SpriteBatch aSpriteBatch)
         {
-            myInputBox.Draw(aSpriteBatch);
             base.Draw(aSpriteBatch);
         }
     }

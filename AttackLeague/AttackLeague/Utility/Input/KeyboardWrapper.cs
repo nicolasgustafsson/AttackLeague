@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
-namespace AttackLeague.Utility
+namespace AttackLeague.Utility.Input
 {
     static class KeyboardWrapper
     {
@@ -14,6 +14,22 @@ namespace AttackLeague.Utility
             myFramesSinceLastPressed++;
             myPreviousState = myCurrentState;
             myCurrentState = Keyboard.GetState();
+        }
+
+        public static String GetPressedText()
+        {
+            String outString = "";
+
+            var previousList = myPreviousState.GetPressedKeys().ToList();
+            var currentList = myCurrentState.GetPressedKeys().ToList();
+            currentList.RemoveAll(x => previousList.Contains(x));
+
+            foreach(Keys key in currentList)
+            {
+                outString += key.ToString();
+            }
+
+            return outString;
         }
 
         public static bool KeyPressed(Keys aKey)

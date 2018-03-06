@@ -56,7 +56,7 @@ namespace AttackLeague.AttackLeague.States
             GameInfo.GameInfo.myPlayers.Add(new Player.Player(playerInfo));
         }
 
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
 
@@ -66,7 +66,7 @@ namespace AttackLeague.AttackLeague.States
             FeedbackManager.Update();
         }
 
-        public override void Draw(SpriteBatch aSpriteBatch)
+        protected override void Draw(SpriteBatch aSpriteBatch)
         {
             base.Draw(aSpriteBatch);
 

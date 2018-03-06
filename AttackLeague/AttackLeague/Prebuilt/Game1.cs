@@ -15,9 +15,45 @@ using System.Threading;
 using AttackLeague.Utility.StateStack;
 using AttackLeague.AttackLeague.States;
 using AttackLeague.Utility.GUI;
+using AttackLeague.Utility.Input;
 
 namespace AttackLeague
 {
+    /*
+    * THE BIG DOINGS
+
+   Lounge
+      *has hostings
+      *has friend book
+      *find hosted game (server)
+       popular replays (TV) & voting systems for them
+       has friend search
+   Lobby (servers)
+      *invite friends to your hosted gaem
+      *manual invite to your hosted game
+      *start game when everyone ready
+      *chat
+
+       let your friends invite friends
+       set handicap & attack orders / game mode etc
+
+   Story unlocks some things
+       AI has block/cloth/something => you unlock it
+
+   Other modes rewards
+       Achievements / Coins? Unlockables?
+
+
+   More states:
+       Dressroom
+           character customization
+       Thingroom
+           block & effects customization
+       Furnitureroom
+           customize your own lobby? Because that's cool
+
+   */
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager myGraphicsDeviceManager;
@@ -42,6 +78,7 @@ namespace AttackLeague
             Content.RootDirectory = "Content";
 
             ContentManagerInstance.Content = Content;
+            EventInput.Initialize(Window);
         }
 
         protected override void Initialize()

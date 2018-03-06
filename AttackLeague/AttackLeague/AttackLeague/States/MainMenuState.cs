@@ -8,9 +8,6 @@ namespace AttackLeague.AttackLeague.States
 {
     class MainMenuState : State
     {
-        Button myQuickPlayButton;
-        Button myLobbyButton;
-
         public MainMenuState()
         {
             LoadContent();
@@ -18,13 +15,16 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            myQuickPlayButton = new Button();
-            myQuickPlayButton.SetSprite("PlayButton", new Point(0, 512));
-            myQuickPlayButton.OnClicked = CreateGameStaet;
+            Button quickPlayButton = new Button();
+            quickPlayButton.SetSprite("PlayButton", new Point(0, 512));
+            quickPlayButton.OnClicked = CreateGameStaet;
+            myGUICaretaker.AddGUI(quickPlayButton);
 
-            myLobbyButton = new Button();
-            myLobbyButton.SetSprite("LobbyButton", new Point(0, 128));
-            myLobbyButton.OnClicked = CreateLobbying;
+
+            Button lobbyButton = new Button();
+            lobbyButton.SetSprite("LobbyButton", new Point(0, 128));
+            lobbyButton.OnClicked = CreateLobbying;
+            myGUICaretaker.AddGUI(lobbyButton);
         }
 
         public bool CreateGameStaet()
@@ -47,18 +47,6 @@ namespace AttackLeague.AttackLeague.States
         public override void OnExit()
         {
             GameInfo.GameInfo.SetMouseVisibility(false);
-        }
-
-        public override void Update()
-        {
-            base.Update();
-        }
-
-        public override void Draw(SpriteBatch aSpriteBatch)
-        {
-            myQuickPlayButton.Draw(aSpriteBatch);
-            myLobbyButton.Draw(aSpriteBatch);
-            base.Draw(aSpriteBatch);
         }
     }
 }

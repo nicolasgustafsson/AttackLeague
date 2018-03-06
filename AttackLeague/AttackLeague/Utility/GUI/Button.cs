@@ -10,7 +10,7 @@ namespace AttackLeague.Utility.GUI
 
     class Button
     {
-        private Sprite mySprite;
+        protected Sprite mySprite;
         private Rectangle myHotspot;
         public ButtonAction OnClicked;    
         public ButtonAction OnLostFocus;

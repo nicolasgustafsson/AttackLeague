@@ -1,4 +1,5 @@
 ﻿using AttackLeague.Utility;
+using AttackLeague.Utility.Input;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;

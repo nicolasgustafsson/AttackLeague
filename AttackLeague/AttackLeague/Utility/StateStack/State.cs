@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using AttackLeague.Utility.GUI;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace AttackLeague.Utility.StateStack
     {
         // TODO add gui container
         public StateStack myStateStack { protected get; set; }
+
+        protected GUICaretaker myGUICaretaker = new GUICaretaker();
 
         /*
          Main menu
@@ -28,14 +31,36 @@ namespace AttackLeague.Utility.StateStack
             RenderThrough = false;
         }
 
-        public virtual void Update()
+        public void StateUpdate()
         {
+            Update();
 
+            GUIUpdate();
         }
 
-        public virtual void Draw(SpriteBatch aSpriteBatch)
+        protected virtual void Update()
         {
+            //haha
+        }
 
+        protected virtual void GUIUpdate()
+        {
+            myGUICaretaker.Update();
+        }
+
+        public void StateDraw(SpriteBatch aSpriteBatch)
+        {
+            Draw(aSpriteBatch);
+            GUIDraw(aSpriteBatch);
+        }
+
+        protected virtual void Draw(SpriteBatch aSpriteBatch)
+        {
+        }
+
+        protected virtual void GUIDraw(SpriteBatch aSpriteBatch)
+        {
+            myGUICaretaker.Draw(aSpriteBatch);
         }
 
         public virtual void OnEnter()

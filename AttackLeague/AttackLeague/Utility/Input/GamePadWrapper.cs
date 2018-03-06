@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using AttackLeague.AttackLeague.Player;
 
-namespace AttackLeague.Utility
+namespace AttackLeague.Utility.Input
 {
     static class GamePadWrapper
     {

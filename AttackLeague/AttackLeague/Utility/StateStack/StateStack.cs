@@ -34,7 +34,7 @@ namespace AttackLeague.Utility.StateStack
 
             for (int i = startIndex; i < myStates.Last().Count; i++)
             {
-                myStates.Last()[i].Update();
+                myStates.Last()[i].StateUpdate();
             }
         }
 
@@ -50,7 +50,7 @@ namespace AttackLeague.Utility.StateStack
 
             for (int i = startIndex; i < myStates.Last().Count; i++)
             {
-                myStates.Last()[i].Draw(aSpriteBatch);
+                myStates.Last()[i].StateDraw(aSpriteBatch);
             }
         }
 

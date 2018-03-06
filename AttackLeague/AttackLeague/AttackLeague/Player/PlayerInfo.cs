@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AttackLeague.Utility;
 using Microsoft.Xna.Framework.Input;
+using AttackLeague.Utility.Input;
 
 namespace AttackLeague.AttackLeague.Player
 {

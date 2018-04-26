@@ -82,6 +82,9 @@
     <Compile Include="Prebuilt\Game1.cs" />
     <Compile Include="Prebuilt\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\GUI\AnimatedGUI.cs" />
+    <Compile Include="Utility\GUI\BaseWidget.cs" />
+    <Compile Include="Utility\GUI\ImageWidget.cs" />
     <Compile Include="Utility\Input\ActionMapper.cs" />
     <Compile Include="Utility\Betweenxt\Betweenxt.cs" />
     <Compile Include="Utility\ContentManagerInstance.cs" />

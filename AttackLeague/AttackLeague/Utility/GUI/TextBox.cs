@@ -53,6 +53,9 @@ namespace AttackLeague.Utility.GUI
 
         bool GainFocus()
         {
+            if (myHasFocus)
+                return true;
+
             myHasFocus = true;
             SetSpriteColor(Color.Green);
             EventInput.CharEntered += gotabokstav;
@@ -61,6 +64,9 @@ namespace AttackLeague.Utility.GUI
 
         bool LoseFocus()
         {
+            if (!myHasFocus)
+                return true;
+
             myHasFocus = false;
             SetSpriteColor(Color.Gray);
             EventInput.CharEntered -= gotabokstav;

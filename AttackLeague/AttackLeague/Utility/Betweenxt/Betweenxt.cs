@@ -38,6 +38,7 @@ namespace AttackLeague.Utility.Betweenxt
         public void Update(float aKeyIncrement)
         {
             myCurrentKey += aKeyIncrement;
+            myCurrentKey = Math.Max(Math.Min(myCurrentKey, myEndKey), myStartKey); // clampedy clamp
         }
 
         public bool IsFinished()
@@ -71,6 +72,11 @@ namespace AttackLeague.Utility.Betweenxt
             myCurrentKey = myEndKey;
             myStartKey = myEndKey;
             myEndKey = tempStart;
+        }
+
+        public float GetEndKey()
+        {
+            return myEndKey;
         }
 
         public float GetProgress()

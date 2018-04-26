@@ -86,3 +86,23 @@ namespace AttackLeague.Utility.GUI
         }
     }
 }
+
+/*
+ baseGUI
+    parent
+    children
+    pos - abs / rel
+    size - abs / rel
+    alignment - right / left  up / down  center
+    pivot
+
+    Image
+    Column
+    Button
+    Text
+    Textbox
+    Dropdown
+    Slider
+    Radiobuttons
+    Checkbox -> Cool Checkbox w particles and everything
+*/

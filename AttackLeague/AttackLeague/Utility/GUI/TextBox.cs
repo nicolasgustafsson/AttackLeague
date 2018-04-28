@@ -6,14 +6,21 @@ using System;
 
 namespace AttackLeague.Utility.GUI
 {
+    [Serializable]
     class TextBox : Button
     {
+        [NonSerialized]
         bool myHasFocus = false;
+
         public string myText = "";
+
         public delegate void TextBoxEvent(TextBox sender);
+        [NonSerialized]
         public TextBoxEvent OnEnterPressed;
+        [NonSerialized]
         public TextBoxEvent OnTabPressed;
 
+        [NonSerialized]
         public SpriteFont myFont;
 
         public TextBox()

@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using AttackLeague.Utility.GUI;
 using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
+using AttackLeague.Utility;
+using System.IO;
 
 namespace AttackLeague.AttackLeague.States
 {
@@ -15,16 +17,10 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            Button quickPlayButton = new Button();
-            quickPlayButton.SetSprite("PlayButton", new Point(0, 512));
-            quickPlayButton.OnClicked = CreateGameStaet;
-            myGUICaretaker.AddGUI(quickPlayButton);
+            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("MainMenuGUI");
 
-
-            Button lobbyButton = new Button();
-            lobbyButton.SetSprite("LobbyButton", new Point(0, 128));
-            lobbyButton.OnClicked = CreateLobbying;
-            myGUICaretaker.AddGUI(lobbyButton);
+            myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
+            myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
         }
 
         public bool CreateGameStaet()

@@ -2,31 +2,41 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AttackLeague.Utility.GUI
 {
+    [Serializable]
     class GUICaretaker
     {
         public void Update()
         {
-            myGUIs.ForEach(x => x.Update());
+            foreach (var Thing in myGUIs)
+            {
+                Thing.Value.Update();
+            }
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
         {
-            myGUIs.ForEach(x => x.Draw(aSpriteBatch));
+            foreach(var Thing in myGUIs)
+            {
+                Thing.Value.Draw(aSpriteBatch);
+            }
         }
 
-        public void AddGUI(Button aGUI)
+        public void AddGUI(Button aGUI, string aName)
         {
-            myGUIs.Add(aGUI);
+            myGUIs.Add(aName, aGUI);
+            myGUIPaths.Add(aName);
         }
 
-        public void RemoveGUI(Button aGUI)
+        public void RemoveGUI(string aName)
         {
-            myGUIs.Remove(aGUI);
+            myGUIs.Remove(aName);
+            myGUIPaths.Remove(aName);
         }
 
         public void SpringClean()
@@ -34,6 +44,31 @@ namespace AttackLeague.Utility.GUI
             myGUIs.Clear(); //like the windows after spring clean
         }
 
-        private List<Button> myGUIs = new List<Button>();
+        public Button GetButton(String aButtonName)
+        {
+            return myGUIs[aButtonName];
+        }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            foreach(var GUIPath in myGUIPaths)
+            {
+                myGUIs.Add(GUIPath, JsonUtility.LoadJson<Button>(GUIPath));
+            }
+        }
+
+        [OnSerialized]
+        internal void OnSerialized(StreamingContext context)
+        {
+            foreach (var Thing in myGUIs)
+            {
+                JsonUtility.SaveJson(Thing.Key, Thing.Value);
+            }
+        }
+
+        public List<String> myGUIPaths = new List<String>();
+
+        private Dictionary<String, Button> myGUIs = new Dictionary<String, Button>();
     }
 }

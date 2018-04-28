@@ -3,31 +3,50 @@ using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace AttackLeague.Utility.GUI
 {
     public delegate bool ButtonAction();
 
+    [Serializable]
     class Button
     {
-        protected Sprite mySprite;
-        private Rectangle myHotspot;
+        public String myName = "Hello";
+
+        public Sprite mySprite;
+
+        protected Rectangle myHotspot;
+
+        [NonSerialized]
         public ButtonAction OnClicked;    
+        [NonSerialized]
         public ButtonAction OnLostFocus;
 
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            SetHotspotBasedOnSprite();
+        }
         //this is ylfs domain
 
         public Button()
         {
             MouseUtility.LeftPressedCallback += OnClickedFunction;
-            // todo remove at destruction! Otherwise no garbagecollectingy!!
         }
 
         public virtual void SetSprite(string aTextureName, Point aPosition) // todo default args pls
         {
             mySprite = new Sprite(aTextureName);
             mySprite.SetPosition(new Vector2(aPosition.X, aPosition.Y));
-            myHotspot = new Rectangle(aPosition.X, aPosition.Y, (int)mySprite.GetSize().X, (int)mySprite.GetSize().Y);
+            SetHotspotBasedOnSprite();
+        }
+
+        private void SetHotspotBasedOnSprite()
+        {
+            var Position = mySprite.GetPosition();
+            myHotspot = new Rectangle((int)Position.X, (int)Position.Y, (int)mySprite.GetSize().X, (int)mySprite.GetSize().Y);
         }
 
         public virtual void SetSprite(string aTextureName, Point aPosition, Point aSize, bool aSetScale) // todo default args pls

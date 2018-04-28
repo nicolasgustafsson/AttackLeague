@@ -1,4 +1,5 @@
-﻿using AttackLeague.Utility.GUI;
+﻿using AttackLeague.Utility;
+using AttackLeague.Utility.GUI;
 using AttackLeague.Utility.StateStack;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,9 +19,13 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            TextBox inputBox = new TextBox();
-            inputBox.OnEnterPressed += InputBoxEnterPressed;
-            myGUICaretaker.AddGUI(inputBox);
+           TextBox inputBox = new TextBox();
+           inputBox.OnEnterPressed += InputBoxEnterPressed;
+
+           //myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
+            //why null, whyyyyyyyyy? do investigate pl0x.
+            //myGUICaretaker.AddGUI(inputBox, "IpInputBox");
+            //JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
         }
 
         void InputBoxEnterPressed(TextBox aBox)

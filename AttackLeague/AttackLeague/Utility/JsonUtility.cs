@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,16 +24,51 @@ namespace AttackLeague.Utility
         }
         */
 
+        [Serializable]
+        private struct SerializedData
+        {
+            public string typename;
+            public object data;
+        }
+
         protected static string GetSolutionFSPath()
         {
             return Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        }
+
+        public static object LoadJsonTyped(string aFileName)
+        {
+            try
+            {
+                // 1. What class do we have
+                // 2. Send data as JSON string and deserialize as intended object yes code yes
+
+                SerializedData data = LoadJson<SerializedData>(aFileName);
+                string className = data.typename;
+                string classData = data.data.ToString();
+                Type type = Type.GetType(className, false);
+                var JSONCovert = typeof(JsonConvert);
+                var parameterTypes = new[] { typeof(string) };
+                MethodInfo deserializer = JSONCovert.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .Where(i => i.Name.Equals("DeserializeObject", StringComparison.InvariantCulture))
+                    .Where(i => i.IsGenericMethod)
+                    .Where(i => i.GetParameters().Select(a => a.ParameterType).SequenceEqual(parameterTypes))
+                    .Single();
+                deserializer = deserializer.MakeGenericMethod(type);
+                return deserializer.Invoke(null, new object[] { classData });
+            }
+            catch (Exception e)
+            {
+                Console.Write("We did wrong" + e.ToString());
+                throw;
+            }
         }
 
         public static T LoadJson<T>(string aFileName)
         {
             try
             {
-                using (StreamReader r = new StreamReader(GetSolutionFSPath() + "/Json/" + aFileName + ".json"))
+                using (StreamReader r = new StreamReader(GetSolutionFSPath() + "/.." + "/Json/" + aFileName + ".json"))
                 {
                     string json = r.ReadToEnd();
                     return JsonConvert.DeserializeObject<T>(json);
@@ -47,9 +83,14 @@ namespace AttackLeague.Utility
 
         public static void SaveJson(string aFileName, object aObject)
         {
-            using (StreamWriter r = new StreamWriter(GetSolutionFSPath() + "/Json/" + aFileName + ".json"))
+           // SerializedData Data;
+           // Data.data = aObject;
+           // Data.typename = aObject.GetType().ToString();
+
+
+            using (StreamWriter r = new StreamWriter(GetSolutionFSPath() + "/.." + "/Json/" + aFileName + ".json"))
             {
-                r.Write(JsonConvert.SerializeObject(aObject, Formatting.Indented));
+                r.Write(JsonConvert.SerializeObject(aObject /*Data*/, Formatting.None));
             }
         }
     }

@@ -5,9 +5,23 @@ using AttackLeague.Utility.Sprites;
 using Microsoft.Xna.Framework;
 using AttackLeague.Utility;
 using System.IO;
+using System;
 
 namespace AttackLeague.AttackLeague.States
 {
+    [Serializable]
+    class TotallyArray
+    {
+        public TotallyArray()
+        {
+            myPosition = new Vector2();
+            myPosition.X = 1;
+            myPosition.Y = 5;
+        }
+
+        public Vector2 myPosition;
+    }
+
     class MainMenuState : State
     {
         public MainMenuState()
@@ -17,13 +31,18 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("MainMenuGUI");
+            //JsonUtility.SaveJson("EnMassaTotaltKnaprig", new TotallyArray());
+            //int br = 0;
+            //br++;
+
+            //myGUICaretaker = JsonUtility.LoadJsonTyped("MainMenuGUI") as GUICaretaker; // /*LoadJson*/
+            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("MainMenuGUI"); // LoadJson
 
             myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
             myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
         }
 
-        public bool CreateGameStaet()
+        public bool CreateGameStaet() 
         {
             myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
             return true;
@@ -33,7 +52,7 @@ namespace AttackLeague.AttackLeague.States
         {
             myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new LobbyState() });
             return true;
-        }
+        } 
 
         public override void OnEnter()
         {

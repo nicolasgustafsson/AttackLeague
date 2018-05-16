@@ -1,0 +1,4 @@
+{
+  "typename": "AttackLeague.Utility.GUI.Button",
+  "data": {"myName": "Hello", "mySprite": {"myTextureName": "pixel", "myColor": {"B": 128,"G": 128,"R": 128,"A": 255},"myPosition": "512, 512" }}
+}

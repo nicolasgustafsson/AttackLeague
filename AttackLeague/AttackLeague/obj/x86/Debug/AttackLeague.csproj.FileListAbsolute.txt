@@ -24,7 +24,6 @@ C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLea
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CoreCompileInputs.cache
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache
 C:\Users\nicolas.gustafsson\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayerMarker.xnb
-E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojResolveAssemblyReference.cache
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\Pixel.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\PlayerMarker.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\AttackLeague.exe
@@ -135,3 +134,5 @@ E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windo
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Content\LobbyButton.xnb
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Newtonsoft.Json.dll
 E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\bin\Windows\x86\Debug\Newtonsoft.Json.xml
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csproj.CopyComplete
+E:\Users\MyMan\Desktop\Projects\AttackLeague\AttackLeague\AttackLeague\obj\x86\Debug\AttackLeague.csprojAssemblyReference.cache

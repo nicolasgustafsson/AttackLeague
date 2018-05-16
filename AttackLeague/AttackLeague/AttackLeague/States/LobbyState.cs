@@ -19,14 +19,17 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-           TextBox inputBox = new TextBox();
-           inputBox.OnEnterPressed += InputBoxEnterPressed;
+            TextBox inputBox = new TextBox();
+            inputBox.OnEnterPressed += InputBoxEnterPressed;
 
-           //myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
-            //why null, whyyyyyyyyy? do investigate pl0x.
+
+            //myGUICaretaker = JsonUtility.LoadJsonTyped("LobbyMenuGUI") as GUICaretaker;
+            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
+            //why null, whyyyyyyyyy ? do investigate pl0x. hello ylfs
             //myGUICaretaker.AddGUI(inputBox, "IpInputBox");
-            //JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
-        }
+            JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
+
+        } 
 
         void InputBoxEnterPressed(TextBox aBox)
         {
@@ -35,7 +38,7 @@ namespace AttackLeague.AttackLeague.States
 
         public bool CreateGameStaet()
         {
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
             return true;
         }
 

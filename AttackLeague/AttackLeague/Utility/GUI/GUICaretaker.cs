@@ -29,6 +29,11 @@ namespace AttackLeague.Utility.GUI
 
         public void AddGUI(Button aGUI, string aName)
         {
+            if (myGUIs.ContainsKey(aName))
+            {
+                Console.WriteLine("[ERROR] We have already added the GUI " + aName);
+                return;
+            }
             myGUIs.Add(aName, aGUI);
             myGUIPaths.Add(aName);
         }

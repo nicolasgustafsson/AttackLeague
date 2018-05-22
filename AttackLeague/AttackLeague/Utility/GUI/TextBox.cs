@@ -14,6 +14,8 @@ namespace AttackLeague.Utility.GUI
 
         public string myText = "";
 
+        public string myPlaceholderText = "";
+
         public delegate void TextBoxEvent(TextBox sender);
         [NonSerialized]
         public TextBoxEvent OnEnterPressed;
@@ -94,7 +96,11 @@ namespace AttackLeague.Utility.GUI
         public override void Draw(SpriteBatch aSpriteBatch)
         {
             base.Draw(aSpriteBatch);
-            aSpriteBatch.DrawString(myFont, myText, mySprite.GetPosition(), Color.White);
+            // TODO if you wanana
+            // If string too long, break up into newline
+            // or allow a certain amount of characters only
+            // if is ip-box, only allow ip-format strings?
+            aSpriteBatch.DrawString(myFont, (myText.Length > 0 || myHasFocus) ? myText : myPlaceholderText , mySprite.GetPosition(), Color.White);
             // draw my text as text
         }
     }

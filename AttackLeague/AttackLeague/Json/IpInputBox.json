@@ -1,7 +1,8 @@
 {
   "typename": "AttackLeague.Utility.GUI.TextBox",
   "data": {
-    "myText": "Hejsan",
+    "myText": "",
+    "myPlaceholderText": "Enter IP of friend",
     "myName": "Hello",
     "mySprite": {
       "myTextureName": "pixel",

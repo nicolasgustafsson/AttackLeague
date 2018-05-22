@@ -38,8 +38,8 @@ namespace AttackLeague.AttackLeague.States
             //myGUICaretaker = JsonUtility.LoadJsonTyped("MainMenuGUI") as GUICaretaker; // /*LoadJson*/
             myGUICaretaker = JsonUtility.LoadJsonTyped("MainMenuGUI") as GUICaretaker; // LoadJson
 
-           // myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
-           // myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
+            myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
+            myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
 
             JsonUtility.SaveJson("MainMenuGUI", myGUICaretaker);
         }

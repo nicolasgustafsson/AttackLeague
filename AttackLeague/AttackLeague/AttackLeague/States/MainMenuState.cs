@@ -31,15 +31,17 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            //JsonUtility.SaveJson("EnMassaTotaltKnaprig", new TotallyArray());
+            JsonUtility.SaveJson("EnMassaTotaltKnaprig", new TotallyArray());
             //int br = 0;
             //br++;
 
             //myGUICaretaker = JsonUtility.LoadJsonTyped("MainMenuGUI") as GUICaretaker; // /*LoadJson*/
-            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("MainMenuGUI"); // LoadJson
+            myGUICaretaker = JsonUtility.LoadJsonTyped("MainMenuGUI") as GUICaretaker; // LoadJson
 
-            myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
-            myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
+           // myGUICaretaker.GetButton("MainMenuPlay").OnClicked += CreateGameStaet;
+           // myGUICaretaker.GetButton("LobbyButton").OnClicked += CreateLobbying;
+
+            JsonUtility.SaveJson("MainMenuGUI", myGUICaretaker);
         }
 
         public bool CreateGameStaet() 

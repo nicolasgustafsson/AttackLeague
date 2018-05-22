@@ -1,1 +1,17 @@
-{"typename":"AttackLeague.Utility.GUI.Button","data":{"myName":"Hello","mySprite":{"myTextureName":"pixel","myColor":{"B":128,"G":128,"R":128,"A":255},"myPosition":"512, 512"}}}
+{
+  "typename": "AttackLeague.Utility.GUI.TextBox",
+  "data": {
+    "myText": "Hejsan",
+    "myName": "Hello",
+    "mySprite": {
+      "myTextureName": "pixel",
+      "myColor": {
+        "B": 128,
+        "G": 128,
+        "R": 128,
+        "A": 255
+      },
+      "myPosition": "512, 512"
+    }
+  }
+}

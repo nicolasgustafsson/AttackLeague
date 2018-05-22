@@ -45,17 +45,22 @@ namespace AttackLeague.Utility
 
                 SerializedData data = LoadJson<SerializedData>(aFileName);
                 string className = data.typename;
-                string classData = data.data.ToString();
+                object classData = data.data;
+
+                string serialized = JsonConvert.SerializeObject(classData /*Data*/, Formatting.Indented);
+
+
                 Type type = Type.GetType(className, false);
-                var JSONCovert = typeof(JsonConvert);
+                var JSONConvert = typeof(JsonConvert);
                 var parameterTypes = new[] { typeof(string) };
-                MethodInfo deserializer = JSONCovert.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                MethodInfo deserializer = JSONConvert.GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .Where(i => i.Name.Equals("DeserializeObject", StringComparison.InvariantCulture))
                     .Where(i => i.IsGenericMethod)
                     .Where(i => i.GetParameters().Select(a => a.ParameterType).SequenceEqual(parameterTypes))
                     .Single();
                 deserializer = deserializer.MakeGenericMethod(type);
-                return deserializer.Invoke(null, new object[] { classData });
+                return deserializer.Invoke(null, new object[] { serialized });
+
             }
             catch (Exception e)
             {
@@ -64,7 +69,7 @@ namespace AttackLeague.Utility
             }
         }
 
-        public static T LoadJson<T>(string aFileName)
+        private static T LoadJson<T>(string aFileName)
         {
             try
             {
@@ -83,14 +88,14 @@ namespace AttackLeague.Utility
 
         public static void SaveJson(string aFileName, object aObject)
         {
-           // SerializedData Data;
-           // Data.data = aObject;
-           // Data.typename = aObject.GetType().ToString();
+           SerializedData Data;
+           Data.data = aObject;
+           Data.typename = aObject.GetType().ToString();
 
 
             using (StreamWriter r = new StreamWriter(GetSolutionFSPath() + "/.." + "/Json/" + aFileName + ".json"))
             {
-                r.Write(JsonConvert.SerializeObject(aObject /*Data*/, Formatting.None));
+                r.Write(JsonConvert.SerializeObject(Data /*Data*/, Formatting.Indented));
             }
         }
     }

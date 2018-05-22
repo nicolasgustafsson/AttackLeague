@@ -19,12 +19,13 @@ namespace AttackLeague.AttackLeague.States
 
         void LoadContent()
         {
-            TextBox inputBox = new TextBox();
-            inputBox.OnEnterPressed += InputBoxEnterPressed;
+            //TextBox inputBox = new TextBox();
+            //inputBox.OnEnterPressed += InputBoxEnterPressed;
 
+            
 
-            //myGUICaretaker = JsonUtility.LoadJsonTyped("LobbyMenuGUI") as GUICaretaker;
-            myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
+            myGUICaretaker = JsonUtility.LoadJsonTyped("LobbyMenuGUI") as GUICaretaker;
+            //myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
             //why null, whyyyyyyyyy ? do investigate pl0x. hello ylfs
             //myGUICaretaker.AddGUI(inputBox, "IpInputBox");
             JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);

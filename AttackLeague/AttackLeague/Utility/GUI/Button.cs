@@ -29,8 +29,8 @@ namespace AttackLeague.Utility.GUI
         {
             SetHotspotBasedOnSprite();
         }
-        //this is ylfs domain
 
+        //this is ylfs domain
         public Button()
         {
             MouseUtility.LeftPressedCallback += OnClickedFunction;
@@ -46,17 +46,19 @@ namespace AttackLeague.Utility.GUI
         private void SetHotspotBasedOnSprite()
         {
             var Position = mySprite.GetPosition();
-            myHotspot = new Rectangle((int)Position.X, (int)Position.Y, (int)mySprite.GetSize().X, (int)mySprite.GetSize().Y);
+            myHotspot = new Rectangle((int)Position.X, (int)Position.Y, (int)mySprite.GetScaledSize().X, (int)mySprite.GetScaledSize().Y);
         }
 
         public virtual void SetSprite(string aTextureName, Point aPosition, Point aSize, bool aSetScale) // todo default args pls
         {
             SetSprite(aTextureName, aPosition);
-            myHotspot.Width = aSize.X;
-            myHotspot.Height = aSize.Y;
+            myHotspot.Width = (int)mySprite.GetSize().X;
+            myHotspot.Height = (int)mySprite.GetSize().Y;
             if (aSetScale)
             {
                 mySprite.SetScale(new Vector2(aSize.X, aSize.Y));
+                myHotspot.Width *= aSize.X;
+                myHotspot.Height *= aSize.Y;
             }
         }
 

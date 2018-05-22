@@ -1,6 +1,8 @@
 {
-	"myGUIPaths" : [
-		"MainMenuPlay",
-		"LobbyButton"
-	]
+  "typename": "AttackLeague.Utility.GUI.GUICaretaker",
+  "data": {
+    "myGUIPaths": [
+      "IpInputBox"
+    ]
+  }
 }

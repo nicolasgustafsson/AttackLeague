@@ -59,7 +59,7 @@ namespace AttackLeague.Utility.GUI
         {
             foreach(var GUIPath in myGUIPaths)
             {
-                myGUIs.Add(GUIPath, JsonUtility.LoadJson<Button>(GUIPath));
+                myGUIs.Add(GUIPath, JsonUtility.LoadJsonTyped(GUIPath) as Button);
             }
         }
 

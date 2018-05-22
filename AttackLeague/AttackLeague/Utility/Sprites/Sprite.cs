@@ -43,6 +43,11 @@ namespace AttackLeague.Utility.Sprites
             return new Vector2(myTexture.Width, myTexture.Height);
         }
 
+        public virtual Vector2 GetScaledSize()
+        {
+            return new Vector2(myTexture.Width * myScale.X, myTexture.Height * myScale.Y);
+        }
+
         public void SetScale(Vector2 aNewScale)
         {
             myScale = aNewScale;

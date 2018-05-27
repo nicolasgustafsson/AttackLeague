@@ -1,9 +1,9 @@
 {
-  "typename": "AttackLeague.Utility.GUI.TextBox",
+  "typename": "AttackLeague.Utility.GUI.IPTextBox",
   "data": {
     "myText": "",
     "myPlaceholderText": "Enter IP of friend",
-    "myName": "Hello",
+    "myName": "IPInputBox",
     "mySprite": {
       "myTextureName": "pixel",
       "myColor": {

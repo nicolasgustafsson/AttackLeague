@@ -2,7 +2,8 @@
   "typename": "AttackLeague.Utility.GUI.GUICaretaker",
   "data": {
     "myGUIPaths": [
-      "IpInputBox"
+      "IpInputBox",
+      "HostButton"
     ]
   }
 }

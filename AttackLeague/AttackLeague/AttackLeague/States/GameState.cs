@@ -18,9 +18,19 @@ namespace AttackLeague.AttackLeague.States
 {
     class GameState : State
     {
+        bool myIsHosting = true;
+
+        string myIPToConnectTo = "";
+
         public GameState()
         {
+            myIsHosting = true;
+        }
 
+        public GameState(string IP)
+        {
+            myIsHosting = false;
+            myIPToConnectTo = IP;
         }
 
         public override void OnEnter()
@@ -30,16 +40,32 @@ namespace AttackLeague.AttackLeague.States
 
         public void LoadContent()
         {
-            //wait til connect
-            NetHost host = new NetHost();
-            host.StartListen();
-            NetPoster.Instance.Connection = host;
+            //YLF SPECIAL START
+            if (myIsHosting == false)
+            {
+                NetPeer newConnection = new NetPeer();
+                newConnection.StartConnection(myIPToConnectTo);
+                NetPoster.Instance.Connection = newConnection;
 
-            while (host.IsConnected() == false)
-                Thread.Sleep(1);
+                while (newConnection.IsConnected() == false)
+                    Thread.Sleep(1);
 
-            GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
-            GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
+                GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(0, EInputType.Keyboard, "ylf")));
+                GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(1, EInputType.Keyboard)));
+            }
+            else
+            {
+                NetHost host = new NetHost();
+                host.StartListen();
+                NetPoster.Instance.Connection = host;
+
+                //wait til connect
+                while (host.IsConnected() == false)
+                    Thread.Sleep(1);
+
+                GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
+                GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
+            }
 
             foreach (var playerdesu in GameInfo.GameInfo.myPlayers)
             {

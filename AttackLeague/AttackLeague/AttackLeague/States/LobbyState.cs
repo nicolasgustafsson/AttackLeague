@@ -28,18 +28,29 @@ namespace AttackLeague.AttackLeague.States
             //myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
             //why null, whyyyyyyyyy ? do investigate pl0x. hello ylfs
             //myGUICaretaker.AddGUI(inputBox, "IpInputBox");
-            JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
 
-        } 
+
+
+            JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
+            IPTextBox IPTextBox = myGUICaretaker.GetButton("IpInputBox") as IPTextBox;
+            IPTextBox.OnEnterPressed += InputBoxEnterPressed;
+
+            myGUICaretaker.GetButton("HostButton").OnClicked += CreateGameStaet;
+        }
 
         void InputBoxEnterPressed(TextBox aBox)
         {
-            Console.WriteLine(aBox.myText);
+            System.Net.IPAddress address;
+
+            if (!System.Net.IPAddress.TryParse(aBox.myText, out address))
+                return;
+
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(aBox.myText) });
         }
 
         public bool CreateGameStaet()
         {
-                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
             return true;
         }
 

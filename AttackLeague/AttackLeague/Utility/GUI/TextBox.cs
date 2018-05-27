@@ -40,7 +40,7 @@ namespace AttackLeague.Utility.GUI
             SetSpriteColor(Color.Gray);
         }
 
-        void gotabokstav(object aSender, CharacterEventArgs argies)
+        protected virtual void gotabokstav(object aSender, CharacterEventArgs argies)
         {
             switch(argies.Character)
             {
@@ -80,17 +80,6 @@ namespace AttackLeague.Utility.GUI
             SetSpriteColor(Color.Gray);
             EventInput.CharEntered -= gotabokstav;
             return true;
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            if (myHasFocus)
-            {
-
-                // acquire input to string thingy
-
-            }
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)

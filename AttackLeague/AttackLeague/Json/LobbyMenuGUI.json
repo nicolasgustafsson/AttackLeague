@@ -3,7 +3,8 @@
   "data": {
     "myGUIPaths": [
       "IpInputBox",
-      "HostButton"
+      "HostButton",
+      "Hosthost"
     ]
   }
 }

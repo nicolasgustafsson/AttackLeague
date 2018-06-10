@@ -27,7 +27,7 @@ namespace AttackLeague.Utility.GUI
             }
         }
 
-        public void AddGUI(Button aGUI, string aName)
+        public void AddGUI(BaseGUI aGUI, string aName)
         {
             if (myGUIs.ContainsKey(aName))
             {
@@ -49,9 +49,14 @@ namespace AttackLeague.Utility.GUI
             myGUIs.Clear(); //like the windows after spring clean
         }
 
-        public Button GetButton(String aButtonName)
+        public BaseGUI GetGUI(String aGUIName)
         {
-            return myGUIs[aButtonName];
+            return myGUIs[aGUIName];
+        }
+
+        public T GetGUI<T>(String aGUIName) where T : BaseGUI
+        {
+            return (T)myGUIs[aGUIName];
         }
 
         [OnDeserialized]
@@ -59,7 +64,7 @@ namespace AttackLeague.Utility.GUI
         {
             foreach(var GUIPath in myGUIPaths)
             {
-                myGUIs.Add(GUIPath, JsonUtility.LoadJsonTyped(GUIPath) as Button);
+                myGUIs.Add(GUIPath, JsonUtility.LoadJsonTyped(GUIPath) as BaseGUI);
             }
         }
 
@@ -74,6 +79,6 @@ namespace AttackLeague.Utility.GUI
 
         public List<String> myGUIPaths = new List<String>();
 
-        private Dictionary<String, Button> myGUIs = new Dictionary<String, Button>();
+        private Dictionary<String, BaseGUI> myGUIs = new Dictionary<String, BaseGUI>();
     }
 }

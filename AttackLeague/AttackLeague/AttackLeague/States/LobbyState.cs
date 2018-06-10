@@ -22,20 +22,16 @@ namespace AttackLeague.AttackLeague.States
             //TextBox inputBox = new TextBox();
             //inputBox.OnEnterPressed += InputBoxEnterPressed;
 
-            
-
             myGUICaretaker = JsonUtility.LoadJsonTyped("LobbyMenuGUI") as GUICaretaker;
             //myGUICaretaker = JsonUtility.LoadJson<GUICaretaker>("LobbyMenuGUI");
-            //why null, whyyyyyyyyy ? do investigate pl0x. hello ylfs
+            //why null, whyyyyyyyyy ? do investigate pl0x. hello ylfs titta kod
             //myGUICaretaker.AddGUI(inputBox, "IpInputBox");
 
-
-
             JsonUtility.SaveJson("LobbyMenuGUI", myGUICaretaker);
-            IPTextBox IPTextBox = myGUICaretaker.GetButton("IpInputBox") as IPTextBox;
+            IPTextBox IPTextBox = myGUICaretaker.GetGUI("IpInputBox") as IPTextBox;
             IPTextBox.OnEnterPressed += InputBoxEnterPressed;
 
-            myGUICaretaker.GetButton("HostButton").OnClicked += CreateGameStaet;
+            myGUICaretaker.GetGUI<Button>("HostButton").OnClicked += CreateGameStaet;
         }
 
         void InputBoxEnterPressed(TextBox aBox)
@@ -50,7 +46,9 @@ namespace AttackLeague.AttackLeague.States
 
         public bool CreateGameStaet()
         {
+            myGUICaretaker.GetGUI<Text>("Hosthost").SetVisibility(EGUIVisibility.Visible);
             myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            //CreateGameStaet SOME GUI FOR THE THING SAYiNG "host host"
             return true;
         }
 

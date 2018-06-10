@@ -11,6 +11,7 @@
         "A": 255
       },
       "myPosition": "0, 512"
-    }
+    },
+    "myStartingVisibility": 0
   }
 }

@@ -11,7 +11,7 @@ namespace AttackLeague.Utility.GUI
     public delegate bool ButtonAction();
 
     [Serializable]
-    class Button
+    class Button : BaseGUI
     {
         public String myName = "Hello";
 
@@ -32,6 +32,7 @@ namespace AttackLeague.Utility.GUI
 
         //this is ylfs domain
         public Button()
+            : base()
         {
             MouseUtility.LeftPressedCallback += OnClickedFunction;
         }
@@ -84,7 +85,7 @@ namespace AttackLeague.Utility.GUI
             }
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             //Point mousePos = Mouse.GetState().Position;
             //if (myHotspot.Bottom > mousePos.Y &&
@@ -101,8 +102,10 @@ namespace AttackLeague.Utility.GUI
         {
         }
 
-        public virtual void Draw(SpriteBatch aSpriteBatch)
+        public override void Draw(SpriteBatch aSpriteBatch)
         {
+            if (myVisibility == EGUIVisibility.Hidden)
+                return;
             mySprite.Draw(aSpriteBatch);
         }
     }

@@ -13,6 +13,7 @@
         "A": 255
       },
       "myPosition": "512, 512"
-    }
+    },
+    "myStartingVisibility": 0
   }
 }

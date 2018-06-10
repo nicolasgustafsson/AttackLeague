@@ -55,13 +55,15 @@ namespace AttackLeague.AttackLeague.States
             }
             else
             {
+                //lägg dit nytt state som har detta vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
                 NetHost host = new NetHost();
                 host.StartListen();
                 NetPoster.Instance.Connection = host;
 
                 //wait til connect
                 while (host.IsConnected() == false)
-                    Thread.Sleep(1);
+                    Thread.Sleep(1); //inte sova utan rendera animation grej
+                //^^^^^^^^ ^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^ ^^^^^                         ^^ ^^^^  ^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
                 GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
                 GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));

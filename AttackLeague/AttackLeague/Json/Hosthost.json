@@ -1,0 +1,14 @@
+{
+  "typename": "AttackLeague.Utility.GUI.Text",
+  "data": {
+    "myPosition": "400, 400",
+    "myText": "Host host",
+    "myColor": {
+      "B": 255,
+      "G": 255,
+      "R": 255,
+      "A": 255
+    },
+    "myStartingVisibility": 1
+  }
+}

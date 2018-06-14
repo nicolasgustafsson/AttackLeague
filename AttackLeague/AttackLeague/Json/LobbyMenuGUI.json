@@ -4,7 +4,8 @@
     "myGUIPaths": [
       "IpInputBox",
       "HostButton",
-      "Hosthost"
+      "Hosthost",
+      "ConnectToNicos"
     ]
   }
 }

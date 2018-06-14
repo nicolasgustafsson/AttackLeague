@@ -30,7 +30,6 @@ namespace AttackLeague.Utility.GUI
             SetHotspotBasedOnSprite();
         }
 
-        //this is ylfs domain
         public Button()
             : base()
         {

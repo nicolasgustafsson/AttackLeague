@@ -1,0 +1,17 @@
+{
+  "typename": "AttackLeague.Utility.GUI.Button",
+  "data": {
+    "myName": "ConnectToNicos",
+    "mySprite": {
+      "myTextureName": "Nicos",
+      "myColor": {
+        "B": 0,
+        "G": 165,
+        "R": 255,
+        "A": 255
+      },
+      "myPosition": "800, 128"
+    },
+    "myStartingVisibility": 0
+  }
+}

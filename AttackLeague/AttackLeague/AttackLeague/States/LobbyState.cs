@@ -3,6 +3,7 @@ using AttackLeague.Utility.GUI;
 using AttackLeague.Utility.Network;
 using AttackLeague.Utility.Network.Messages;
 using AttackLeague.Utility.StateStack;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -104,6 +105,18 @@ namespace AttackLeague.AttackLeague.States
 
         protected override void Draw(SpriteBatch aSpriteBatch)
         {
+            Text hostText = myGUICaretaker.GetGUI<Text>("Hosthost");
+
+            int seconds = DateTime.Now.Second;
+
+            int hostCount = seconds % 10;
+
+            hostText.myText = "";
+
+            for(int i = 0; i < hostCount; i++)
+            {
+                hostText.myText += "host ";
+            }
             base.Draw(aSpriteBatch);
         }
     }

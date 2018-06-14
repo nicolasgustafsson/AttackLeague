@@ -46,7 +46,7 @@ namespace AttackLeague.AttackLeague.States
 
         public bool CreateGameStaet() 
         {
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
+            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(true) });
             return true;
         }
 

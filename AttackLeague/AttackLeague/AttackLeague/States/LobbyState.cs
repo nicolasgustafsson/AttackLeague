@@ -1,17 +1,25 @@
 ﻿using AttackLeague.Utility;
 using AttackLeague.Utility.GUI;
+using AttackLeague.Utility.Network;
+using AttackLeague.Utility.Network.Messages;
 using AttackLeague.Utility.StateStack;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.States
 {
+    public delegate void ConnectedCallback();
+
     class LobbyState : State
     {
+        bool myIsNetworking = false;
+        ConnectedCallback myConnectedCallback = null;
+
         public LobbyState()
         {
             LoadContent();
@@ -41,14 +49,35 @@ namespace AttackLeague.AttackLeague.States
             if (!System.Net.IPAddress.TryParse(aBox.myText, out address))
                 return;
 
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(aBox.myText) });
+            // --------------------
+
+            NetPeer newConnection = new NetPeer();
+            newConnection.StartConnection(aBox.myText);
+            NetPoster.Instance.Connection = newConnection;
+            myIsNetworking = true;
+
+            // --------------------
+
+            //myGUICaretaker.GetGUI<Text>("Connectingy").SetVisibility(EGUIVisibility.Visible); says "connectingy..."
+            myConnectedCallback = () =>
+            {
+                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(false) });
+            };
         }
 
         public bool CreateGameStaet()
         {
+            NetHost host = new NetHost();
+            host.StartListen();
+            NetPoster.Instance.Connection = host;
+            myIsNetworking = true;
+
             myGUICaretaker.GetGUI<Text>("Hosthost").SetVisibility(EGUIVisibility.Visible);
-            myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState() });
-            //CreateGameStaet SOME GUI FOR THE THING SAYiNG "host host"
+
+            myConnectedCallback = () => 
+            {
+                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(true)});
+            };
             return true;
         }
 
@@ -65,6 +94,12 @@ namespace AttackLeague.AttackLeague.States
         protected override void Update()
         {
             base.Update();
+
+            if (myIsNetworking == true && NetPoster.Instance.Connection.IsConnected() == true)
+            {
+                myIsNetworking = false;
+                myConnectedCallback();
+            }
         }
 
         protected override void Draw(SpriteBatch aSpriteBatch)

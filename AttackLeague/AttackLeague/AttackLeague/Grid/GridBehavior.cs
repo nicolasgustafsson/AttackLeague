@@ -146,7 +146,8 @@ namespace AttackLeague.AttackLeague.Grid
                     myMercyTimer -= DeltaTime * myModifiedGameSpeed;
                     if (myMercyTimer < 0)
                     {
-                        GameInfo.GameInfo.myPlayers[myPlayerIndex].DebugDied(myPlayerIndex);
+                        if (myPlayerIndex == 1)
+                            GameInfo.GameInfo.myPlayers[myPlayerIndex].DebugDied(myPlayerIndex);
                         myIsDead = true;
                         DeadFeedback();
                     }

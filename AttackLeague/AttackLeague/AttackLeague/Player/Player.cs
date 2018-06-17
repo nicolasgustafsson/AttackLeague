@@ -8,6 +8,7 @@ using AttackLeague.AttackLeague.Blocks.Angry;
 using AttackLeague.Utility;
 using System.Diagnostics;
 using AttackLeague.Utility.Network.Messages;
+using AttackLeague.AttackLeague.Feedback;
 
 namespace AttackLeague.AttackLeague.Player
 {
@@ -93,6 +94,16 @@ namespace AttackLeague.AttackLeague.Player
 
         public virtual void DebugDied(int aPlayerIndex)
         {
+            if (aPlayerIndex != myPlayerInfo.myPlayerIndex)
+                return;
+            Vector2 smallOffset = new Vector2();
+            smallOffset.X = myGridBundle.Container.GetInitialWidth() / 3 * AbstractBlock.GetTileSize();
+            smallOffset.Y = myGridBundle.Container.GetInitialHeight() / 3 * AbstractBlock.GetTileSize();
+            SpriteFeedback losar = new SpriteFeedback("fantastiskt", myGridBundle.Behavior.GetOffset() + smallOffset, () =>
+            {
+                return myGridBundle.Behavior.myIsDead == false;
+            });
+            FeedbackManager.AddFeedback(losar);
         }
 
         public virtual void ReceiveAttack(AngryInfo aAngryInfo)

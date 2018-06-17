@@ -29,8 +29,7 @@ namespace AttackLeague.AttackLeague.Player
 
         private void OnDebugDiedReceived(DebugDiedMessage aMessage)
         {
-            int br = 0;
-            br++;
+            base.DebugDied(aMessage.PlayerIndex);
         }
 
         private void OnFrameMessageReceived(AdvanceFrameMessage aMessage)

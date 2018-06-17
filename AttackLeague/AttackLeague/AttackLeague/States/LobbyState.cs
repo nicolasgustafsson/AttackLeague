@@ -71,7 +71,9 @@ namespace AttackLeague.AttackLeague.States
             //myGUICaretaker.GetGUI<Text>("Connectingy").SetVisibility(EGUIVisibility.Visible); says "connectingy..."
             myConnectedCallback = () =>
             {
-                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(myIsHosty) });
+                MatchInfo matchInfo = new MatchInfo();
+                matchInfo.myMatchType = EMatchType.Client;
+                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(matchInfo) });
             };
         }
 
@@ -87,7 +89,9 @@ namespace AttackLeague.AttackLeague.States
 
             myConnectedCallback = () => 
             {
-                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(myIsHosty) });
+                MatchInfo matchInfo = new MatchInfo();
+                matchInfo.myMatchType = EMatchType.Host;
+                myStateStack.AddCommand(new StateCommand { myCommandType = EStateCommandType.Add, myStateType = EStateType.Major, myState = new GameState(matchInfo) });
             };
             return true;
         }

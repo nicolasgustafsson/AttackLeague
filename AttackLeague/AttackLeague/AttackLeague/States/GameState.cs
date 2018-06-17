@@ -16,15 +16,28 @@ using System.Threading.Tasks;
 
 namespace AttackLeague.AttackLeague.States
 {
+    enum EMatchType
+    {
+        Host,
+        Client,
+        Singeplayer
+    }
+
+    struct MatchInfo
+    {
+        public List<PlayerInfo> myPlayers;
+        public EMatchType myMatchType;
+    }
+
     class GameState : State
     {
-        bool myIsHosting = true;
+        private MatchInfo myMatchInfo;
 
         //string myIPToConnectTo = "";
 
-        public GameState(bool isHosting)
+        public GameState(MatchInfo aMatchInfo)
         {
-            myIsHosting = isHosting;
+            myMatchInfo = aMatchInfo;
         }
 
         //public GameState(string IP)
@@ -41,16 +54,33 @@ namespace AttackLeague.AttackLeague.States
         public void LoadContent()
         {
             //YLF SPECIAL START
-            if (myIsHosting == false)
+
+            switch (myMatchInfo.myMatchType)
             {
-                GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(0, EInputType.Keyboard, "ylf")));
-                GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(1, EInputType.Keyboard)));
+                case EMatchType.Host:
+                    GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
+                    GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Networked, "ylf")));
+                    break;
+
+                case EMatchType.Client:
+                    GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(0, EInputType.Networked, "ylf")));
+                    GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(1, EInputType.Keyboard)));
+                    break;
+
+                case EMatchType.Singeplayer:
+                    GameInfo.GameInfo.myPlayers.Add(new DebugPlayer());
+                    break;
             }
-            else
-            {
-                GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
-                GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Keyboard, "ylf")));
-            }
+            //if (myIsHosting == false)
+            //{
+            //    GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(0, EInputType.Networked, "ylf")));
+            //    GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(1, EInputType.Keyboard)));
+            //}
+            //else
+            //{
+            //    GameInfo.GameInfo.myPlayers.Add(new NetPostingPlayer(new PlayerInfo(0, EInputType.Keyboard)));
+            //    GameInfo.GameInfo.myPlayers.Add(new RemotePlayer(new PlayerInfo(1, EInputType.Networked, "ylf")));
+            //}
 
             foreach (var playerdesu in GameInfo.GameInfo.myPlayers)
             {

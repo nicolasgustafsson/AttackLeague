@@ -16,6 +16,7 @@ namespace AttackLeague.AttackLeague.Player
         GamePad3,
         GamePad4,
         Keyboard,
+        Networked,
         Length
     }
 

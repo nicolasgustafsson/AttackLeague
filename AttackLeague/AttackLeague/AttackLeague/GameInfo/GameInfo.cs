@@ -46,8 +46,8 @@ namespace AttackLeague.AttackLeague.GameInfo
         static public void SendMyRegards(AngryInfo aAngryInfo)
         {
             foreach (var toAttackIndex in myPlayers[aAngryInfo.mySendingPlayer].myAttackOrder)
-            {
-                if (myPlayers[toAttackIndex].CanBeAttacked() == true)
+            {                                                           //remove this to test attacks vvvvvvv
+                if (myPlayers[toAttackIndex].CanBeAttacked() == true && aAngryInfo.mySendingPlayer != toAttackIndex)
                 {
                     myPlayers[toAttackIndex].ReceiveAttack(aAngryInfo);
                     break;

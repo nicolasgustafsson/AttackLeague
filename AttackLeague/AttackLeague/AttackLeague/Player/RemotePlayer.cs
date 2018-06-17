@@ -13,16 +13,24 @@ namespace AttackLeague.AttackLeague.Player
     {
         private Subscriber<AdvanceFrameMessage> myAdvanceFrameSubscriber;
         private Subscriber<AngryBlockMessage> myAngryBlockSubscriber;
+        private Subscriber<DebugDiedMessage> myDebugDiedMessage;
 
         public RemotePlayer(PlayerInfo aPlayerInfo)
             :base(aPlayerInfo)
         {
             myAdvanceFrameSubscriber = new Subscriber<AdvanceFrameMessage>(OnFrameMessageReceived, true);
             myAngryBlockSubscriber = new Subscriber<AngryBlockMessage>(OnAngryAttackReceived, true);
+            myDebugDiedMessage = new Subscriber<DebugDiedMessage>(OnDebugDiedReceived, true);
         }
 
         public override void Update()
         {
+        }
+
+        private void OnDebugDiedReceived(DebugDiedMessage aMessage)
+        {
+            int br = 0;
+            br++;
         }
 
         private void OnFrameMessageReceived(AdvanceFrameMessage aMessage)

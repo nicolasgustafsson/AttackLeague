@@ -13,5 +13,6 @@ namespace AttackLeague.AttackLeague.Player
         public List<string> Actions;
         public int PlayerIndex;
         public int FrameIndex;
+        public bool Died;
     }
 }

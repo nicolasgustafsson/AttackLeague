@@ -15,6 +15,11 @@ namespace AttackLeague.AttackLeague.Player
         {
         }
 
+        public override void DebugDied(int aPlayerIndex)
+        {
+            NetPoster.Instance.PostMessage(new DebugDiedMessage() { PlayerIndex = aPlayerIndex});
+        }
+
         public override void ReceiveAttack(AngryInfo aAngryInfo)
         {
             myQueuedAngryBlocks.Add(aAngryInfo);

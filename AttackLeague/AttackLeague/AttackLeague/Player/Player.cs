@@ -91,6 +91,10 @@ namespace AttackLeague.AttackLeague.Player
             return myGridBundle.Behavior.myIsDead == false; // todo : do crazy stuff
         }
 
+        public virtual void DebugDied(int aPlayerIndex)
+        {
+        }
+
         public virtual void ReceiveAttack(AngryInfo aAngryInfo)
         {
             myQueuedAngryBlocks.Add(aAngryInfo);

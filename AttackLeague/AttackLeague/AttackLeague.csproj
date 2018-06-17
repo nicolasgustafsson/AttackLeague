@@ -67,6 +67,7 @@
     <Compile Include="AttackLeague\Grid\GridContainer.cs" />
     <Compile Include="AttackLeague\Player\ActionList.cs" />
     <Compile Include="AttackLeague\Player\AdvanceFrameMessage.cs" />
+    <Compile Include="AttackLeague\Player\DebugDiedMessage.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayer.cs" />
     <Compile Include="AttackLeague\Player\DebugPlayerInfo.cs" />
     <Compile Include="AttackLeague\Player\NetPostingPlayer.cs" />
